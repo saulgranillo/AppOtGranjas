@@ -1,0 +1,20 @@
+<ion-header class="ion-no-border">
+
+  <ion-toolbar>
+    <ion-title>Seleccionar Area</ion-title>
+  </ion-toolbar>
+
+  <ion-searchbar #search placeholder="Buscar" inputmode="text" [debounce]="250" animated
+    (ionChange)="onSearchChange( $event )"></ion-searchbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list>
+    <ion-item *ngFor="let area of lstArea | filtro: textoBuscar : 'AreaDesc';" 
+              (click)="onClick( area )">
+      <ion-label>{{area.AreaDesc}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "ordenesTrabajo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

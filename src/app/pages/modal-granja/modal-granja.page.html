@@ -1,0 +1,19 @@
+<ion-header class="ion-no-border">
+
+  <ion-toolbar>
+    <ion-title>Seleccionar Granja</ion-title>
+  </ion-toolbar>
+
+  <ion-searchbar #search placeholder="Buscar" inputmode="text" [debounce]="250" animated
+    (ionChange)="onSearchChange( $event )"></ion-searchbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list>
+    <ion-item *ngFor="let granja of lstGranja | filtro: textoBuscar : 'Nombre';" (click)="onClick( granja )">
+      <ion-label>{{granja.Nombre}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

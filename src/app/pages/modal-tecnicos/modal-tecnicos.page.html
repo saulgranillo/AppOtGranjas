@@ -1,0 +1,20 @@
+<ion-header class="ion-no-border">
+
+  <ion-toolbar>
+    <ion-title>Seleccionar Técnico</ion-title>
+  </ion-toolbar>
+
+  <ion-searchbar #search placeholder="Buscar" inputmode="text" [debounce]="250" animated
+    (ionChange)="onSearchChange( $event )"></ion-searchbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list>
+    <ion-item *ngFor="let tecnico of arrTecnicos | filtro: textoBuscar : 'nombre';" 
+              (click)="onClick( tecnico )">
+      <ion-label>{{tecnico.nombre}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

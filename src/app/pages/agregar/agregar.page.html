@@ -1,0 +1,248 @@
+<app-header titulo="Agregar OT"></app-header>
+
+<ion-content>
+
+  <form [formGroup]="agregarForm">
+
+  <ion-card >
+    <ion-list>
+  
+      <ion-list-header>
+        <ion-label class="subTitulo">Estatus</ion-label>
+      </ion-list-header>
+  
+      <ion-radio-group  formControlName="agregarForm" (ionChange)="checkEstatus($event)">
+   
+        <ion-item *ngFor="let stat of lstEstatus; let i=index;" lines="none" (click)="getIdEstatus(i)">
+          <ion-label>{{stat.Estatus}}</ion-label>
+          <ion-radio slot="start" value="{{stat.Estado}}"></ion-radio>
+        </ion-item>
+  
+      </ion-radio-group>
+    </ion-list>
+  </ion-card>
+
+  
+  <ion-card [hidden]="!codEstatusHidden">
+    <ion-list>
+  
+      <ion-list-header>
+        <ion-label class="subTitulo">Prioridad</ion-label>
+      </ion-list-header>
+  
+      <ion-radio-group formControlName="agregarForm" (ionChange)="checkPrioridad($event)">
+  
+        <ion-item *ngFor="let item of lstPrioridad; let i=index;" lines="none">
+          <ion-label>{{item.Nombre}}</ion-label>
+          <ion-radio slot="start" value="{{item.Prioridad}}"></ion-radio>
+        </ion-item>
+  
+      </ion-radio-group>
+    </ion-list>
+  </ion-card>
+
+<ion-card>
+  <ion-list>
+    <ion-list-header>
+      <ion-label class="subTitulo">Tipo</ion-label>
+    </ion-list-header>
+
+    <ion-radio-group formControlName="agregarForm" (ionChange)="checkTipo($event)">
+
+      <ion-item *ngFor="let tipo of lstTipo; let i=index;" lines="none" (click)="getIdTipo(i)">
+        <ion-label>{{tipo.Tipo}}</ion-label>
+        <ion-radio slot="start" value="{{tipo.Codigo}}"></ion-radio>
+      </ion-item>
+
+    </ion-radio-group>
+  </ion-list>
+</ion-card>
+
+
+  <ion-card>
+    <ion-list-header>
+      <ion-label class="subTitulo">Granja</ion-label>
+    </ion-list-header>
+  
+    <ion-card-content>
+  
+      <ion-button expand="block" fill="outline" (click)="modalGranja()">
+        {{granja}}
+      </ion-button>
+  
+    </ion-card-content>
+  </ion-card>
+
+  
+  <ion-card>
+    <ion-list-header>
+      <ion-label class="subTitulo">Area</ion-label>
+    </ion-list-header>
+
+    <ion-card-content>
+      <ion-button expand="block" fill="outline" (click)="modalArea()">
+        {{areaDesc}}
+       </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
+
+  <form [formGroup]="ionicForm" (ngSubmit)="guardarObj()" novalidate>  
+  <ion-card>
+    <ion-list-header>
+      <ion-label class="subTitulo">Ubicación del equipo</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-textarea formControlName="ubicacion" autocapitalize="true" inputmode="text" 
+                    placeholder="Describe la ubicación"  
+                    [debounce]="250"            
+                    (ionChange)="(txtUbicacion($event))"></ion-textarea>
+    </ion-item>
+    <span class="error ion-padding" *ngIf=" errorCtrl.ubicacion.errors?.required">
+      Indicar Ubicacion 
+    </span>
+    <span class="error ion-padding" *ngIf=" errorCtrl.ubicacion.errors?.minlength">
+      Ubicación debe ser mayor a 5 caracteres
+    </span>
+  </ion-card>
+
+  <ion-card>
+    <ion-list-header>
+      <ion-label class="subTitulo">Actividad</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-textarea formControlName="actividad" autocapitalize="true" inputmode="text" 
+                    placeholder="Describe la actividad a realizar"  
+                    [debounce]="250"            
+                    (ionChange)="(txtActividad($event))"></ion-textarea>
+    </ion-item>
+    <!-- para estar parte del errorControlName, el name se cambia por el valor del formgroup (revisar el console
+    log en get errorcontrol() ) -->
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.actividad.errors?.required">
+      Indicar Actividad
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.actividad.errors?.minlength">
+      Actividad debe ser mayor a 5 caracteres
+    </span>
+  </ion-card>
+
+  <ion-card>
+    <ion-list-header>
+      <ion-label class="subTitulo">Materiales</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-textarea formControlName="materiales" autocapitalize="true" inputmode="text" 
+                    placeholder="Describe materiales requeridos"  
+                    [debounce]="250"            
+                    (ionChange)="(txtMateriales($event))"></ion-textarea>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.materiales.errors?.required">
+      indicar Materiales
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.materiales.errors?.minlength">
+      Materiales debe ser mayor a 5 caracteres
+    </span>
+  </ion-card>
+
+  <!-- <ion-row>
+    <ion-col>
+      <ion-button type="submit" color="danger" expand="block">Submit</ion-button>
+    </ion-col>
+  </ion-row> -->
+
+
+  </form>
+
+  <ion-card>
+    <ion-list-header>
+      <ion-label class="subTitulo">Equipo</ion-label>
+    </ion-list-header>
+  
+    <ion-card-content>
+  
+      <ion-button expand="block" fill="outline" (click)="modalEquipo()">
+        {{equipo}}
+      </ion-button>
+  
+    </ion-card-content>
+  </ion-card>
+
+  
+ <!-- aqui estaba estatus -->
+
+  <ion-card [hidden]="codEstatusHidden"> <!-- este hidden es para ocutar los técnicos cuando la ot es no realizada-->
+    <ion-list-header>
+      <ion-label class="subTitulo">Técnicos involucrados</ion-label>
+    </ion-list-header>
+  
+    <ion-card-content>
+  
+      <ion-button expand="block" fill="outline" (click)="modalTecnico()">
+        Seleccionar
+      </ion-button>
+  
+      <ion-list>
+        <ion-label>{{tecnico}}</ion-label>
+        <!-- lo comente solo para la version beta, que escojan solo 1 tecnico -->
+        <!-- <ion-item *ngFor="let tecnico of lstTecnico; let i = index;">
+          <ion-label>
+            {{tecnico.nombre}}
+          </ion-label>
+          <ion-icon (click)="eliminarTecnico(i)" name="trash-outline"></ion-icon>
+        </ion-item> -->
+      </ion-list>
+  
+  
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card [hidden]="codEstatusHidden"> <!-- este hidden es para ocutar el tipo cuando la ot es no realizada, es con el mismo de tecnicos -->
+    <ion-list>
+  
+      <ion-list-header>
+        <ion-label class="subTitulo">Tipo evento</ion-label>
+      </ion-list-header>
+  
+      <ion-radio-group formControlName="agregarForm" (ionChange)="checkEvento($event)">
+   
+        <ion-item *ngFor="let item of lstEvento; let i=index;" lines="none">
+          <ion-label>{{item.Evento}}</ion-label>
+          <!-- el evento click lo uso para obtener la descipcion del tipo evento -->
+          <ion-radio (click)="obtenerEvento(i)"  slot="start" value="{{item.EstatusEvento}}"></ion-radio>
+        </ion-item>
+  
+      </ion-radio-group>
+    </ion-list>
+  </ion-card>
+</form>
+
+  <ion-card>
+    <ion-list-header>
+      <ion-label class="subTitulo">Imagen</ion-label>
+    </ion-list-header>
+  
+    <ion-card-content>
+  
+      <ion-button expand="block" fill="outline">
+        Seleccionar
+      </ion-button>
+  
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-card>
+  
+      <ion-button expand="block" fill="outline" (click)="guardarObj()">
+        GUARDAR
+      </ion-button>
+  
+  </ion-card>
+  
+<!-- 
+  <ion-button expand="block" fill="outline" (click)="creardb()">
+    BD
+  </ion-button> -->
+ 
+</ion-content>
