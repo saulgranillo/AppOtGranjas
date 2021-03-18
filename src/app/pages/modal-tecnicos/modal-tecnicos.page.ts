@@ -181,7 +181,7 @@ export class ModalTecnicosPage implements OnInit {
 
   textoBuscar: string = "";
   tecnico : any;
-
+pruebaDevelop: any;
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {
