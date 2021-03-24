@@ -20,14 +20,14 @@ export class AgregarOTService {
 
   constructor( private http : HttpClient) { }
 
-  obtenerAlbumes(){
-    return this.http.get<any[]>('https://jsonplaceholder.typicode.com/albums');
-  }
+  // obtenerAlbumes(){
+  //   return this.http.get<any[]>('https://jsonplaceholder.typicode.com/albums');
+  // }
 
   cargarEquipoLista(){
 
     let promise = new Promise((resolve, reject) =>{
-      this.http.get(`${environment.urlApiOrdenesTrabajo}/TodoItems/CargarEquipo`).toPromise().then(
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarEquipo`).toPromise().then(
         res =>{
           this.lstEquipo = res ;               
           resolve( res );
@@ -54,7 +54,7 @@ export class AgregarOTService {
   cargarPrioridadLista(){
 
     let promise = new Promise((resolve, reject) =>{
-      this.http.get(`${environment.urlApiOrdenesTrabajo}/OrdenesTrabajo/CargarPrioridad`).toPromise().then(
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarPrioridad`).toPromise().then(
         res =>{
           this.lstPrioridad = res ;               
           resolve( res );
@@ -70,7 +70,7 @@ export class AgregarOTService {
   cargarTipoLista(){
 
     let promise = new Promise((resolve, reject) =>{
-      this.http.get(`${environment.urlApiOrdenesTrabajo}/OrdenesTrabajo/CargarTipo`).toPromise().then(
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarTipo`).toPromise().then(
         res =>{
           this.lstTipoOT = res ;               
           resolve( res );
@@ -86,7 +86,7 @@ export class AgregarOTService {
   cargarAreaLista(){
 
     let promise = new Promise((resolve, reject) =>{
-      this.http.get(`${environment.urlApiOrdenesTrabajo}/OrdenesTrabajo/CargarArea`).toPromise().then(
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarArea`).toPromise().then(
         res =>{
           this.lstArea = res ;               
           resolve( res );
@@ -102,7 +102,7 @@ export class AgregarOTService {
   cargarGranjaLista(){
 
     let promise = new Promise((resolve, reject) =>{
-      this.http.get(`${environment.urlApiOrdenesTrabajo}/OrdenesTrabajo/CargarGranja`).toPromise().then(
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarGranja`).toPromise().then(
         res =>{
           this.lstGranja = res ;               
           resolve( res );
@@ -117,7 +117,7 @@ export class AgregarOTService {
 
   cargarEstatusLista(){
     let promise = new Promise((resolve, reject) =>{
-      this.http.get(`${environment.urlApiOrdenesTrabajo}/OrdenesTrabajo/CargarEstatus`).toPromise().then(
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarEstatus`).toPromise().then(
         res =>{
           this.lstEstatus = res ;               
           resolve( res );
@@ -132,7 +132,7 @@ export class AgregarOTService {
 
   cargarEventoLista(){
     let promise = new Promise((resolve, reject) =>{
-      this.http.get(`${environment.urlApiOrdenesTrabajo}/OrdenesTrabajo/CargarEvento`).toPromise().then(
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarEvento`).toPromise().then(
         res =>{
           this.lstTipoEvento = res ;               
           resolve( res );
@@ -157,7 +157,7 @@ export class AgregarOTService {
         Centro : objGuardar.granja.Centro === undefined ? '' : objGuardar.granja.Centro,
         Area : objGuardar.area.AreaDesc === undefined ? '' : objGuardar.area.AreaDesc,
         CodArea : objGuardar.area.Area === undefined ? '' : objGuardar.area.Area,
-        Ubicacion : objGuardar.ubicacion === undefined ? '' : objGuardar.ubicacion.value,
+        Sala : objGuardar.sala === undefined ? '' : objGuardar.sala,
         Equipo : objGuardar.equipo.Equipo === undefined ? '' : objGuardar.equipo.Equipo,
         CodEquipo : objGuardar.equipo.CodEquipo === undefined ? '' : objGuardar.equipo.CodEquipo,
         Grupo : objGuardar.equipo.Grupo === undefined ? '' : objGuardar.equipo.Grupo,
@@ -168,10 +168,12 @@ export class AgregarOTService {
         Tecnico : objGuardar.tecnicos === undefined ? '' : objGuardar.tecnicos,
         TipoEvento : objGuardar.evento === undefined ? '' : objGuardar.evento,
         CodEvento: objGuardar.codEvento === undefined ? '' : objGuardar.codEvento.value
+      
       }
       console.log('MODEL')
       console.log(model)
-      this.http.post(`${environment.urlApiOrdenesTrabajo}/OrdenesTrabajo/Guardar`,model).subscribe((data) =>{
+
+      this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/Guardar`,model).subscribe((data) =>{
         resolve(data)
       }, error =>{
         reject(error);

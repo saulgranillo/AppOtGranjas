@@ -5,7 +5,7 @@ const routes: Routes = [
 
   {
     path: '',
-    redirectTo: 'validador',
+    redirectTo: 'agregar',
     pathMatch: 'full'
   },
   {

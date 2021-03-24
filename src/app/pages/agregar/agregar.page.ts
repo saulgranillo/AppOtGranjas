@@ -45,8 +45,9 @@ export class AgregarPage implements OnInit {
 
   actividad : string = "";
   materiales : string = "";
-  ubicacion : string ="";
+  // ubicacion : string ="";
   objTecnicos : {};
+  sala:any;
   
   estatus : any;
   codEstatus: any;
@@ -66,6 +67,7 @@ export class AgregarPage implements OnInit {
   tecnico : any;
   lstEstatus : any [] = [];
   lstEvento : any [] = [];
+  
 
 
   //Validadores
@@ -90,7 +92,7 @@ export class AgregarPage implements OnInit {
     
     //Validadores
     this.ionicForm = this.formBuilder.group({
-      ubicacion: ['', [Validators.required, Validators.minLength(5)]],
+      // ubicacion: ['', [Validators.required, Validators.minLength(5)]],
       actividad: ['', [Validators.required, Validators.minLength(5)]],
       materiales: ['', [Validators.required, Validators.minLength(5)]]
     })
@@ -281,6 +283,7 @@ export class AgregarPage implements OnInit {
     }
     // console.log('el obj equipo');
     // console.log(this.objEquipo)
+  
   }
 
   async modalTecnico(){
@@ -317,10 +320,11 @@ export class AgregarPage implements OnInit {
     this.materiales= event.detail;  //event.detail.value;
     // console.log(this.materiales);
   }
-
-  txtUbicacion(event){
-    this.ubicacion = event.detail;
-    // console.log(this.ubicacion);
+  
+  salaValor(e){
+    this.sala = e.detail.value;
+    // console.log(this.sala);
+  
   }
 
 
@@ -358,7 +362,7 @@ export class AgregarPage implements OnInit {
         codTipoOt: this.codTipoOt.value,
         granja: this.objGranja,
         area: this.objArea,
-        ubicacion: this.ubicacion,
+        sala: this.sala,
         equipo: this.objEquipo,
         actividad: this.actividad,
         materiales: this.materiales,
@@ -389,6 +393,7 @@ export class AgregarPage implements OnInit {
           this.areaDesc="Seleccionar"
           this.equipo="Seleccionar"
           this.lstTecnico.length=0;
+          
           
         }
       }).catch((err) => {
@@ -436,7 +441,6 @@ export class AgregarPage implements OnInit {
     });
     toast.present();
   }
-
 
 
 }

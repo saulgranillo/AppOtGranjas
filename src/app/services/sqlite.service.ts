@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
-import {catEquipo, tablasSQLite} from './tablasSqLite';
+import { catOT, CatEquipo, CatEstatus, CatPrioridad, CatTipo, CatTipoEvento } from './tablasSqLite';
+import { AgregarOTService } from './agregar-ot.service';
+import { async } from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +14,9 @@ export class SqliteService {
   
   constructor(private sqlite: SQLite,
               // private storage: SQLiteObject,
+              private otService : AgregarOTService
               ) { }
-
+lstTipo: any[] = [];
 
   crearCatOT(){
     this.sqlite.create({
@@ -23,7 +26,7 @@ export class SqliteService {
       .then((db: SQLiteObject) => {
     
     
-        db.executeSql(tablasSQLite, [])
+        db.executeSql(catOT, [])
           .then(() =>
            console.log ('Executed SQL')
            )
@@ -32,6 +35,14 @@ export class SqliteService {
             );
     
           this.database = db;
+
+          db.executeSql(CatEquipo);
+          db.executeSql(CatEstatus);
+          db.executeSql(CatPrioridad);
+          db.executeSql(CatTipo);
+          db.executeSql(CatTipoEvento);
+
+          
         
       })
       .catch(e => 
@@ -40,30 +51,37 @@ export class SqliteService {
 
   }
 
-  // crearCatEquipo(){
-  //   this.database.open()
-  //   this.database.executeSql(catEquipo);
 
+//   catTipoSync(){
+//     this.otService.cargarTipoLista().then((tipo:[]) =>{
+//       this.lstTipo = tipo.concat(); 
+//       //  console.log(this.lstTipo)
+//       this.guardarCatTipo(this.lstTipo);
+//     });
+//   }
+
+//   async guardarCatTipo(lst){
+//     console.log("guardare", lst);
+// for (let index = 0; index < lst.length; index++) {
+//   // const element = array[index];
+  
+ 
+//     let sqlcmd = `
+//     INSERT INTO CatTipo()
+//       VALUES(
+//         ${lst[index].Tipo},  ${lst[index].Codigo}
+//       );
+//       `;
+//     console.log("Query a ejecutar", sqlcmd);
+//     this.database.executeSql(sqlcmd)
+//     .then(() => console.log('se ejecuto sql??'))
+//     .catch(e => console.log(e));
+//   }
   // }
 
-  getData(){
-    return new Promise((resolve, reject) =>{
-      this.database.executeSql(`CREATE TABLE IF NOT EXISTS CatEquipo(
-        IdEquipo INTEGER PRIMARY KEY NOT NULL,
-        Descripcion TEXT,
-        Codigo TEXT,
-        GpoEquipo TEXT
-        );`,[]).then((data) => {
-          
-          console.log('resolve');
-
-        }, (error) =>{
-          reject(error);
-        })
-    });
-  }
-
  
+
+
   // async guardarVenta(objGuardar:any) {
   //   console.log("Documento a guardar >> ", objGuardar);
   //   let sqlcmd = `

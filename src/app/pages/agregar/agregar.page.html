@@ -86,27 +86,55 @@
 
     </ion-card-content>
   </ion-card>
+<ion-card>
+  <ion-list-header class="subTitulo">
+    Ubicación
+  </ion-list-header>
 
+  <ion-card-content>
+    <ion-item>
+      <ion-label>Sala</ion-label>
+      <ion-select placeholder="Seleccionar" okText="Aceptar" cancelText="Cancelar" (ionChange)="salaValor($event)">
+        <ion-select-option value="NA">N/A</ion-select-option>
+        <ion-select-option value="1">1</ion-select-option>
+        <ion-select-option value="2">2</ion-select-option>
+        <ion-select-option value="3">3</ion-select-option>
+        <ion-select-option value="4">4</ion-select-option>
+        <ion-select-option value="5">5</ion-select-option>
+        <ion-select-option value="6">6</ion-select-option>
+        <ion-select-option value="7">7</ion-select-option>
+        <ion-select-option value="8">8</ion-select-option>
+        <ion-select-option value="9">9</ion-select-option>
+        <ion-select-option value="10">10</ion-select-option>
+        <ion-select-option value="11">11</ion-select-option>
+        <ion-select-option value="12">12</ion-select-option>
+        <ion-select-option value="13">13</ion-select-option>
+        <ion-select-option value="14">14</ion-select-option>
+        <ion-select-option value="15">15</ion-select-option>
+        <ion-select-option value="16">16</ion-select-option>
+        <ion-select-option value="17">17</ion-select-option>
+        <ion-select-option value="18">18</ion-select-option>
+        <ion-select-option value="19">19</ion-select-option>
+        <ion-select-option value="20">20</ion-select-option>
+        <ion-select-option value="21">21</ion-select-option>
+        <ion-select-option value="22">22</ion-select-option>
+        <ion-select-option value="23">23</ion-select-option>
+        <ion-select-option value="24">24</ion-select-option>
+        <ion-select-option value="25">25</ion-select-option>
+        <ion-select-option value="26">26</ion-select-option>
+        <ion-select-option value="27">27</ion-select-option>
+        <ion-select-option value="28">28</ion-select-option>
+        <ion-select-option value="29">29</ion-select-option>
+        <ion-select-option value="30">30</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-card-content>
+
+</ion-card>
+  
 
   <form [formGroup]="ionicForm" (ngSubmit)="guardarObj()" novalidate>  
-  <ion-card>
-    <ion-list-header>
-      <ion-label class="subTitulo">Ubicación del equipo</ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-textarea formControlName="ubicacion" autocapitalize="true" inputmode="text" 
-                    placeholder="Describe la ubicación"  
-                    [debounce]="250"            
-                    (ionChange)="(txtUbicacion($event))"></ion-textarea>
-    </ion-item>
-    <span class="error ion-padding" *ngIf=" errorCtrl.ubicacion.errors?.required">
-      Indicar Ubicacion 
-    </span>
-    <span class="error ion-padding" *ngIf=" errorCtrl.ubicacion.errors?.minlength">
-      Ubicación debe ser mayor a 5 caracteres
-    </span>
-  </ion-card>
-
+ 
   <ion-card>
     <ion-list-header>
       <ion-label class="subTitulo">Actividad</ion-label>
@@ -217,7 +245,7 @@
   </ion-card>
 </form>
 
-  <ion-card>
+  <!-- <ion-card>
     <ion-list-header>
       <ion-label class="subTitulo">Imagen</ion-label>
     </ion-list-header>
@@ -229,7 +257,7 @@
       </ion-button>
   
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
 
   <ion-card>
@@ -240,9 +268,9 @@
   
   </ion-card>
   
-<!-- 
-  <ion-button expand="block" fill="outline" (click)="creardb()">
-    BD
-  </ion-button> -->
+ 
+  <!-- <ion-button expand="block" fill="outline" (click)="post()">
+    POST
+  </ion-button>  -->
  
 </ion-content>

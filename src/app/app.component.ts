@@ -29,10 +29,8 @@ export class AppComponent {
       // debugger;
       // this.sqlService.crearCatOT();
 
-
-      // this.sqlService.getData().then( res =>{
-      //   console.log(res);
-      // }) 
+      // this.sqlService.catTipoSync();
+      
 
     });
   }

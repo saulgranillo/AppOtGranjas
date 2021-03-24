@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "ordenesTrabajo",
+  "appId": "net.norson.OTGranjas",
+  "appName": "OT Granjas",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
