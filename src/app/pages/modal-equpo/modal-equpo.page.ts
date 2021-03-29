@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AgregarOTService } from '../../services/agregar-ot.service';
+import { SqliteService } from '../../services/sqlite.service';
 
 @Component({
   selector: 'app-modal-equpo',
@@ -13,18 +14,30 @@ export class ModalEqupoPage implements OnInit {
   area : any;
 
   lstEquipo: any[] = [];
-
-  constructor(private modalCtrl : ModalController, private otService : AgregarOTService) { }
+  lstEquipoSql:any;
+  
+  constructor(private modalCtrl : ModalController, private otService : AgregarOTService, private sqlService:SqliteService) { }
 
   ngOnInit() {
-    this.cargarEquipo();
+    // this.cargarEquipo();
+    this.cargarEquipoSql();
   }
+
+  cargarEquipoSql(){
+    this.sqlService.selectCatEquipo_Sql().then(res => {
+      this.lstEquipoSql = res;
+      console.log('EQUIPO 😎')
+      console.log(this.lstEquipoSql);
+
+    });
+  }
+
 
   cargarEquipo() {
 
     this.otService.cargarEquipoLista().then((equipo: []) => {
       this.lstEquipo = equipo.concat();
-      // console.log(this.lstEquipo);
+      console.log(this.lstEquipo);
     });
   }
 

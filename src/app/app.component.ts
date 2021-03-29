@@ -27,9 +27,8 @@ export class AppComponent {
       this.splashScreen.hide();
       // crearDB
       // debugger;
-      // this.sqlService.crearCatOT();
-
-      // this.sqlService.catTipoSync();
+      this.sqlService.crearDB();
+      // this.sqlService.crearTablas();
       
 
     });

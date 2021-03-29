@@ -1,6 +1,7 @@
 import { Component, OnInit, NgModule, ViewChild, Directive } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AgregarOTService } from '../../services/agregar-ot.service';
+import { SqliteService } from '../../services/sqlite.service';
 
 
 @Component({
@@ -15,24 +16,36 @@ export class ModalGranjaPage implements OnInit {
 
 
   textoBuscar: string = "";
-  granja: any;
+  // granja: any;
+  granjaSql:any;
 
   lstGranja: any[] = [];
+  // lstGranjaSql: any[] = [];
   constructor(
     private modalCtrl: ModalController,
-    private otService: AgregarOTService
+    private otService: AgregarOTService,
+    private sqlService:SqliteService
   ) { }
 
 
 
   ngOnInit() {
-    this.cargarGranjas();
+    // this.cargarGranjas();
+    this.cargarGranjaSql();
   }
 
+  cargarGranjaSql(){
+    this.sqlService.selectCatGranja_Sql().then(res => {
+      this.granjaSql = res;
+      console.log('GRANJA 😎')
+      console.log(this.granjaSql);
+
+    });
+  }
   cargarGranjas() {
     this.otService.cargarGranjaLista().then((granja: []) => {
       this.lstGranja = granja.concat();
-      // console.log(this.lstGranja)
+      console.log(this.lstGranja)
     });
   }
 

@@ -6,13 +6,8 @@ import { ModalAreaPage } from '../modal-area/modal-area.page';
 import { ModalTecnicosPage } from '../modal-tecnicos/modal-tecnicos.page';
 import { ModalEqupoPage } from '../modal-equpo/modal-equpo.page';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
-import { fileURLToPath } from 'url';
+import { SqliteService } from '../../services/sqlite.service';
 
- // import { SqliteService } from '../../services/sqlite.service';
- 
-// primero ver si con lo que hice de vaciar lstTecnicos ya no se traba ; si no seguir buscando opciones
-// revisar que hacer al validar el estatus!! probablemente tengo que separar el guardarObj para poner el servicio en otra funcion👀
-// donde debo de vaciar el valor de las variables que deben de ir en =""
 
 @Component({
   selector: 'app-agregar',
@@ -69,6 +64,11 @@ export class AgregarPage implements OnInit {
   lstEvento : any [] = [];
   
 
+  // ListasOfline
+  lstTipoSql: any [] = [];
+  tipoSql : any;
+  estatusSql : any;
+  eventoSql : any;
 
   //Validadores
   ionicForm: FormGroup;
@@ -79,11 +79,12 @@ export class AgregarPage implements OnInit {
     private modalCtrl : ModalController,
     public formBuilder : FormBuilder,
     private alertCtrl : AlertController,
-    private toastCtrl : ToastController
-    // private sqlService : SqliteService
+    private toastCtrl : ToastController,
+    private sqlService : SqliteService
     ) {}
 
   ngOnInit() {
+ 
     
     this.cargarPrioridad();
     this.cargarTipo();
@@ -100,8 +101,93 @@ export class AgregarPage implements OnInit {
     this.agregarForm = new FormGroup({
       "agregarForm" : new FormControl()
     });
+
+  
+  }
+  
+  // creardb(){
+  //   this.sqlService.crearDB().then( res => {
+  //     console.log('creardb desde agregar')
+  //     console.log(res);
+  //   });
+  // }
+
+  // crearTablas(){
+  //   this.sqlService.crearTablas().then( res =>{
+  //     console.log('crear tablas desde agregar');
+  //     console.log(res)
+  //   });
+  // }
+
+  // insertar(){
+  //   this.sqlService.insertarCatTipo();
+  // }
+
+  // sql(){
+  //   this.sqlService.selectCatTipo().then( res => {
+  //     console.log('respuesta del select en agregar')
+  //     this.tipoSql = res;
+  //     console.log(this.tipoSql);
+  //  });
+  
+  // }
+
+  sync() {
+// CatTIPO
+    this.sqlService.insertarCatTipo_Sql().then(resp => {
+      // console.log('resppp')
+      console.log(resp);
+
+      this.sqlService.selectCatTipo_Sql().then(res => {
+        // console.log('respuesta del select en agregar')
+        this.tipoSql = res;
+        // console.log(this.tipoSql);
+      });
+    })
+// CatEstatus
+    this.sqlService.insertarCatEst_Sql().then(resp => {
+      // console.log('ESTATUS RESP')
+      console.log(resp);
+
+      this.sqlService.selectCatEstatus_Sql().then(res => {
+        // console.log('rsp Estatus')
+        this.estatusSql = res;
+        // console.log(this.estatusSql);
+      });
+    })
+// CatEvento
+    this.sqlService.insertarCatEvento_Sql().then(resp => {
+      // console.log('EVENTO RESP')
+      console.log(resp);
+
+      this.sqlService.selectCatEvento_Sql().then(res => {
+        // console.log('rsp Evento')
+        this.eventoSql = res;
+        // console.log(this.eventoSql);
+      });
+    })
+    
+// CatArea
+    this.sqlService.insertarCatArea_Sql().then(resp => {
+      // console.log('AREA insertado')
+      console.log(resp);
+    });
+
+// CatGranja
+      this.sqlService.insertarCatGranja_Sql().then(resp => {
+        console.log('Granja insertado')
+        // console.log(resp);
+      });
+
+// CatEquipo
+      this.sqlService.insertarCatEquipo_Sql().then(resp => {
+        console.log('EQUIPOinsertado')
+        console.log(resp);
+      });
+
   }
 
+  
   // gotoTop(){
   //   this.content.scrollToTop();
   // }
@@ -441,6 +527,35 @@ export class AgregarPage implements OnInit {
     });
     toast.present();
   }
+
+  
+  // obtenerTipo() {
+  //   console.log("entre al obtener");
+  // this.lstTipoSql = [] ; 
+  //   this.sqlService.database.executeSql('SELECT * FROM CatTIpo', []).then(res => {
+  //     console.log("hice la consulta ");
+  //     if (res.rows.length > 0) {
+  //       console.log('resInicio', res)
+  //       for (let i = 0; i < res.rows.length; i++) {
+  //         this.lstTipoSql.push({
+  //           id: res.rows.item(i).IdTipo,
+  //           tipo: res.rows.item(i).Tipo,
+  //           codigo: res.rows.item(i).Codigo
+  //         });
+  //       }
+  //       console.log('ITEMS', this.lstTipoSql)
+  //     }
+  //   });
+
+  // }
+
+//  async getSqlite(){
+//     console.log('entre al getSqlite')
+//   let aver =  this.sqlService.se();
+//     console.log('saco algo?');
+//     console.log(aver);
+//   }
+
 
 
 }

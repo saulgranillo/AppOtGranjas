@@ -258,13 +258,49 @@
   
     </ion-card-content>
   </ion-card> -->
+  
 
 
   <ion-card>
   
-      <ion-button expand="block" fill="outline" (click)="guardarObj()">
-        GUARDAR
+      <!-- <ion-button expand="block" fill="outline" (click)="creardb()">
+        DB
+      </ion-button> -->
+
+      <!-- <ion-button expand="block" fill="outline" (click)="crearTablas()">
+        Tablas
+      </ion-button> -->
+
+      <!-- <ion-button expand="block" fill="outline" (click)="insertar()">
+        Insert
+      </ion-button> -->
+
+      <!-- <ion-button expand="block" fill="outline" (click)="sql()">
+        leer
+      </ion-button> -->
+
+
+      <ion-button (click)="sync()">
+        Sync<ion-icon name="sync-outline"></ion-icon>
       </ion-button>
+  
+
+      <ion-item *ngFor="let tipo of tipoSql; let i=index;" lines="none" (click)="getIdTipo(i)">
+        <ion-label>{{tipo.Tipo}}</ion-label>
+        <ion-radio slot="start" value="{{tipo.Codigo}}"></ion-radio>
+      </ion-item>
+
+      <ion-item *ngFor="let stat of estatusSql; let i=index;" lines="none" (click)="getIdEstatus(i)">
+        <ion-label>{{stat.Estatus}}</ion-label>
+        <ion-radio slot="start" value="{{stat.Estado}}"></ion-radio>
+      </ion-item>
+
+      <ion-item *ngFor="let item of eventoSql; let i=index;" lines="none">
+        <ion-label>{{item.Evento}}</ion-label>
+        <!-- el evento click lo uso para obtener la descipcion del tipo evento -->
+        <ion-radio (click)="obtenerEvento(i)"  slot="start" value="{{item.EstatusEvento}}"></ion-radio>
+      </ion-item>
+
   
   </ion-card>
   

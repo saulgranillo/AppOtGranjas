@@ -55,3 +55,18 @@ export const CatTipoEvento =
      EstatusEvento TEXT
     );
    `
+export const CatArea =
+`CREATE TABLE IF NOT EXISTS CatArea(
+     IdArea INTEGER PRIMARY KEY NOT NULL,
+     Area TEXT,
+     AreaDesc TEXT
+    );
+   `
+export const CatGranja =
+`CREATE TABLE IF NOT EXISTS CatGranja(
+     IdGranja INTEGER PRIMARY KEY NOT NULL,
+     Centro TEXT,
+     Nombre TEXT
+    );
+   `
+

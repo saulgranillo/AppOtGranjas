@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { AgregarOTService } from '../../services/agregar-ot.service';
+import { SqliteService } from '../../services/sqlite.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class ValidadorPage implements OnInit {
   lstEquipo: any[] = [];
 
 
-  constructor(public formBuilder: FormBuilder, private otService : AgregarOTService) { }
+  constructor(public formBuilder: FormBuilder, private otService : AgregarOTService, private sqlService : SqliteService) { }
 
   ngOnInit() {
     console.log(this.isSubmitted)
