@@ -379,9 +379,7 @@ export class AgregarPage implements OnInit {
 
 
   guardarObj(){
-    
-    // console.log(this.lstTecnico)
-    
+ 
     if (this.codEstatusHidden == 1) {
       this.lstTecnico[0] = "";
       this.lstTecnico[1] = "";
@@ -431,29 +429,50 @@ export class AgregarPage implements OnInit {
         evento: this.evento,
         codEvento: this.codEvento
       }
-     
-      // console.log('voy a guardar',this.objGuardar);
-      this.sqlService.GuardarCatOt_Sql(this.objGuardar).then((result: any)=>{
-        this.lstTecnico.length=0;
+ // valido para guardar desde la compu o el cel
+      if (this.platform.is('cordova')) {
 
-        if (result.insertId >0 || result.insertId != undefined) {
-          console.log('guardarSQlresult',result); 
-          this.agregadoToast(); 
-          document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
-          this.ionicForm.reset();
-          this.agregarForm.reset();
-          this.granja="Seleccionar"
-          this.areaDesc="Seleccionar"
-          this.equipo="Seleccionar"
-          this.lstTecnico.length=0;
-          
-        }else{
-          let err = "Error agregar SQLite"
-          this.alertaErrorAgregar(err);
-        }
-        
-        
-      });
+        // console.log('voy a guardar',this.objGuardar);
+        this.sqlService.GuardarCatOt_Sql(this.objGuardar).then((result: any) => {
+          this.lstTecnico.length = 0;
+
+          if (result.insertId > 0 || result.insertId != undefined) {
+            console.log('guardarSQlresult', result);
+            this.agregadoToast();
+            document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
+            this.ionicForm.reset();
+            this.agregarForm.reset();
+            this.granja = "Seleccionar"
+            this.areaDesc = "Seleccionar"
+            this.equipo = "Seleccionar"
+            this.lstTecnico.length = 0;
+
+          } else {
+            let err = "Error agregar SQLite"
+            this.alertaErrorAgregar(err);
+          }
+
+
+        });
+
+      }
+      else {
+        this.otService.guardarOTOnline(this.objGuardar).then((result: any) => {
+          this.lstTecnico.length = 0;
+          if (result.MsgError != "") {
+            this.alertaErrorAgregar(result.MsgError);
+          } else {
+            this.agregadoToast();
+            document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
+            this.ionicForm.reset();
+            this.agregarForm.reset();
+            this.granja = "Seleccionar"
+            this.areaDesc = "Seleccionar"
+            this.equipo = "Seleccionar"
+            this.lstTecnico.length = 0;
+          }
+        })
+      };
 
       // this.otService.guardarOT(this.objGuardar).then((result: any) => {
       //   console.log(result);

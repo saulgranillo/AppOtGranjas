@@ -32,7 +32,7 @@ export const CatEquipo =
     IdEquipo INTEGER PRIMARY KEY NOT NULL,
     Descripcion TEXT,
     Codigo TEXT,
-    GpoEquipo TEXT
+    Grupo TEXT
     );`
 export const CatEstatus =
 `CREATE TABLE IF NOT EXISTS CatEstatus(

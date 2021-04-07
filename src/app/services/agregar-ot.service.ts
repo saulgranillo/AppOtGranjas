@@ -145,7 +145,7 @@ export class AgregarOTService {
     return promise;
   }
 
-  guardarOT(objGuardar:any){
+  guardarOTdesdeSql(objGuardar:any){
     // JSON.stringify(objGuardar);
     var Prioridad = objGuardar[0].Prioridad 
     var CodPrioridad = objGuardar[0].CodPrioridad
@@ -204,6 +204,44 @@ export class AgregarOTService {
       console.log('MODEL')
       console.log(model)
 
+      this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/Guardar`,model).subscribe((data) =>{
+        resolve(data)
+      }, error =>{
+        reject(error);
+      })
+    })
+  }
+
+  guardarOTOnline(objGuardar){
+    console.log('servicio', objGuardar)
+
+    return new Promise((resolve, reject) => {
+      
+      var model ={
+        Prioridad : objGuardar.prioridad === undefined ? '' : objGuardar.prioridad,
+        CodPrioridad: objGuardar.codPrioridad === undefined ? '' : objGuardar.codPrioridad,
+        TipoOT : objGuardar.tipo === undefined ? '' : objGuardar.tipo,
+        CodTipoOT : objGuardar.codTipoOt === undefined ? '' : objGuardar.codTipoOt,
+        Granja : objGuardar.granja.nombre === undefined ? '' : objGuardar.granja.nombre,
+        Centro : objGuardar.granja.Centro === undefined ? '' : objGuardar.granja.Centro,
+        Area : objGuardar.area.AreaDesc === undefined ? '' : objGuardar.area.AreaDesc,
+        CodArea : objGuardar.area.Area === undefined ? '' : objGuardar.area.Area,
+        Sala : objGuardar.sala === undefined ? '' : objGuardar.sala,
+        Equipo : objGuardar.equipo.Equipo === undefined ? '' : objGuardar.equipo.Equipo,
+        CodEquipo : objGuardar.equipo.CodEquipo === undefined ? '' : objGuardar.equipo.CodEquipo,
+        Grupo : objGuardar.equipo.Grupo === undefined ? '' : objGuardar.equipo.Grupo,
+        Actividad : objGuardar.actividad === undefined ? '' : objGuardar.actividad.value,
+        Materiales: objGuardar.materiales === undefined ? '' : objGuardar.materiales.value,
+        Estatus : objGuardar.estatus === undefined ? '' : objGuardar.estatus,
+        CodEstatus : objGuardar.codEstatus === undefined ? '' : objGuardar.codEstatus.value,
+        Tecnico1 : objGuardar.tecnico1 === undefined ? '' : objGuardar.tecnico1.nombre,
+        Tecnico2 : objGuardar.tecnico2 === undefined ? '' : objGuardar.tecnico2.nombre,
+        Tecnico3 : objGuardar.tecnico3 === undefined ? '' : objGuardar.tecnico3.nombre,
+        Tecnico4 : objGuardar.tecnico4 === undefined ? '' : objGuardar.tecnico4.nombre,
+        Tecnico5 : objGuardar.tecnico5 === undefined ? '' : objGuardar.tecnico5.nombre,
+        TipoEvento : objGuardar.evento === undefined ? '' : objGuardar.evento,
+        CodEvento: objGuardar.codEvento === undefined ? '' : objGuardar.codEvento.value
+      }
       this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/Guardar`,model).subscribe((data) =>{
         resolve(data)
       }, error =>{

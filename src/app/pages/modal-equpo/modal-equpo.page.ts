@@ -64,7 +64,7 @@ export class ModalEqupoPage implements OnInit {
       IdEquipo: equipo.IdEquipo,
       Descripcion: equipo.Descripcion,
       Codigo: equipo.Codigo,
-      Grupo: equipo.GpoEquipo
+      Grupo: equipo.Grupo
     })
   }
 

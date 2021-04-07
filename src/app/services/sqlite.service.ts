@@ -424,7 +424,7 @@ insertarCatEquipo_Sql() {
     var lst = this.lstEquipo;
     for (let i = 0; i < lst.length; i++) {
       let datos = [lst[i].Descripcion, lst[i].Codigo, lst[i].Grupo]
-      this.database.executeSql(`INSERT INTO CatEquipo(Descripcion,Codigo,GpoEquipo) VALUES(?,?,?)`, datos).then((data) => {
+      this.database.executeSql(`INSERT INTO CatEquipo(Descripcion,Codigo,Grupo) VALUES(?,?,?)`, datos).then((data) => {
         console.log('inserte Equipo', data)
         resolve(datos);
       }, (error) => {
@@ -445,7 +445,7 @@ selectCatEquipo_Sql() {
           items.push({
             Descripcion: data.rows.item(i).Descripcion,
             Codigo: data.rows.item(i).Codigo,
-            GpoEquipo: data.rows.item(i).GpoEquipo
+            Grupo: data.rows.item(i).Grupo
           })
         }
       }
@@ -562,7 +562,7 @@ GuardarCatOt_Sql(objGuardar) {
           this.idActualizar = this.porGuardar[0].IdOT
           console.log('this.idActualizar', this.idActualizar);
 
-          this.otService.guardarOT(this.porGuardar).then(() => {
+          this.otService.guardarOTdesdeSql(this.porGuardar).then(() => {
             this.actualizarEstatus(this.idActualizar)
           });
   
@@ -583,7 +583,7 @@ GuardarCatOt_Sql(objGuardar) {
         this.idActualizar = this.porGuardar[0].IdOT
         console.log('this.idActualizar', this.idActualizar);
       }
-      this.otService.guardarOT(this.porGuardar).then(() => {
+      this.otService.guardarOTdesdeSql(this.porGuardar).then(() => {
         this.actualizarEstatus(this.idActualizar)
       });
 
