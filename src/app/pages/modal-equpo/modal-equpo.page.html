@@ -11,7 +11,7 @@
 <ion-content class="ion-padding">
 
   <ion-list>
-    <ion-item *ngFor="let equipo of lstEquipoSql | filtro: textoBuscar : 'Descripcion';" (click)="onClick( equipo )">
+    <ion-item *ngFor="let equipo of lstEquipo | filtro: textoBuscar : 'Descripcion';" (click)="onClick( equipo )">
       <ion-label>{{equipo.Descripcion}}</ion-label>
     </ion-item>
   </ion-list>

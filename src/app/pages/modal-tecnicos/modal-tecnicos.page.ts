@@ -194,9 +194,9 @@ pruebaDevelop: any;
 
   onClick(tecnico){
     // console.log('tecnico seleccionado')
-    // console.log(tecnico);
+    console.log(tecnico);
       this.modalCtrl.dismiss({
-        id : tecnico.id,
+        // id : tecnico.id,
         nombre : tecnico.nombre
       })
     }

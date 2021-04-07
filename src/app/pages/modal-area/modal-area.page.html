@@ -11,7 +11,7 @@
 <ion-content class="ion-padding">
 
   <ion-list>
-    <ion-item *ngFor="let area of areaSql | filtro: textoBuscar : 'AreaDesc';" 
+    <ion-item *ngFor="let area of lstArea | filtro: textoBuscar : 'AreaDesc';" 
               (click)="onClick( area )">
       <ion-label>{{area.AreaDesc}}</ion-label>
     </ion-item>

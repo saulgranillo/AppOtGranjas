@@ -7,6 +7,10 @@ import { ModalTecnicosPage } from '../modal-tecnicos/modal-tecnicos.page';
 import { ModalEqupoPage } from '../modal-equpo/modal-equpo.page';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
 import { SqliteService } from '../../services/sqlite.service';
+import { Platform } from '@ionic/angular';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { Network } from '@ionic-native/network/ngx';
 
 
 @Component({
@@ -80,16 +84,27 @@ export class AgregarPage implements OnInit {
     public formBuilder : FormBuilder,
     private alertCtrl : AlertController,
     private toastCtrl : ToastController,
-    private sqlService : SqliteService
+    private sqlService : SqliteService,
+    private platform: Platform,
+    private files: File,
+    private socialSharing: SocialSharing,
+    private network:Network
     ) {}
 
   ngOnInit() {
  
-    
-    this.cargarPrioridad();
-    this.cargarTipo();
-    this.cargarEstatus();
-    this.cargarEvento();   
+    if (this.platform.is('cordova')) {
+      this.cargarPrioridadSql();
+      this.cargarTipoSql();
+      this.cargarEstatusSql();
+      this.cargarEventoSql();
+    }
+    else{
+      this.cargarPrioridad();
+      this.cargarTipo();
+      this.cargarEstatus();
+      this.cargarEvento();   
+    };
     
     //Validadores
     this.ionicForm = this.formBuilder.group({
@@ -101,92 +116,9 @@ export class AgregarPage implements OnInit {
     this.agregarForm = new FormGroup({
       "agregarForm" : new FormControl()
     });
-
   
   }
   
-  // creardb(){
-  //   this.sqlService.crearDB().then( res => {
-  //     console.log('creardb desde agregar')
-  //     console.log(res);
-  //   });
-  // }
-
-  // crearTablas(){
-  //   this.sqlService.crearTablas().then( res =>{
-  //     console.log('crear tablas desde agregar');
-  //     console.log(res)
-  //   });
-  // }
-
-  // insertar(){
-  //   this.sqlService.insertarCatTipo();
-  // }
-
-  // sql(){
-  //   this.sqlService.selectCatTipo().then( res => {
-  //     console.log('respuesta del select en agregar')
-  //     this.tipoSql = res;
-  //     console.log(this.tipoSql);
-  //  });
-  
-  // }
-
-  sync() {
-// CatTIPO
-    this.sqlService.insertarCatTipo_Sql().then(resp => {
-      // console.log('resppp')
-      console.log(resp);
-
-      this.sqlService.selectCatTipo_Sql().then(res => {
-        // console.log('respuesta del select en agregar')
-        this.tipoSql = res;
-        // console.log(this.tipoSql);
-      });
-    })
-// CatEstatus
-    this.sqlService.insertarCatEst_Sql().then(resp => {
-      // console.log('ESTATUS RESP')
-      console.log(resp);
-
-      this.sqlService.selectCatEstatus_Sql().then(res => {
-        // console.log('rsp Estatus')
-        this.estatusSql = res;
-        // console.log(this.estatusSql);
-      });
-    })
-// CatEvento
-    this.sqlService.insertarCatEvento_Sql().then(resp => {
-      // console.log('EVENTO RESP')
-      console.log(resp);
-
-      this.sqlService.selectCatEvento_Sql().then(res => {
-        // console.log('rsp Evento')
-        this.eventoSql = res;
-        // console.log(this.eventoSql);
-      });
-    })
-    
-// CatArea
-    this.sqlService.insertarCatArea_Sql().then(resp => {
-      // console.log('AREA insertado')
-      console.log(resp);
-    });
-
-// CatGranja
-      this.sqlService.insertarCatGranja_Sql().then(resp => {
-        console.log('Granja insertado')
-        // console.log(resp);
-      });
-
-// CatEquipo
-      this.sqlService.insertarCatEquipo_Sql().then(resp => {
-        console.log('EQUIPOinsertado')
-        console.log(resp);
-      });
-
-  }
-
   
   // gotoTop(){
   //   this.content.scrollToTop();
@@ -195,6 +127,14 @@ export class AgregarPage implements OnInit {
 
   cargarPrioridad() {
     this.otService.cargarPrioridadLista().then((prio:[]) =>{
+      this.lstPrioridad = prio.concat();
+      // console.log(this.lstPrioridad)
+    });
+    
+  }
+
+  cargarPrioridadSql() {
+    this.sqlService.selectCatPrioridad_Sql().then((prio:[]) =>{
       this.lstPrioridad = prio.concat();
       // console.log(this.lstPrioridad)
     });
@@ -226,6 +166,13 @@ export class AgregarPage implements OnInit {
     });
   }
 
+  cargarTipoSql() {
+    this.sqlService.selectCatTipo_Sql().then((tipo:[]) =>{
+      this.lstTipo = tipo.concat(); 
+      //  console.log(this.lstTipo)
+    });
+  }
+
   checkTipo(tipo){
     this.codTipoOt = tipo.detail;
     // console.log(this.codTipoOt)
@@ -242,6 +189,14 @@ export class AgregarPage implements OnInit {
 
   cargarEstatus(){
     this.otService.cargarEstatusLista().then((estatus:[]) =>{
+      this.lstEstatus = estatus.concat();
+      // console.log('estatus')
+      // console.log(this.lstEstatus);
+    });
+  }
+
+  cargarEstatusSql(){
+    this.sqlService.selectCatEstatus_Sql().then((estatus:[]) =>{
       this.lstEstatus = estatus.concat();
       // console.log('estatus')
       // console.log(this.lstEstatus);
@@ -285,6 +240,13 @@ export class AgregarPage implements OnInit {
 
   cargarEvento(){
     this.otService.cargarEventoLista().then((evento:[]) =>{
+      this.lstEvento = evento.concat();
+      // console.log(this.lstEvento);
+    });
+  }
+
+  cargarEventoSql(){
+    this.sqlService.selectCatEvento_Sql().then((evento:[]) =>{
       this.lstEvento = evento.concat();
       // console.log(this.lstEvento);
     });
@@ -380,15 +342,17 @@ export class AgregarPage implements OnInit {
     await modal.present();
 
     const resp = await modal.onDidDismiss();
-    // console.log('resp')
-    // console.log(resp)
-    this.tecnico = resp.data.nombre
+    
+    // this.tecnico = resp.data.nombre
     // console.log('this.tecnico');
     // console.log(this.tecnico);
+   if (this.lstTecnico.length >= 5) {
+     this.maxTecnicos();
+   }else{
+    this.lstTecnico.push(resp.data);
+    console.log(this.lstTecnico);
+   }  
     
-    // this.lstTecnico.push(resp.data);
-
-    // console.log(this.lstTecnico);
 
   }
 
@@ -419,8 +383,12 @@ export class AgregarPage implements OnInit {
     // console.log(this.lstTecnico)
     
     if (this.codEstatusHidden == 1) {
-
-      this.tecnico = "",
+      this.lstTecnico[0] = "";
+      this.lstTecnico[1] = "";
+      this.lstTecnico[2] = "";
+      this.lstTecnico[3] = "";
+      this.lstTecnico[4] = "";
+      // this.tecnico = "",
         this.evento = "",
         this.codEvento = ""
     } else {
@@ -430,15 +398,16 @@ export class AgregarPage implements OnInit {
 
     this.isSubmitted = true;
     if (!this.ionicForm.valid || this.prioridad == undefined || this.codPrioridad == undefined || this.tipoOt == undefined || this.codTipoOt == undefined || this.objGranja == undefined || this.objArea == undefined
-      || this.objEquipo == undefined  || this.tecnico == undefined  || this.estatus == undefined || this.codEstatus == undefined
-      || this.evento == undefined || this.codEvento == undefined) {
+      || this.objEquipo == undefined  || this.estatus == undefined || this.codEstatus == undefined || this.evento == undefined || this.codEvento == undefined || this.sala == undefined
+      ) {
+        // || this.tecnico == undefined
         // this.lstTecnico.length <= 0
 
       this.alertaValidarForm();
       return false;
     }
     else {
-      
+      // console.log(this.lstTecnico);
 
       console.log(this.ionicForm.value)
       this.objGuardar = {
@@ -454,25 +423,23 @@ export class AgregarPage implements OnInit {
         materiales: this.materiales,
         estatus: this.estatus,
         codEstatus: this.codEstatus,
-        tecnicos: this.tecnico,
+        tecnico1: this.lstTecnico[0],
+        tecnico2: this.lstTecnico[1],
+        tecnico3: this.lstTecnico[2],
+        tecnico4: this.lstTecnico[3],
+        tecnico5: this.lstTecnico[4],
         evento: this.evento,
         codEvento: this.codEvento
       }
-      console.log('guardar en agregar')
-      console.log(this.objGuardar);
-
-      this.otService.guardarOT(this.objGuardar).then((result: any) => {
-        console.log(result);
+     
+      // console.log('voy a guardar',this.objGuardar);
+      this.sqlService.GuardarCatOt_Sql(this.objGuardar).then((result: any)=>{
         this.lstTecnico.length=0;
-        if (result.MsgError != "") {
-          this.alertaErrorAgregar(result.MsgError);
-        }
-        else {
-          
-        // document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
-          
-        this.agregadoToast();
-        document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
+
+        if (result.insertId >0 || result.insertId != undefined) {
+          console.log('guardarSQlresult',result); 
+          this.agregadoToast(); 
+          document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
           this.ionicForm.reset();
           this.agregarForm.reset();
           this.granja="Seleccionar"
@@ -480,15 +447,42 @@ export class AgregarPage implements OnInit {
           this.equipo="Seleccionar"
           this.lstTecnico.length=0;
           
-          
+        }else{
+          let err = "Error agregar SQLite"
+          this.alertaErrorAgregar(err);
         }
-      }).catch((err) => {
-        console.log(err);
+        
+        
       });
+
+      // this.otService.guardarOT(this.objGuardar).then((result: any) => {
+      //   console.log(result);
+      //   this.lstTecnico.length=0;
+      //   if (result.MsgError != "") {
+      //     this.alertaErrorAgregar(result.MsgError);
+      //   }
+      //   else {
+          
+      //   // document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
+          
+      //   this.agregadoToast();
+      //   document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
+      //     this.ionicForm.reset();
+      //     this.agregarForm.reset();
+      //     this.granja="Seleccionar"
+      //     this.areaDesc="Seleccionar"
+      //     this.equipo="Seleccionar"
+      //     this.lstTecnico.length=0;
+          
+          
+      //   }
+      // }).catch((err) => {
+      //   console.log(err);
+      // });
 
     }
     
-    console.log(this.objGuardar)
+    // console.log(this.objGuardar)
   }
  
 
@@ -527,6 +521,18 @@ export class AgregarPage implements OnInit {
     });
     toast.present();
   }
+
+  async maxTecnicos() {
+    const alert = await this.alertCtrl.create({
+      // cssClass: 'my-custom-class',
+      header: 'Error',
+      // subHeader: 'Para continuar',
+      message: 'Maximo 5 técnicos',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
 
   
   // obtenerTipo() {

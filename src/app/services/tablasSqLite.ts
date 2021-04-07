@@ -13,12 +13,19 @@ export const catOT =
     Sala TEXT,
     Equipo TEXT,
     CodEquipo TEXT,
+    Grupo TEXT,
     Actividad TEXT,
     Materiales TEXT,
     Estatus TEXT,
     CodEstatus TEXT,
-    Tecnico TEXT,          
-    UUID TEXT
+    Tecnico1 TEXT,
+    Tecnico2 TEXT,
+    Tecnico3 TEXT,
+    Tecnico4 TEXT,
+    Tecnico5 TEXT,
+    TipoEvento TEXT,
+    CodEvento TEXT, 
+    Guardado TEXT
     );`
 export const CatEquipo =
 `CREATE TABLE IF NOT EXISTS CatEquipo(
@@ -69,4 +76,11 @@ export const CatGranja =
      Nombre TEXT
     );
    `
+// export const RelTecnicos =
+//    `CREATE TABLE IF NOT EXISTS RelTecnicos(
+//         IdRel INTEGER PRIMARY KEY NOT NULL,
+//         IdOT  INTREGER,
+//         IdTecnico INTREGER 
+//        );
+//       `
 

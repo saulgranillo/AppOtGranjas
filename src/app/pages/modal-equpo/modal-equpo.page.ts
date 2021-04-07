@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { AgregarOTService } from '../../services/agregar-ot.service';
 import { SqliteService } from '../../services/sqlite.service';
 
@@ -14,20 +14,28 @@ export class ModalEqupoPage implements OnInit {
   area : any;
 
   lstEquipo: any[] = [];
-  lstEquipoSql:any;
+  // lstEquipoSql:any;
   
-  constructor(private modalCtrl : ModalController, private otService : AgregarOTService, private sqlService:SqliteService) { }
+  constructor(private modalCtrl : ModalController, 
+              private otService : AgregarOTService, 
+              private sqlService:SqliteService,
+              private platform : Platform) { }
 
   ngOnInit() {
-    // this.cargarEquipo();
-    this.cargarEquipoSql();
+    if (this.platform.is('cordova')) {
+      this.cargarEquipoSql();
+    }
+    else{
+      this.cargarEquipo();
+    
+    }
   }
 
   cargarEquipoSql(){
-    this.sqlService.selectCatEquipo_Sql().then(res => {
-      this.lstEquipoSql = res;
+    this.sqlService.selectCatEquipo_Sql().then((res:[]) => {
+      this.lstEquipo = res;
       console.log('EQUIPO 😎')
-      console.log(this.lstEquipoSql);
+      console.log(this.lstEquipo);
 
     });
   }
@@ -56,7 +64,7 @@ export class ModalEqupoPage implements OnInit {
       IdEquipo: equipo.IdEquipo,
       Descripcion: equipo.Descripcion,
       Codigo: equipo.Codigo,
-      Grupo: equipo.Grupo
+      Grupo: equipo.GpoEquipo
     })
   }
 

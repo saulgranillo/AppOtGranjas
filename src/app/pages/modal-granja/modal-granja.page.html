@@ -11,7 +11,7 @@
 <ion-content class="ion-padding">
 
   <ion-list>
-    <ion-item *ngFor="let granja of granjaSql | filtro: textoBuscar : 'Nombre';" (click)="onClick( granja )">
+    <ion-item *ngFor="let granja of lstGranja | filtro: textoBuscar : 'Nombre';" (click)="onClick( granja )">
       <ion-label>{{granja.Nombre}}</ion-label>
     </ion-item>
   </ion-list>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { promise } from 'protractor';
 import { AgregarOTService } from '../../services/agregar-ot.service';
 import { SqliteService } from '../../services/sqlite.service';
+import { interval, Subscription } from 'rxjs';
+import { Platform, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inicio',
@@ -16,52 +17,97 @@ export class InicioPage implements OnInit {
   lstArea: any[] = [];
   lstGranja: any[] = [];
 
-  constructor(private otService: AgregarOTService, private sqlService : SqliteService) { }
+  subscripcion: Subscription
+
+  constructor(private otService: AgregarOTService, 
+              private sqlService : SqliteService,
+              private platform: Platform,
+              private loadingCtrl : LoadingController
+              ) { }
 
   ngOnInit() {
+    // this.subscripcion = interval(10000).subscribe((x => {
+    //   console.log('entre al timer');
+    //   this.selecNoGuardada();
+    // }));
+   
   }
+  
+
+  ngAfterViewInit(){
+    this.sqlService.crearDB();
+  }
+
+  
   ionViewDidEnter(){
   // this.sqlService.getData().then( res =>{
   //   console.log(res);
   // }) 
+  
   }
 
-  cargarEquipo() {
-
-    this.otService.cargarEquipoLista().then((equipo: []) => {
-      this.lstEquipo = equipo.concat();
-      console.log(this.lstEquipo);
-
+  selecNoGuardada(){
+    this.sqlService.selecNoGuardada().then(()=>{
+      console.log("Alerta de guardado exitosamente")
+    }).catch(()=>{
+      console.log("alerta de error al guardar en srvr")
     });
   }
-
-  cargarPrioridad() {
-    this.otService.cargarPrioridadLista().then((prio:[]) =>{
-      this.lstPrioridad = prio.concat();
-      console.log(this.lstPrioridad)
+ 
+  excel(){
+    this.sqlService.selectCatOT_Sql();
+  }
+// este es el caminito para todo por sqlite
+  actualizarCat(){
+    
+    this.sqlService.insertarCatPrioridad_Sql().then(resp => {
+      // console.log('resppp')
+      console.log(resp);
     });
     
-  }
-
-  cargarTipo() {
-    this.otService.cargarTipoLista().then((tipo:[]) =>{
-      this.lstTipo = tipo.concat();
-      console.log(this.lstTipo)
+    this.sqlService.insertarCatTipo_Sql().then(resp => {
+      // console.log('resppp')
+      console.log(resp);
     });
-  }
-
-  cargarArea() {
-    this.otService.cargarAreaLista().then((area:[]) =>{
-      this.lstArea = area.concat();
-      console.log(this.lstArea)
+    
+    this.sqlService.insertarCatEst_Sql().then(resp => {
+      // console.log('resppp')
+      console.log(resp);
     });
-  }
 
-  cargarGranja() {
-    this.otService.cargarGranjaLista().then((granja:[]) =>{
-      this.lstGranja = granja.concat();
-      console.log(this.lstGranja)
+    this.sqlService.insertarCatEvento_Sql().then(resp => {
+      // console.log('resppp')
+      console.log(resp);
     });
+
+    this.sqlService.insertarCatArea_Sql().then(resp => {
+      // console.log('resppp')
+      console.log(resp);
+    });
+
+    this.sqlService.insertarCatGranja_Sql().then(resp => {
+      // console.log('resppp')
+      console.log(resp);
+    });
+
+    this.sqlService.insertarCatEquipo_Sql().then(resp => {
+      // console.log('resppp')
+      console.log(resp);
+    });
+
+
+this.presentLoading();
   }
 
+  async presentLoading() {
+    const loading = await this.loadingCtrl.create({
+      cssClass: 'my-custom-class',
+      message: 'Actualizando los datos',
+      duration: 2000
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  }
 }

@@ -27,7 +27,7 @@ export class AppComponent {
       this.splashScreen.hide();
       // crearDB
       // debugger;
-      this.sqlService.crearDB();
+      // this.sqlService.crearDB();
       // this.sqlService.crearTablas();
       
 

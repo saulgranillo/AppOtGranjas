@@ -5,7 +5,7 @@ const routes: Routes = [
 
   {
     path: '',
-    redirectTo: 'agregar',
+    redirectTo: 'inicio',
     pathMatch: 'full'
   },
   {

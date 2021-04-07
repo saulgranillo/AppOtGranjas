@@ -1,11 +1,18 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Ionic Forms</ion-title>
+
+    <<ion-buttons slot="start">
+      <ion-button (click)="exportCSV()">
+        Export
+      </ion-button>
+    </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form [formGroup]="ionicForm" (ngSubmit)="submitForm()" novalidate>
+<ion-content scrollX=true>
+  <!-- <form [formGroup]="ionicForm" (ngSubmit)="submitForm()" novalidate>
 
     <ion-item lines="full">
       <ion-label position="floating">Name</ion-label>
@@ -50,13 +57,30 @@
         <ion-button type="submit" color="danger" expand="block">Submit</ion-button>
       </ion-col>
     </ion-row>
-  </form>
+  </form> -->
 
-  <ion-list>
+  <!-- <ion-list>
     <ion-item *ngFor="let equipo of lstEquipo" >
       <ion-label>{{equipo.descripcion}}</ion-label>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
+
+  <table border="1" class="data-table">
+    <tr>
+      <td *ngFor="let header of headerRow" text-center ><b>
+        {{header}}
+      </b></td>
+    </tr>
+
+    <tr *ngFor="let row of csvData; let i = index" >
+      <td *ngFor="let data of row; let j = index; trackBy: trackByFn" class="data-col" >
+        <ion-input type="text" [(ngModel)]="csvData[i][j]">
+
+        </ion-input>
+      </td>
+    </tr>
+
+  </table>
 
 
 </ion-content>

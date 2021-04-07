@@ -1,5 +1,5 @@
 import { Component, OnInit, NgModule, ViewChild, Directive } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { AgregarOTService } from '../../services/agregar-ot.service';
 import { SqliteService } from '../../services/sqlite.service';
 
@@ -16,29 +16,36 @@ export class ModalGranjaPage implements OnInit {
 
 
   textoBuscar: string = "";
-  // granja: any;
-  granjaSql:any;
+  granja: any;
+  // granjaSql:any;
 
   lstGranja: any[] = [];
   // lstGranjaSql: any[] = [];
   constructor(
     private modalCtrl: ModalController,
     private otService: AgregarOTService,
-    private sqlService:SqliteService
+    private sqlService:SqliteService,
+    private platform: Platform
   ) { }
 
 
 
   ngOnInit() {
-    // this.cargarGranjas();
-    this.cargarGranjaSql();
+    if (this.platform.is('cordova')) {
+      this.cargarGranjaSql();
+    }
+    else{
+      this.cargarGranjas();
+    
+    }
+   
   }
 
   cargarGranjaSql(){
-    this.sqlService.selectCatGranja_Sql().then(res => {
-      this.granjaSql = res;
+    this.sqlService.selectCatGranja_Sql().then((res:[]) => {
+      this.lstGranja = res;
       console.log('GRANJA 😎')
-      console.log(this.granjaSql);
+      console.log(this.lstGranja);
 
     });
   }

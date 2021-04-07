@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { AgregarOTService } from '../../services/agregar-ot.service';
 import { SqliteService } from '../../services/sqlite.service';
 
@@ -14,22 +14,31 @@ export class ModalAreaPage implements OnInit {
 
   textoBuscar: string = "";
   area : any;
-  areaSql:any
+  // areaSql:any
 
   lstArea: any[] = [];
-  lstAreaSql: any[] = [];
-  constructor( private modalCtrl: ModalController, private otService : AgregarOTService, private sqlService:SqliteService) { }
+  // lstAreaSql: any[] = [];
+  constructor(private modalCtrl:ModalController,
+              private otService : AgregarOTService, 
+              private sqlService:SqliteService,
+              private platform: Platform) { }
 
   ngOnInit() {
-    // this.cargarArea();
-    this.cargarAreaSql();
+    if (this.platform.is('cordova')) {
+      this.cargarAreaSql();
+    }
+    else{
+      this.cargarArea();
+    
+    }
+    
   }
 
   cargarAreaSql(){
-    this.sqlService.selectCatArea_Sql().then(res => {
-      this.areaSql = res;
+    this.sqlService.selectCatArea_Sql().then((res:[]) => {
+      this.lstArea = res;
       console.log('areaSelect 😎')
-      console.log(this.areaSql);
+      console.log(this.lstArea);
 
     });
   }
@@ -38,7 +47,7 @@ export class ModalAreaPage implements OnInit {
 
     this.otService.cargarAreaLista().then((area:[]) =>{
       this.lstArea = area.concat();
-      // console.log(this.lstArea)
+      console.log(this.lstArea)
     });
   }
 

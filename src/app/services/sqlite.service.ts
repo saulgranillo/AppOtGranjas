@@ -5,13 +5,13 @@ import { catOT, CatEquipo, CatEstatus, CatPrioridad, CatTipo, CatTipoEvento, Cat
 import { AgregarOTService } from './agregar-ot.service';
 import { Platform } from '@ionic/angular';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class SqliteService {
 
   public database: SQLiteObject;
+ 
   
   constructor(private sqlite: SQLite,
               // private storage: SQLiteObject,
@@ -25,6 +25,11 @@ lstEvento: any[] = [];
 lstArea: any[] = [];
 lstGranja: any[] = [];
 lstEquipo: any[] = [];
+lstPrioridad: any[] = [];
+lstCatOt: any[] = [];
+porGuardar:any[] = [];
+idActualizar:any;
+
 
 crearDB(){
   return new Promise((resolve, reject) => {
@@ -52,7 +57,9 @@ crearDB(){
         console.log('CatArea')
         this.database.executeSql(CatArea);   
         console.log('CatGranja')
-        this.database.executeSql(CatGranja);     
+        this.database.executeSql(CatGranja);
+        // console.log('Rel')
+        // this.database.executeSql(RelTecnicos);     
         console.log('Cree las tablas')
 
       }).catch( e => 
@@ -104,6 +111,55 @@ crearDB(){
   //     this.insertarCatTipo(this.lstTipo);
   //   });
   // }
+  insertarCatPrioridad_Sql() {
+    // console.log('estoy en el isntartar')
+
+    this.database.executeSql('DROP TABLE CatPrioridad ');
+    this.database.executeSql(CatPrioridad);
+    console.log('elimine y cree Cattipo en insertar')
+    this.otService.cargarPrioridadLista().then((tipo: []) => {
+      this.lstPrioridad = tipo.concat();
+      console.log(this.lstTipo);
+    });
+
+    return new Promise((resolve, reject) => {
+      var lst = this.lstPrioridad;
+      for (let i = 0; i < lst.length; i++) {
+        let datos = [lst[i].Nombre, lst[i].Prioridad]
+        this.database.executeSql(`INSERT INTO CatPrioridad(Nombre,Prioridad) VALUES(?,?)`, datos).then((data) => {
+          console.log('inserte', data)
+          resolve(datos);
+        }, (error) => {
+          reject(error);
+        })
+      }
+
+    });
+  }
+
+  selectCatPrioridad_Sql() {
+    //  console.log('Entre al select');
+     return new Promise((resolve, reject) => {
+       this.database.executeSql('SELECT * FROM CatPrioridad', []).then((data) => {
+         let items = [];
+         if (data.rows.length > 0) {
+           for (let i = 0; i < data.rows.length; i++) {
+             items.push({
+               id: data.rows.item(i).IdPrioridad,
+               Nombre: data.rows.item(i).Nombre,
+               Prioridad: data.rows.item(i).Prioridad
+             })
+           }
+         }
+        //  console.log('items',items)
+         resolve(items);
+
+       }, (error) => {
+         reject(error);
+       })
+     });
+   
+  }
 
   insertarCatTipo_Sql() {
     // console.log('estoy en el isntartar')
@@ -304,7 +360,6 @@ selectCatArea_Sql() {
 
 }
 
-
 insertarCatGranja_Sql() {
   // console.log('insert Granja')
   
@@ -390,7 +445,187 @@ selectCatEquipo_Sql() {
           items.push({
             Descripcion: data.rows.item(i).Descripcion,
             Codigo: data.rows.item(i).Codigo,
-            GpoEquipo: data.rows.item(i).Grupo
+            GpoEquipo: data.rows.item(i).GpoEquipo
+          })
+        }
+      }
+      console.log('EQUIPO',items)
+      resolve(items);
+
+    }, (error) => {
+      reject(error);
+    })
+  });
+
+}
+
+GuardarCatOt_Sql(objGuardar) {
+  console.log('servicio', objGuardar)
+
+    return new Promise((resolve, reject) => {
+      
+      var model ={
+        Prioridad : objGuardar.prioridad === undefined ? '' : objGuardar.prioridad,
+        CodPrioridad: objGuardar.codPrioridad === undefined ? '' : objGuardar.codPrioridad,
+        TipoOT : objGuardar.tipo === undefined ? '' : objGuardar.tipo,
+        CodTipoOT : objGuardar.codTipoOt === undefined ? '' : objGuardar.codTipoOt,
+        Granja : objGuardar.granja.nombre === undefined ? '' : objGuardar.granja.nombre,
+        Centro : objGuardar.granja.Centro === undefined ? '' : objGuardar.granja.Centro,
+        Area : objGuardar.area.AreaDesc === undefined ? '' : objGuardar.area.AreaDesc,
+        CodArea : objGuardar.area.Area === undefined ? '' : objGuardar.area.Area,
+        Sala : objGuardar.sala === undefined ? '' : objGuardar.sala,
+        Equipo : objGuardar.equipo.Equipo === undefined ? '' : objGuardar.equipo.Equipo,
+        CodEquipo : objGuardar.equipo.CodEquipo === undefined ? '' : objGuardar.equipo.CodEquipo,
+        Grupo : objGuardar.equipo.Grupo === undefined ? '' : objGuardar.equipo.Grupo,
+        Actividad : objGuardar.actividad === undefined ? '' : objGuardar.actividad.value,
+        Materiales: objGuardar.materiales === undefined ? '' : objGuardar.materiales.value,
+        Estatus : objGuardar.estatus === undefined ? '' : objGuardar.estatus,
+        CodEstatus : objGuardar.codEstatus === undefined ? '' : objGuardar.codEstatus.value,
+        Tecnico1 : objGuardar.tecnico1 === undefined ? '' : objGuardar.tecnico1.nombre,
+        Tecnico2 : objGuardar.tecnico2 === undefined ? '' : objGuardar.tecnico2.nombre,
+        Tecnico3 : objGuardar.tecnico3 === undefined ? '' : objGuardar.tecnico3.nombre,
+        Tecnico4 : objGuardar.tecnico4 === undefined ? '' : objGuardar.tecnico4.nombre,
+        Tecnico5 : objGuardar.tecnico5 === undefined ? '' : objGuardar.tecnico5.nombre,
+        TipoEvento : objGuardar.evento === undefined ? '' : objGuardar.evento,
+        CodEvento: objGuardar.codEvento === undefined ? '' : objGuardar.codEvento.value
+      }
+
+      this.database.executeSql(`INSERT INTO CatOT(
+                                                  Prioridad,
+                                                  CodPrioridad,
+                                                  TipoOT,
+                                                  CodTipoOT,
+                                                  Granja,
+                                                  Centro,
+                                                  Area,
+                                                  CodArea,
+                                                  Sala,
+                                                  Equipo,
+                                                  CodEquipo,
+                                                  Grupo,
+                                                  Actividad,
+                                                  Materiales,
+                                                  Estatus,
+                                                  CodEstatus,
+                                                  Tecnico1,
+                                                  Tecnico2,
+                                                  Tecnico3,
+                                                  Tecnico4,
+                                                  Tecnico5,
+                                                  TipoEvento,
+                                                  CodEvento,
+                                                  Guardado) 
+                                VALUES
+                                (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                                                  [model.Prioridad, 
+                                                   model.CodPrioridad, 
+                                                   model.TipoOT, 
+                                                   model.CodTipoOT, 
+                                                   model.Granja, 
+                                                   model.Centro, 
+                                                   model.Area, 
+                                                   model.CodArea, 
+                                                   model.Sala, 
+                                                   model.Equipo,
+                                                   model.CodEquipo, 
+                                                   model.Grupo, 
+                                                   model.Actividad, 
+                                                   model.Materiales, 
+                                                   model.Estatus, 
+                                                   model.CodEstatus, 
+                                                   model.Tecnico1,
+                                                   model.Tecnico2,
+                                                   model.Tecnico3,
+                                                   model.Tecnico4,
+                                                   model.Tecnico5, 
+                                                   model.TipoEvento, 
+                                                   model.CodEvento,
+                                                  'N']).then((data) => {
+        console.log('inserte Equipo', data)
+        resolve(data);
+        // this.selecNoGuardada();
+      }, (error) => {
+        reject(error);
+      })
+    });
+
+  }
+
+  selecNoGuardada() {
+    return new Promise((resolve,reject) =>{
+      this.database.executeSql('SELECT * FROM CatOT WHERE CatOT.Guardado="N" LIMIT 1', []).then((data) => {
+        this.porGuardar.pop();
+        for (let i = 0; i < data.rows.length; i++) {
+          let item = data.rows.item(i);
+          this.porGuardar.push(item);
+          console.log('porguardar', this.porGuardar);
+          this.idActualizar = this.porGuardar[0].IdOT
+          console.log('this.idActualizar', this.idActualizar);
+
+          this.otService.guardarOT(this.porGuardar).then(() => {
+            this.actualizarEstatus(this.idActualizar)
+          });
+  
+        }
+                resolve(true)  
+      }, (error)=>{
+        reject(error);
+      })
+  
+    });
+
+    this.database.executeSql('SELECT * FROM CatOT WHERE CatOT.Guardado="N" LIMIT 1', []).then((data) => {
+      this.porGuardar.pop();
+      for (let i = 0; i < data.rows.length; i++) {
+        let item = data.rows.item(i);
+        this.porGuardar.push(item);
+        console.log('porguardar', this.porGuardar);
+        this.idActualizar = this.porGuardar[0].IdOT
+        console.log('this.idActualizar', this.idActualizar);
+      }
+      this.otService.guardarOT(this.porGuardar).then(() => {
+        this.actualizarEstatus(this.idActualizar)
+      });
+
+    })
+      .catch(e => console.log(e));
+
+  }
+
+actualizarEstatus(id){
+  this.database.executeSql('UPDATE CatOT SET Guardado="S" WHERE IdOT = ?',[id])
+}
+
+// lo usare?
+selectCatOT_Sql() {
+  console.log('select CatOT');
+  return new Promise((resolve, reject) => {
+    this.database.executeSql('SELECT * FROM CatOT', []).then((data) => {
+      let items = [];
+      console.log('data selec',data)
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          items.push({
+            IdOT: data.rows.item(i).IdOT,
+            Prioridad: data.rows.item(i).Prioridad,
+            CodPrioridad: data.rows.item(i).CodPrioridad,
+            TipoOT: data.rows.item(i).TipoOT,
+            CodTipoOT: data.rows.item(i).CodTipoOT,
+            Centro: data.rows.item(i).Centro,
+            Granja: data.rows.item(i).Granja,
+            Area: data.rows.item(i).Area,
+            CodArea: data.rows.item(i).CodArea,
+            Sala: data.rows.item(i).Sala,
+            Equipo: data.rows.item(i).Equipo,
+            CodEquipo: data.rows.item(i).CodEquipo,
+            Grupo: data.rows.item(i).Grupo,
+            Actividad: data.rows.item(i).Actividad,
+            Materiales: data.rows.item(i).Materiales,
+            Estatus: data.rows.item(i).Estatus,
+            CodEstatus: data.rows.item(i).CodEstatus,
+            Tecnico: data.rows.item(i).Tecnico,
+            TipoEvento: data.rows.item(i).TipoEvento,
+            CodEvento: data.rows.item(i).CodEvento,
           })
         }
       }
@@ -406,35 +641,6 @@ selectCatEquipo_Sql() {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-
-
- 
-
-
-
-
 
 
 //Este aun no
