@@ -17,7 +17,9 @@ export class AgregarOTService {
   lstGranja : any;
   lstEstatus : any;
   lstTipoEvento : any;
+  lstCSV : any;
 
+  
   constructor( private http : HttpClient) { }
 
   // obtenerAlbumes(){
@@ -248,6 +250,22 @@ export class AgregarOTService {
         reject(error);
       })
     })
+  }
+
+  cargarCSV(){
+
+    let promise = new Promise((resolve, reject) =>{
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarCSV`).toPromise().then(
+        res =>{
+          this.lstCSV = res ;               
+          resolve( res );
+        },
+        msg => {
+          reject (msg);
+        }
+      )
+    });
+    return promise;
   }
 
 
