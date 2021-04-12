@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AgregarOTService } from '../../services/agregar-ot.service';
 import { SqliteService } from '../../services/sqlite.service';
 import { interval, Subscription } from 'rxjs';
-import { Platform, LoadingController } from '@ionic/angular';
+import { Platform, LoadingController, AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Papa } from 'ngx-papaparse';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { ExportService } from '../../services/export.service';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-inicio',
@@ -36,16 +37,18 @@ export class InicioPage implements OnInit {
               private papa: Papa,
               private files: File,
               private socialSharing: SocialSharing,
-              private exportService : ExportService
+              private exportService : ExportService,
+              private network: Network,
+              private alertCtrl : AlertController
               
               ) { }
 
   ngOnInit() {
-    // this.subscripcion = interval(10000).subscribe((x => {
-    //   console.log('entre al timer');
-    //   this.selecNoGuardada();
-    // }));
-   
+    this.subscripcion = interval(10000).subscribe((x => {
+      console.log('entre al timer');
+      this.selecNoGuardada();
+
+    }));
   }
   
 
@@ -55,10 +58,24 @@ export class InicioPage implements OnInit {
     }
     
     this.cargarCSV();
+
+    // this.exportService.appIsOnline$.subscribe(online => {
+    //   console.log('quees',online)
+    //   if(online){
+    //     console.log("que hare en online?")
+    //   }
+    //   else{
+    //     console.log("que hare en offline?")
+    //   }
+    // })
+
+      
     
   }
 
-
+//Este es el que uso para correr con el timer, 
+// haré otro igual para el botón de "Guardar oT pendientes",
+// porque si pongo el alert aquí va a aparecer cada que entre el timer
   selecNoGuardada(){
     this.sqlService.selecNoGuardada().then(()=>{
       console.log("Alerta de guardado exitosamente")
@@ -66,10 +83,35 @@ export class InicioPage implements OnInit {
       console.log("alerta de error al guardar en srvr")
     });
   }
+
+  guardarPendientes(){
+    
+    if (this.network.type === "none") {
+      this.alertaNetwork();
+    }
+    else {
+      this.sqlService.selecNoGuardada().then(() => {    
+        this.alertaOTPendientesGuardadas();
+      }).catch((err) => {
+        console.log(err)
+        // this.alertaNetwork();
+      });
+    }
+
+  }
  
 
   actualizarCat(){
+
+     if (this.network.type==="none") 
+    {
+     this.alertaNetwork();
+    }
+    else{
     
+    this.alertCargarCatalogos();
+    
+   
     this.sqlService.insertarCatPrioridad_Sql().then(resp => {
       // console.log('resppp')
       console.log(resp);
@@ -105,21 +147,12 @@ export class InicioPage implements OnInit {
       console.log(resp);
     });
 
-
-this.presentLoading();
+    this.alertaCatActualizados();
   }
 
-  async presentLoading() {
-    const loading = await this.loadingCtrl.create({
-      cssClass: 'my-custom-class',
-      message: 'Actualizando los datos',
-      duration: 2000
-    });
-    await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
   }
+
+
 
   cargarCSV(){
 
@@ -137,11 +170,79 @@ this.presentLoading();
 
   excel(){
     
-    let noMostrar : any = ['Imagen'];
+    if(this.network.type==="none") 
+    {
+     this.alertaNetwork();
+    }
+    else{
+      let noMostrar : any = ['Imagen'];
     this.exportService.exportExcel(this.lstCSV,'Ordenes.xlsx',noMostrar)
+    this.alertaExcelExportado();
+
+    }
+
+    
 
   }
 
+  async alertCargarCatalogos() {
+    const loading = await this.loadingCtrl.create({
+      cssClass: 'my-custom-class',
+      message: 'Actualizando los datos',
+      duration: 2000
+    });
+    await loading.present();
+
+    
+    const {} = await loading.onDidDismiss().then(()=>{
+      this.alertaCatActualizados();
+    });
+   
+  }
+
+  async alertaNetwork() {
+    const alert = await this.alertCtrl.create({
+      // cssClass: 'my-custom-class',
+      header: 'Error',
+      // subHeader: 'Para continuar',
+      message: 'Debe tener conexión a Internet.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async alertaCatActualizados() {
+    const alert = await this.alertCtrl.create({
+      // cssClass: 'my-custom-class',
+      header: 'Listo',
+      // subHeader: 'Para continuar',
+      message: 'Los catálogos han sido actualizados.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async alertaOTPendientesGuardadas() {
+    const alert = await this.alertCtrl.create({
+      // cssClass: 'my-custom-class',
+      header: 'Listo',
+      // subHeader: 'Para continuar',
+      message: 'Guardado en el servidor.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async alertaExcelExportado() {
+    const alert = await this.alertCtrl.create({
+      // cssClass: 'my-custom-class',
+      header: 'Listo',
+      // subHeader: 'Para continuar',
+      message: 'Reporte guardado en descargas.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
   // extraerCSV(lst){
   //   let csvData = lst || '' ;
 

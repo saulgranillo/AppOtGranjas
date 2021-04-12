@@ -4,6 +4,8 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { catOT, CatEquipo, CatEstatus, CatPrioridad, CatTipo, CatTipoEvento, CatArea, CatGranja } from './tablasSqLite';
 import { AgregarOTService } from './agregar-ot.service';
 import { Platform } from '@ionic/angular';
+import { Network } from '@ionic-native/network/ngx';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,8 @@ export class SqliteService {
   constructor(private sqlite: SQLite,
               // private storage: SQLiteObject,
               private otService : AgregarOTService,
-              private platform : Platform
+              private platform : Platform,
+              private network: Network,
               ) { }
 
 lstTipo: any[] = [];
@@ -27,7 +30,7 @@ lstGranja: any[] = [];
 lstEquipo: any[] = [];
 lstPrioridad: any[] = [];
 lstCatOt: any[] = [];
-porGuardar:any[] = [];
+porGuardar:any;
 idActualizar:any;
 
 
@@ -553,20 +556,33 @@ GuardarCatOt_Sql(objGuardar) {
 
   selecNoGuardada() {
     return new Promise((resolve,reject) =>{
-      this.database.executeSql('SELECT * FROM CatOT WHERE CatOT.Guardado="N" LIMIT 1', []).then((data) => {
-        this.porGuardar.pop();
-        for (let i = 0; i < data.rows.length; i++) {
-          let item = data.rows.item(i);
-          this.porGuardar.push(item);
-          console.log('porguardar', this.porGuardar);
-          this.idActualizar = this.porGuardar[0].IdOT
-          console.log('this.idActualizar', this.idActualizar);
-
-          this.otService.guardarOTdesdeSql(this.porGuardar).then(() => {
-            this.actualizarEstatus(this.idActualizar)
-          });
-  
+      this.database.executeSql('SELECT * FROM CatOT WHERE Guardado="N" ', []).then((data) => {
+        // this.porGuardar.pop();
+        if (data.rows.length >0) {
+          for (let i = 0; i < data.rows.length; i++) {
+            let item = data.rows.item(i);
+            this.porGuardar = item;
+            // console.log('porguardar', this.porGuardar);
+            this.idActualizar = this.porGuardar.IdOT;
+            console.log('this.idActualizar', this.idActualizar);
+            if (this.network.type === "none") {
+              
+              return
+            }
+            this.otService.guardarOTdesdeSql(this.porGuardar)
+            // .finally(() => {
+              this.actualizarEstatus(this.idActualizar)
+            // });
+             
+          }  
+        }else{
+          return (error) =>{
+              console.log("error al cargar SQLITE", error)
+          }
+          
+          
         }
+        
                 resolve(true)  
       }, (error)=>{
         reject(error);

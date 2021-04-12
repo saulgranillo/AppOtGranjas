@@ -438,7 +438,14 @@ export class AgregarPage implements OnInit {
 
           if (result.insertId > 0 || result.insertId != undefined) {
             console.log('guardarSQlresult', result);
+            //Valido la conexión para mostrar el diferente alert
+            if(this.network.type==="none") 
+            {
+             this.agregadoLocalToast();
+            }
+            else{
             this.agregadoToast();
+            }
             document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
             this.ionicForm.reset();
             this.agregarForm.reset();
@@ -535,6 +542,16 @@ export class AgregarPage implements OnInit {
     const toast = await this.toastCtrl.create({
       message: 'Guardado con éxito',
       color:"success",
+      animated: true,
+      duration: 1500
+    });
+    toast.present();
+  }
+
+  async agregadoLocalToast() {
+    const toast = await this.toastCtrl.create({
+      message: 'Guardado local con éxito',
+      color:"warning",
       animated: true,
       duration: 1500
     });

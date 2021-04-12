@@ -149,29 +149,29 @@ export class AgregarOTService {
 
   guardarOTdesdeSql(objGuardar:any){
     // JSON.stringify(objGuardar);
-    var Prioridad = objGuardar[0].Prioridad 
-    var CodPrioridad = objGuardar[0].CodPrioridad
-    var TipoOT = objGuardar[0].TipoOT
-    var CodTipoOT = objGuardar[0].CodTipoOT
-    var Granja = objGuardar[0].Granja
-    var Centro = objGuardar[0].Centro
-    var Area = objGuardar[0].Area
-    var CodArea = objGuardar[0].CodArea
-    var Sala = objGuardar[0].Sala
-    var Equipo = objGuardar[0].Equipo
-    var CodEquipo = objGuardar[0].CodEquipo
-    var Grupo = objGuardar[0].Grupo 
-    var Actividad = objGuardar[0].Actividad
-    var Materiales = objGuardar[0].Materiales
-    var Estatus = objGuardar[0].Estatus
-    var CodEstatus = objGuardar[0].CodEstatus
-    var Tecnico1 = objGuardar[0].Tecnico1
-    var Tecnico2 = objGuardar[0].Tecnico2
-    var Tecnico3 = objGuardar[0].Tecnico3
-    var Tecnico4 = objGuardar[0].Tecnico4
-    var Tecnico5 = objGuardar[0].Tecnico5
-    var TipoEvento = objGuardar[0].TipoEvento
-    var CodEvento = objGuardar[0].CodEvento
+    var Prioridad = objGuardar.Prioridad 
+    var CodPrioridad = objGuardar.CodPrioridad
+    var TipoOT = objGuardar.TipoOT
+    var CodTipoOT = objGuardar.CodTipoOT
+    var Granja = objGuardar.Granja
+    var Centro = objGuardar.Centro
+    var Area = objGuardar.Area
+    var CodArea = objGuardar.CodArea
+    var Sala = objGuardar.Sala
+    var Equipo = objGuardar.Equipo
+    var CodEquipo = objGuardar.CodEquipo
+    var Grupo = objGuardar.Grupo 
+    var Actividad = objGuardar.Actividad
+    var Materiales = objGuardar.Materiales
+    var Estatus = objGuardar.Estatus
+    var CodEstatus = objGuardar.CodEstatus
+    var Tecnico1 = objGuardar.Tecnico1
+    var Tecnico2 = objGuardar.Tecnico2
+    var Tecnico3 = objGuardar.Tecnico3
+    var Tecnico4 = objGuardar.Tecnico4
+    var Tecnico5 = objGuardar.Tecnico5
+    var TipoEvento = objGuardar.TipoEvento
+    var CodEvento = objGuardar.CodEvento
 
 
     return new Promise ((resolve, reject) =>{
