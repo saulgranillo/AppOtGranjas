@@ -10,6 +10,7 @@ import { File } from '@ionic-native/file/ngx';
 import { ExportService } from '../../services/export.service';
 import { Network } from '@ionic-native/network/ngx';
 
+
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
@@ -56,21 +57,7 @@ export class InicioPage implements OnInit {
     if (this.platform.is('cordova')) {
       this.sqlService.crearDB();  
     }
-    
-    this.cargarCSV();
-
-    // this.exportService.appIsOnline$.subscribe(online => {
-    //   console.log('quees',online)
-    //   if(online){
-    //     console.log("que hare en online?")
-    //   }
-    //   else{
-    //     console.log("que hare en offline?")
-    //   }
-    // })
-
       
-    
   }
 
 //Este es el que uso para correr con el timer, 
@@ -147,57 +134,59 @@ export class InicioPage implements OnInit {
       console.log(resp);
     });
 
-    this.alertaCatActualizados();
+    // this.alertaCatActualizados();
   }
 
   }
 
-
-
+  
   cargarCSV(){
 
-    this.otService.cargarCSV().then((result:any) =>{
-      if(!result.Error){
-        this.lstCSV = result
-        console.log('el csv',this.lstCSV)
-      // this.excel(this.lstCSV);
-        // this.extraerCSV(this.lstCSV);
-      }else{
-        console.log('trono el csv')
-      }
-    })
+    
   }
-
+//asi debo de manejar todos los errores
   excel(){
     
     if(this.network.type==="none") 
     {
      this.alertaNetwork();
-    }
-    else{
-      let noMostrar : any = ['Imagen'];
-    this.exportService.exportExcel(this.lstCSV,'Ordenes.xlsx',noMostrar)
-    this.alertaExcelExportado();
-
+     return
     }
 
+    this.otService.cargarCSV().then((result:any) =>{
+      if(result.length >0){
+        this.lstCSV = result
+        // console.log('el csv',this.lstCSV)
+        let noMostrar : any = ['Imagen','CodPrioridad', 'CodTipoOT','Centro','CodArea','CodEquipo','IdOT'];
+
+        this.exportService.exportExcel(this.lstCSV,'Ordenes.xlsx',noMostrar)
+        this.alertaExcelExportado();
+      
+      }else{
+        console.log('trono el csv');
+        this.alertaFalloExcelExportado();
+
+      }
+    }).catch((error:any) =>{
+      console.log('error weyyy', error)
+      this.alertaFalloExcelExportadoMensaje(error)
+
+    })
+    
+     
+
+  
     
 
   }
 
   async alertCargarCatalogos() {
     const loading = await this.loadingCtrl.create({
-      cssClass: 'my-custom-class',
+      cssClass: '',
       message: 'Actualizando los datos',
       duration: 2000
     });
     await loading.present();
-
-    
-    const {} = await loading.onDidDismiss().then(()=>{
-      this.alertaCatActualizados();
-    });
-   
   }
 
   async alertaNetwork() {
@@ -211,16 +200,17 @@ export class InicioPage implements OnInit {
     await alert.present();
   }
 
-  async alertaCatActualizados() {
-    const alert = await this.alertCtrl.create({
-      // cssClass: 'my-custom-class',
-      header: 'Listo',
-      // subHeader: 'Para continuar',
-      message: 'Los catálogos han sido actualizados.',
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
+  // async alertaCatActualizados() {
+   
+  //   const alert = await this.alertCtrl.create({
+  //     // cssClass: 'my-custom-class',
+  //     header: 'Listo',
+  //     // subHeader: 'Para continuar',
+  //     message: 'Los catálogos han sido actualizados.',
+  //     buttons: ['OK']
+  //   });
+  //   await alert.present();
+  // }
 
   async alertaOTPendientesGuardadas() {
     const alert = await this.alertCtrl.create({
@@ -238,7 +228,29 @@ export class InicioPage implements OnInit {
       // cssClass: 'my-custom-class',
       header: 'Listo',
       // subHeader: 'Para continuar',
-      message: 'Reporte guardado en descargas.',
+      message: 'Reporte guardado en la carpeta de descargas.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+  
+  async alertaFalloExcelExportado() {
+    const alert = await this.alertCtrl.create({
+      // cssClass: 'my-custom-class',
+      header: 'Error',
+      // subHeader: 'Para continuar',
+      message: 'Error al generar Reporte.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async alertaFalloExcelExportadoMensaje(err) {
+    const alert = await this.alertCtrl.create({
+      // cssClass: 'my-custom-class',
+      header: 'Error',
+      // subHeader: 'Para continuar',
+      message: err.message,
       buttons: ['OK']
     });
     await alert.present();
