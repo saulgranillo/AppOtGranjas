@@ -66,8 +66,8 @@ export class InicioPage implements OnInit {
   selecNoGuardada(){
     this.sqlService.selecNoGuardada().then(()=>{
       console.log("Alerta de guardado exitosamente")
-    }).catch(()=>{
-      console.log("alerta de error al guardar en srvr")
+    }).catch((error:any)=>{
+      console.log("Error al guardar en srvr /Sin pendientes",error)
     });
   }
 
