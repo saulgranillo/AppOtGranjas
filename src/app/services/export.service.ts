@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
-// import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 import {File, FileEntry} from "@ionic-native/file/ngx";
 import { Platform } from '@ionic/angular';
 import { Observable, fromEvent,merge,of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -21,9 +19,7 @@ export class ExportService {
       	      private platform : Platform
               // ,private fileOpn : FileOpener
               ) 
-              {
-                // this.initConnectivityMonitoring();
-               }
+              { }
 
   fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   fileExtension = '.xlsx';
@@ -78,6 +74,8 @@ export class ExportService {
       const data: Blob = new Blob([buffer], { type: this.fileType });
       FileSaver.saveAs(data, fileName + this.fileExtension);   
     }
+
+    // rigo
     // const data: Blob = new Blob([buffer], { type: this.fileType });
     // // FileSaver.saveAs(data, fileName + this.fileExtension);
     // // new Blob(buffer)
@@ -87,15 +85,4 @@ export class ExportService {
     
   }
 
-  // private initConnectivityMonitoring() {
-
-  //   if (!window || !navigator || !('onLine' in navigator)) return;
-
-  //   this.appIsOnline$ = merge(
-  //     of(null),
-  //     fromEvent(window, 'online'),
-  //     fromEvent(window, 'offline')
-  //   ).pipe(map(() => navigator.onLine))
-
-  // }
 }

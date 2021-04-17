@@ -3,10 +3,6 @@ import { AgregarOTService } from '../../services/agregar-ot.service';
 import { SqliteService } from '../../services/sqlite.service';
 import { interval, Subscription } from 'rxjs';
 import { Platform, LoadingController, AlertController } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
-import { Papa } from 'ngx-papaparse';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { File } from '@ionic-native/file/ngx';
 import { ExportService } from '../../services/export.service';
 import { Network } from '@ionic-native/network/ngx';
 
@@ -33,11 +29,7 @@ export class InicioPage implements OnInit {
   constructor(private otService: AgregarOTService, 
               private sqlService : SqliteService,
               private platform: Platform,
-              private loadingCtrl : LoadingController,
-              private http: HttpClient,
-              private papa: Papa,
-              private files: File,
-              private socialSharing: SocialSharing,
+              private loadingCtrl : LoadingController,            
               private exportService : ExportService,
               private network: Network,
               private alertCtrl : AlertController
@@ -102,39 +94,52 @@ export class InicioPage implements OnInit {
     this.sqlService.insertarCatPrioridad_Sql().then(resp => {
       // console.log('resppp')
       console.log(resp);
+    }).catch((err:any)=>{
+      this.alertFalloCargarCatalogos(err);
     });
     
     this.sqlService.insertarCatTipo_Sql().then(resp => {
       // console.log('resppp')
       console.log(resp);
+    }).catch((err:any)=>{
+      this.alertFalloCargarCatalogos(err);
     });
     
     this.sqlService.insertarCatEst_Sql().then(resp => {
       // console.log('resppp')
       console.log(resp);
+    }).catch((err:any)=>{
+      this.alertFalloCargarCatalogos(err);
     });
 
     this.sqlService.insertarCatEvento_Sql().then(resp => {
       // console.log('resppp')
       console.log(resp);
+    }).catch((err:any)=>{
+      this.alertFalloCargarCatalogos(err);
     });
 
     this.sqlService.insertarCatArea_Sql().then(resp => {
       // console.log('resppp')
       console.log(resp);
+    }).catch((err:any)=>{
+      this.alertFalloCargarCatalogos(err);
     });
 
     this.sqlService.insertarCatGranja_Sql().then(resp => {
       // console.log('resppp')
       console.log(resp);
+    }).catch((err:any)=>{
+      this.alertFalloCargarCatalogos(err);
     });
 
     this.sqlService.insertarCatEquipo_Sql().then(resp => {
       // console.log('resppp')
       console.log(resp);
+    }).catch((err:any)=>{
+      this.alertFalloCargarCatalogos(err);
     });
 
-    // this.alertaCatActualizados();
   }
 
   }
@@ -157,7 +162,7 @@ export class InicioPage implements OnInit {
       if(result.length >0){
         this.lstCSV = result
         // console.log('el csv',this.lstCSV)
-        let noMostrar : any = ['Imagen','CodPrioridad', 'CodTipoOT','Centro','CodArea','CodEquipo','IdOT'];
+        let noMostrar : any = ['IdOT','Imagen','Prioridad', 'TipoOT','Centro','CodArea','CodEquipo','Grupo'];
 
         this.exportService.exportExcel(this.lstCSV,'Ordenes.xlsx',noMostrar)
         this.alertaExcelExportado();
@@ -167,8 +172,9 @@ export class InicioPage implements OnInit {
         this.alertaFalloExcelExportado();
 
       }
-    }).catch((error:any) =>{
-      console.log('error weyyy', error)
+      
+    }). catch((error:any) =>{
+      // console.log('error weyyy', error)
       this.alertaFalloExcelExportadoMensaje(error)
 
     })
@@ -187,6 +193,15 @@ export class InicioPage implements OnInit {
       duration: 2000
     });
     await loading.present();
+  }
+
+  async alertFalloCargarCatalogos(err) {
+    const alert = await this.alertCtrl.create({
+      header: 'Error',
+      message: err.message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   async alertaNetwork() {

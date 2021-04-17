@@ -10,12 +10,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SQLite } from '@ionic-native/sqlite/ngx';
-import { Papa} from 'ngx-papaparse';
-import { File } from '@ionic-native/file/ngx';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { Network } from '@ionic-native/network/ngx';
-// import { FileOpener } from '@ionic-native/file-opener/ngx';
 
+import { File } from '@ionic-native/file/ngx';
+import { Network } from '@ionic-native/network/ngx';
 
 
 
@@ -32,11 +29,7 @@ import { Network } from '@ionic-native/network/ngx';
     SplashScreen,
     SQLite,
     File,
-    SocialSharing,
     Network,
-    Papa,
-    File,
-    // FileOpener,
     // SQLiteObject,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

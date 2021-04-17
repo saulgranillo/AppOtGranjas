@@ -8,7 +8,6 @@ import { ModalEqupoPage } from '../modal-equpo/modal-equpo.page';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
 import { SqliteService } from '../../services/sqlite.service';
 import { Platform } from '@ionic/angular';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 
@@ -87,7 +86,6 @@ export class AgregarPage implements OnInit {
     private sqlService : SqliteService,
     private platform: Platform,
     private files: File,
-    private socialSharing: SocialSharing,
     private network:Network
     ) {}
 
