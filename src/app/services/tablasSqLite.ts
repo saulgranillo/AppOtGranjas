@@ -76,6 +76,14 @@ export const CatGranja =
      Nombre TEXT
     );
    `
+export const RelImagen =
+`CREATE TABLE IF NOT EXISTS RelImagen(
+    IdRel INTEGER PRIMARY KEY NOT NULL,
+    IdOt INTEGER,
+    FileName TEXT
+    );
+   `
+
 // export const RelTecnicos =
 //    `CREATE TABLE IF NOT EXISTS RelTecnicos(
 //         IdRel INTEGER PRIMARY KEY NOT NULL,

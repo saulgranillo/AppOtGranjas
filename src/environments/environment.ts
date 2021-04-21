@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
 // local OrdenesTrabajo
-  // urlApiOrdenesTrabajo: 'http://localhost:54793/api',
+  urlApiOrdenesTrabajo: 'http://localhost:54793/api',
 //IIS Local
   // urlApiOrdenesTrabajo: 'http://localhost:1234/api'
   // urlApiOrdenesTrabajo: 'http://192.168.0.11:1234/api'
@@ -19,7 +19,7 @@ export const environment = {
   // redNorson VPN
   // urlApiOrdenesTrabajo: 'http://192.168.14.13:1243/api/',
 // porFuera
-  urlApiOrdenesTrabajo: 'http://201.147.196.67:1243/api'
+  // urlApiOrdenesTrabajo: 'http://201.147.196.67:1243/api'
 
 };
 

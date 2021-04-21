@@ -216,7 +216,9 @@ export class AgregarOTService {
 
   guardarOTOnline(objGuardar){
     console.log('servicio', objGuardar)
-
+    const options ={
+      headers: new HttpHeaders().append('Content-Type','application/json; charset=utf-8')
+    }
     return new Promise((resolve, reject) => {
       
       var model ={
@@ -243,12 +245,26 @@ export class AgregarOTService {
         Tecnico5 : objGuardar.tecnico5 === undefined ? '' : objGuardar.tecnico5.nombre,
         TipoEvento : objGuardar.evento === undefined ? '' : objGuardar.evento,
         CodEvento: objGuardar.codEvento === undefined ? '' : objGuardar.codEvento.value
+        ,LstImagenes: objGuardar.lstImagenes === undefined ? '' : objGuardar.lstImagenes
       }
-      this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/Guardar`,model).subscribe((data) =>{
+      this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/Guardar`, JSON.stringify(model), options).subscribe((data) =>{
         resolve(data)
       }, error =>{
         reject(error);
       })
+    })
+  }
+
+  guardarImagen(base){
+    const options ={
+      headers: new HttpHeaders().append('Content-Type','application/json; charset=utf-8')
+    }
+    return new Promise((resolve, reject) => {
+    this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/imagen`,JSON.stringify(base),options).subscribe((data) =>{
+      resolve(data)
+    }, error =>{
+      reject(error);
+    })
     })
   }
 

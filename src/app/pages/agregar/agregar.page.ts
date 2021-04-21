@@ -10,6 +10,7 @@ import { SqliteService } from '../../services/sqlite.service';
 import { Platform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
+import { ImagenService } from '../../services/imagen.service';
 
 
 @Component({
@@ -65,14 +66,16 @@ export class AgregarPage implements OnInit {
   tecnico : any;
   lstEstatus : any [] = [];
   lstEvento : any [] = [];
-  
+  public base:any;
+
 
   // ListasOfline
   lstTipoSql: any [] = [];
   tipoSql : any;
   estatusSql : any;
   eventoSql : any;
-
+  lstImagenes : any [] = [];
+ 
   //Validadores
   ionicForm: FormGroup;
   isSubmitted = false;
@@ -86,11 +89,12 @@ export class AgregarPage implements OnInit {
     private sqlService : SqliteService,
     private platform: Platform,
     private files: File,
-    private network:Network
+    private network:Network,
+    public imgService : ImagenService
     ) {}
 
   ngOnInit() {
- 
+//  this.imgService.loadSaved();
     if (this.platform.is('cordova')) {
       this.cargarPrioridadSql();
       this.cargarTipoSql();
@@ -375,6 +379,9 @@ export class AgregarPage implements OnInit {
   
   }
 
+  agregarImagen(){
+    this.imgService.addNewToGallery();
+  }
 
   guardarObj(){
  
@@ -404,6 +411,8 @@ export class AgregarPage implements OnInit {
     }
     else {
       // console.log(this.lstTecnico);
+      this.base = this.imgService.base
+      console.log(this.base)
 
       console.log(this.ionicForm.value)
       this.objGuardar = {
@@ -425,7 +434,8 @@ export class AgregarPage implements OnInit {
         tecnico4: this.lstTecnico[3],
         tecnico5: this.lstTecnico[4],
         evento: this.evento,
-        codEvento: this.codEvento
+        codEvento: this.codEvento,
+        lstImagenes: this.base
       }
  // valido para guardar desde la compu o el cel
       if (this.platform.is('cordova')) {
@@ -436,6 +446,14 @@ export class AgregarPage implements OnInit {
 
           if (result.insertId > 0 || result.insertId != undefined) {
             console.log('guardarSQlresult', result);
+            
+            //me voy a guardar la relación foto
+            this.lstImagenes = this.imgService.imagenes
+            // console.log('LST IMAGENES', this.lstImagenes);
+            this.sqlService.insertarRelImagen_Sql(result.insertId,this.lstImagenes).catch((err:any)=>{
+              this.alertaErrorAgregar(err);
+            })
+
             //Valido la conexión para mostrar el diferente alert
             if(this.network.type==="none") 
             {
@@ -479,35 +497,25 @@ export class AgregarPage implements OnInit {
         })
       };
 
-      // this.otService.guardarOT(this.objGuardar).then((result: any) => {
-      //   console.log(result);
-      //   this.lstTecnico.length=0;
-      //   if (result.MsgError != "") {
-      //     this.alertaErrorAgregar(result.MsgError);
-      //   }
-      //   else {
-          
-      //   // document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
-          
-      //   this.agregadoToast();
-      //   document.querySelector('app-agregar').querySelector('ion-content').scrollToTop();
-      //     this.ionicForm.reset();
-      //     this.agregarForm.reset();
-      //     this.granja="Seleccionar"
-      //     this.areaDesc="Seleccionar"
-      //     this.equipo="Seleccionar"
-      //     this.lstTecnico.length=0;
-          
-          
-      //   }
-      // }).catch((err) => {
-      //   console.log(err);
-      // });
 
     }
     
-    // console.log(this.objGuardar)
   }
+
+  // lo use para prueba
+  // guardarImagen(){
+  //   this.base = this.imgService.base
+  //     console.log(this.base)
+  //     this.otService.guardarImagen(this.base).then((result:any) =>{
+  //     if(result.MsgError != ""){
+  //       console.log("Error imagen")
+  //     }
+  //     else
+  //     {
+  //       console.log("Imajen guardó")
+  //     }
+  //     })
+  // }
  
 
   get errorCtrl() {

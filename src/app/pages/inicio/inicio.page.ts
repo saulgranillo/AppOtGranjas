@@ -37,11 +37,11 @@ export class InicioPage implements OnInit {
               ) { }
 
   ngOnInit() {
-    this.subscripcion = interval(10000).subscribe((x => {
-      console.log('entre al timer');
-      this.selecNoGuardada();
+    // this.subscripcion = interval(10000).subscribe((x => {
+    //   console.log('entre al timer');
+    //   this.selecNoGuardada();
 
-    }));
+    // }));
   }
   
 

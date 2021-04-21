@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
-import { catOT, CatEquipo, CatEstatus, CatPrioridad, CatTipo, CatTipoEvento, CatArea, CatGranja } from './tablasSqLite';
+import { catOT, CatEquipo, CatEstatus, CatPrioridad, CatTipo, CatTipoEvento, CatArea, CatGranja, RelImagen } from './tablasSqLite';
 import { AgregarOTService } from './agregar-ot.service';
 import { Platform } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
+import { Plugins, FilesystemDirectory } from '@capacitor/core';
+const {Filesystem, Storage} = Plugins;
 
 
 @Injectable({
@@ -32,6 +34,8 @@ lstPrioridad: any[] = [];
 lstCatOt: any[] = [];
 porGuardar:any;
 idActualizar:any;
+private PHOTO_STORAGE: string = "photos";
+lstImagenes = [{IdOt:0} ,[{Path: ''}]   ];
 
 
 crearDB(){
@@ -61,8 +65,8 @@ crearDB(){
         this.database.executeSql(CatArea);   
         console.log('CatGranja')
         this.database.executeSql(CatGranja);
-        // console.log('Rel')
-        // this.database.executeSql(RelTecnicos);     
+        console.log('RelImagenes')
+        this.database.executeSql(RelImagen);     
         console.log('Cree las tablas')
 
       }).catch( e => 
@@ -462,6 +466,26 @@ selectCatEquipo_Sql() {
 
 }
 
+insertarRelImagen_Sql(IdOt:number,lstImagenes:any) {
+  console.log('LO que llega ',IdOt, lstImagenes)
+
+    this.lstImagenes = lstImagenes
+  
+  return new Promise((resolve, reject) => {
+    var lst = this.lstImagenes;
+    for (let i = 0; i < lst.length; i++) {
+      let datos = [IdOt , lst[i] ]
+      this.database.executeSql(`INSERT INTO RelImagen(IdOt,FileName) VALUES(?,?)`, datos).then((data) => {
+        console.log('inserte Equipo', data)
+        resolve(datos);
+      }, (error) => {
+        reject(error);
+      })
+    }
+
+  });
+}
+
 GuardarCatOt_Sql(objGuardar) {
   console.log('servicio', objGuardar)
 
@@ -554,26 +578,42 @@ GuardarCatOt_Sql(objGuardar) {
 
   }
 
-  selecNoGuardada() {
+selecNoGuardada() {
     return new Promise((resolve,reject) =>{
-      this.database.executeSql('SELECT * FROM CatOT WHERE Guardado="N" ', []).then((data) => {
+      // qui meto la consulta del join , para la imagen offline(pendiente)
+      this.database.executeSql(`SELECT 
+                                CatOT.IdOT, CatOT.Prioridad, CatOT.CodPrioridad, CatOT.TipoOT, CatOT.CodTipoOT, CatOT.Centro, CatOT.Granja, CatOT.Area, CatOT.CodArea, CatOT.Sala, 
+                                CatOT.Equipo, CatOT.CodEquipo, CatOT.Grupo, CatOT.Actividad, CatOT.Materiales, CatOT.Estatus, CatOT.CodEstatus, CatOT.Tecnico1, CatOT.Tecnico2, 
+                                CatOT.Tecnico3, CatOT.Tecnico4, CatOT.Tecnico5, CatOT.TipoEvento, CatOT.CodEvento, RelImagen.IdOt, RelImagen.FileName 
+                                FROM CatOT  
+                                JOIN RelImagen ON CatOT.IdOT = RelImagen.IdOt where CatOt.Guardado="S" `
+                                , []).then((data) => {
         // this.porGuardar.pop();
+        console.log('MEGACONSULTA',data);
+        // convierto la ruta de la imagen a base64 y la mando en la peticion
         if (data.rows.length >0) {
           for (let i = 0; i < data.rows.length; i++) {
             let item = data.rows.item(i);
             this.porGuardar = item;
             // console.log('porguardar', this.porGuardar);
             this.idActualizar = this.porGuardar.IdOT;
+            var filePath = this.porGuardar.FileName
+
+          //   const photoList =  Storage.get({ key: this.PHOTO_STORAGE });
+          //   const readFile =  Filesystem.readFile({
+          //     path: filePath,
+          //     directory: FilesystemDirectory.Data
+          // });
+          // console.log('readFile', readFile)
+
             console.log('this.idActualizar', this.idActualizar);
-            if (this.network.type === "none") {
-              
+            if (this.network.type === "none") {  
               return
             }
             this.otService.guardarOTdesdeSql(this.porGuardar)
             // .finally(() => {
               this.actualizarEstatus(this.idActualizar)
-            // });
-             
+            // });  
           }  
         }else{
           return (error) =>{
@@ -610,49 +650,6 @@ GuardarCatOt_Sql(objGuardar) {
 
 actualizarEstatus(id){
   this.database.executeSql('UPDATE CatOT SET Guardado="S" WHERE IdOT = ?',[id])
-}
-
-// lo usare?
-selectCatOT_Sql() {
-  console.log('select CatOT');
-  return new Promise((resolve, reject) => {
-    this.database.executeSql('SELECT * FROM CatOT', []).then((data) => {
-      let items = [];
-      console.log('data selec',data)
-      if (data.rows.length > 0) {
-        for (let i = 0; i < data.rows.length; i++) {
-          items.push({
-            IdOT: data.rows.item(i).IdOT,
-            Prioridad: data.rows.item(i).Prioridad,
-            CodPrioridad: data.rows.item(i).CodPrioridad,
-            TipoOT: data.rows.item(i).TipoOT,
-            CodTipoOT: data.rows.item(i).CodTipoOT,
-            Centro: data.rows.item(i).Centro,
-            Granja: data.rows.item(i).Granja,
-            Area: data.rows.item(i).Area,
-            CodArea: data.rows.item(i).CodArea,
-            Sala: data.rows.item(i).Sala,
-            Equipo: data.rows.item(i).Equipo,
-            CodEquipo: data.rows.item(i).CodEquipo,
-            Grupo: data.rows.item(i).Grupo,
-            Actividad: data.rows.item(i).Actividad,
-            Materiales: data.rows.item(i).Materiales,
-            Estatus: data.rows.item(i).Estatus,
-            CodEstatus: data.rows.item(i).CodEstatus,
-            Tecnico: data.rows.item(i).Tecnico,
-            TipoEvento: data.rows.item(i).TipoEvento,
-            CodEvento: data.rows.item(i).CodEvento,
-          })
-        }
-      }
-      console.log('EQUIPO',items)
-      resolve(items);
-
-    }, (error) => {
-      reject(error);
-    })
-  });
-
 }
 
 

@@ -243,25 +243,38 @@
       </ion-radio-group>
     </ion-list>
   </ion-card>
+
+    <ion-card>
+      <ion-list-header>
+        <ion-label class="subTitulo">Imagen</ion-label>
+      </ion-list-header>
+    
+      <ion-card-content>
+
+        <ion-list>
+          <ion-item *ngFor="let photo of imgService.photos">
+            <!-- <ion-thumbnail slot="start"> -->
+              <ion-row>
+                <ion-img [src]="photo.webviewPath"></ion-img>
+              </ion-row>
+              
+            <!-- </ion-thumbnail> -->
+          </ion-item>
+        </ion-list>
+    
+        <ion-button expand="block" fill="outline" (click)="agregarImagen()">
+          Camara
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+
   <ion-button expand="block" fill="outline" (click)="guardarObj()">
     Guardar
   </ion-button>
 
 </form>
 
-   <!-- <ion-card>
-    <ion-list-header>
-      <ion-label class="subTitulo">Imagen</ion-label>
-    </ion-list-header>
-  
-    <ion-card-content>
-  
-      <ion-button expand="block" fill="outline">
-        Seleccionar
-      </ion-button>
-  
-    </ion-card-content>
-  </ion-card> 
-   -->
  
 </ion-content>
