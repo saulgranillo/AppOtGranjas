@@ -11,6 +11,7 @@ import { Platform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { ImagenService } from '../../services/imagen.service';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
 
 @Component({
@@ -66,8 +67,11 @@ export class AgregarPage implements OnInit {
   tecnico : any;
   lstEstatus : any [] = [];
   lstEvento : any [] = [];
-  public base:any;
 
+  //imagen
+  public base:any;
+  imageResponse: any;
+  options: any;
 
   // ListasOfline
   lstTipoSql: any [] = [];
@@ -79,6 +83,8 @@ export class AgregarPage implements OnInit {
   //Validadores
   ionicForm: FormGroup;
   isSubmitted = false;
+  btnFotoHidden:any
+  btnEliminarFoto:any
 
   constructor( 
     private otService : AgregarOTService,
@@ -90,10 +96,14 @@ export class AgregarPage implements OnInit {
     private platform: Platform,
     private files: File,
     private network:Network,
-    public imgService : ImagenService
+    public imgService : ImagenService,
+    private imagePicker: ImagePicker
     ) {}
 
   ngOnInit() {
+    this.btnEliminarFoto=1;
+    this.btnFotoHidden=0;
+    console.log('eliminar ,foto', this.btnEliminarFoto,this.btnFotoHidden)
 //  this.imgService.loadSaved();
     if (this.platform.is('cordova')) {
       this.cargarPrioridadSql();
@@ -213,14 +223,14 @@ export class AgregarPage implements OnInit {
     if (this.codEstatus.value =='N') {
       // console.log('entro al if')
      this.codEstatusHidden = 1
-     console.log('en iff')
-      console.log(this.codEstatusHidden)
+    //  console.log('en iff')
+    //   console.log(this.codEstatusHidden)
      
     }
     else{
       this.codEstatusHidden = 0
-      console.log('en el else')
-      console.log(this.codEstatusHidden)
+      // console.log('en el else')
+      // console.log(this.codEstatusHidden)
     }
 
     // Con la función getID obtengo el row del arreglo que se selecciono  y así puedo obtener la descripcion del tipo ot de manera dinamica 
@@ -380,7 +390,58 @@ export class AgregarPage implements OnInit {
   }
 
   agregarImagen(){
-    this.imgService.addNewToGallery();
+    this.imgService.addNewToGallery().then((res) =>{
+      if (this.imgService.photos.length >= 1) {
+        this.btnFotoHidden =1;
+        this.btnEliminarFoto=0;
+        console.log(this.btnFotoHidden)
+      } 
+    })
+   
+  }
+
+  // agregarImagenGaleria(){
+  //   this.options = {
+  //     // Android only. Max images to be selected, defaults to 15. If this is set to 1, upon
+  //     // selection of a single image, the plugin will return it.
+  //     maximumImagesCount: 1,
+
+  //     // max width and height to allow the images to be.  Will keep aspect
+  //     // ratio no matter what.  So if both are 800, the returned image
+  //     // will be at most 800 pixels wide and 800 pixels tall.  If the width is
+  //     // 800 and height 0 the image will be 800 pixels wide if the source
+  //     // is at least that wide.
+  //     width: 200,
+  //     //height: 200,
+
+  //     // quality of resized image, defaults to 100
+  //     quality: 100,
+
+  //     // output type, defaults to FILE_URIs.
+  //     // available options are 
+  //     // window.imagePicker.OutputType.FILE_URI (0) or 
+  //     // window.imagePicker.OutputType.BASE64_STRING (1)
+  //     outputType: 1
+  //   };
+
+  //   this.imageResponse = [];
+  //   this.imagePicker.getPictures(this.options).then((results) => {
+  //     for (var i = 0; i < results.length; i++) {
+  //       this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
+  //       console.log('imgGaleria',this.imageResponse)
+  //     }
+  //   }, (err) => {
+  //     alert(err);
+  //   });
+  
+  // }
+
+  eliminarImagen(){
+    this.imgService.deleteImage();
+    if (this.imgService.photos.length ==0 || this.imgService.photos.length == undefined) {
+      this.btnEliminarFoto = 1;
+      this.btnFotoHidden=0;
+    }
   }
 
   guardarObj(){
@@ -448,9 +509,9 @@ export class AgregarPage implements OnInit {
             console.log('guardarSQlresult', result);
             
             //me voy a guardar la relación foto
-            this.lstImagenes = this.imgService.imagenes
-            // console.log('LST IMAGENES', this.lstImagenes);
-            this.sqlService.insertarRelImagen_Sql(result.insertId,this.lstImagenes).catch((err:any)=>{
+            // this.lstImagenes = this.imgService.imagenes
+            //intentare guardar el base64
+            this.sqlService.insertarRelImagen_Sql(result.insertId,this.base).catch((err:any)=>{
               this.alertaErrorAgregar(err);
             })
 

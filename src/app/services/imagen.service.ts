@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Component } from '@angular/core';
 import { Plugins, CameraResultType, Capacitor, FilesystemDirectory, CameraPhoto, CameraSource } from '@capacitor/core';
 import { Platform, IonicModule } from '@ionic/angular';
-import {environment} from 'src/environments/environment';
 import {HttpClient, HttpHeaders, HttpParams} from'@angular/common/http';
 const { Camera, Filesystem, Storage } = Plugins;
 
@@ -17,6 +16,8 @@ export class ImagenService {
   private platform: Platform;
   public imagenes: any [] =[];
   public base:any;
+
+  public  window:any;
 
   constructor(platform: Platform, public http : HttpClient) { 
     this.platform = platform;
@@ -112,6 +113,15 @@ export class ImagenService {
     };
     reader.readAsDataURL(blob);
   });
+
+  deleteImage(){
+    
+    Storage.clear();
+    this.photos.pop();
+  
+    
+   }
+  
 
 }
 

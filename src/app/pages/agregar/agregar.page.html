@@ -262,8 +262,16 @@
           </ion-item>
         </ion-list>
     
-        <ion-button expand="block" fill="outline" (click)="agregarImagen()">
+        <ion-button [hidden]="btnFotoHidden" expand="block" fill="outline" (click)="agregarImagen()">
           Camara
+        </ion-button>
+
+        <!-- <ion-button [hidden]="btnFotoHidden" expand="block" fill="outline" (click)="agregarImagenGaleria()">
+          Galeria
+        </ion-button> -->
+
+        <ion-button [hidden]="btnEliminarFoto" expand="block" fill="outline" (click)="eliminarImagen()">
+          Eliminar
         </ion-button>
 
       </ion-card-content>

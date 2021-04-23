@@ -172,7 +172,7 @@ export class AgregarOTService {
     var Tecnico5 = objGuardar.Tecnico5
     var TipoEvento = objGuardar.TipoEvento
     var CodEvento = objGuardar.CodEvento
-
+    var FileName = objGuardar.FileName
 
     return new Promise ((resolve, reject) =>{
       
@@ -200,7 +200,8 @@ export class AgregarOTService {
         Tecnico4 : Tecnico4 === undefined ? '' : Tecnico4,
         Tecnico5 : Tecnico5 === undefined ? '' : Tecnico5,
         TipoEvento : TipoEvento === undefined ? '' : TipoEvento,
-        CodEvento: CodEvento === undefined ? '' : CodEvento
+        CodEvento: CodEvento === undefined ? '' : CodEvento,
+        LstImagenes: FileName === undefined ? '' : FileName
       
       }
       console.log('MODEL')

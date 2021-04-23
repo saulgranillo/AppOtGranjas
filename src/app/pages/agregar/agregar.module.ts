@@ -20,7 +20,8 @@ import { ModalGranjaPageModule } from '../modal-granja/modal-granja.module';
     AgregarPageRoutingModule,
     ComponentsModule,
     PipesModule,
-    ModalGranjaPageModule
+    ModalGranjaPageModule,
+
   ],
   declarations: [
     AgregarPage]

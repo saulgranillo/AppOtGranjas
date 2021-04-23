@@ -473,15 +473,15 @@ insertarRelImagen_Sql(IdOt:number,lstImagenes:any) {
   
   return new Promise((resolve, reject) => {
     var lst = this.lstImagenes;
-    for (let i = 0; i < lst.length; i++) {
-      let datos = [IdOt , lst[i] ]
+    // for (let i = 0; i < lst.length; i++) {
+      let datos = [IdOt , lst ]
       this.database.executeSql(`INSERT INTO RelImagen(IdOt,FileName) VALUES(?,?)`, datos).then((data) => {
         console.log('inserte Equipo', data)
         resolve(datos);
       }, (error) => {
         reject(error);
       })
-    }
+    // }
 
   });
 }
@@ -586,7 +586,7 @@ selecNoGuardada() {
                                 CatOT.Equipo, CatOT.CodEquipo, CatOT.Grupo, CatOT.Actividad, CatOT.Materiales, CatOT.Estatus, CatOT.CodEstatus, CatOT.Tecnico1, CatOT.Tecnico2, 
                                 CatOT.Tecnico3, CatOT.Tecnico4, CatOT.Tecnico5, CatOT.TipoEvento, CatOT.CodEvento, RelImagen.IdOt, RelImagen.FileName 
                                 FROM CatOT  
-                                JOIN RelImagen ON CatOT.IdOT = RelImagen.IdOt where CatOt.Guardado="S" `
+                                JOIN RelImagen ON CatOT.IdOT = RelImagen.IdOt where CatOt.Guardado="N" `
                                 , []).then((data) => {
         // this.porGuardar.pop();
         console.log('MEGACONSULTA',data);
@@ -630,21 +630,21 @@ selecNoGuardada() {
   
     });
 
-    this.database.executeSql('SELECT * FROM CatOT WHERE CatOT.Guardado="N" LIMIT 1', []).then((data) => {
-      this.porGuardar.pop();
-      for (let i = 0; i < data.rows.length; i++) {
-        let item = data.rows.item(i);
-        this.porGuardar.push(item);
-        console.log('porguardar', this.porGuardar);
-        this.idActualizar = this.porGuardar[0].IdOT
-        console.log('this.idActualizar', this.idActualizar);
-      }
-      this.otService.guardarOTdesdeSql(this.porGuardar).then(() => {
-        this.actualizarEstatus(this.idActualizar)
-      });
+    // this.database.executeSql('SELECT * FROM CatOT WHERE CatOT.Guardado="N" LIMIT 1', []).then((data) => {
+    //   this.porGuardar.pop();
+    //   for (let i = 0; i < data.rows.length; i++) {
+    //     let item = data.rows.item(i);
+    //     this.porGuardar.push(item);
+    //     console.log('porguardar', this.porGuardar);
+    //     this.idActualizar = this.porGuardar[0].IdOT
+    //     console.log('this.idActualizar', this.idActualizar);
+    //   }
+    //   this.otService.guardarOTdesdeSql(this.porGuardar).then(() => {
+    //     this.actualizarEstatus(this.idActualizar)
+    //   });
 
-    })
-      .catch(e => console.log(e));
+    // })
+    //   .catch(e => console.log(e));
 
   }
 

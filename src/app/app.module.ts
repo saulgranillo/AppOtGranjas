@@ -13,7 +13,7 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
-
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
 
 @NgModule({
@@ -30,6 +30,7 @@ import { Network } from '@ionic-native/network/ngx';
     SQLite,
     File,
     Network,
+    ImagePicker,
     // SQLiteObject,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
