@@ -9,7 +9,7 @@ export const environment = {
   // urlApiOrdenesTrabajo: 'http://localhost:54793/api',
 //IIS Local
   // urlApiOrdenesTrabajo: 'http://localhost:1234/api'
-  urlApiOrdenesTrabajo: 'http://192.168.0.11:1234/api'
+  urlApiOrdenesTrabajo: 'http://192.168.0.11:1234/api',
 
   // local TodoApi
   // urlApiOrdenesTrabajo: 'http://localhost:53724/api'
@@ -20,6 +20,9 @@ export const environment = {
   // urlApiOrdenesTrabajo: 'http://192.168.14.13:1243/api/',
 // porFuera
   // urlApiOrdenesTrabajo: 'http://201.147.196.67:1243/api'
+
+  urlApiAuthPrueba: 'http://norson17:8081',
+  urlApiAuth: 'http://norson17:8083/'
 
 };
 

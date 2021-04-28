@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/login" ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="ionicForm">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Email</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input type="email" (ionChange)="(inputEmail($event))" [debounce]="250" placeholder="Ingrese su email" formControlName="email"></ion-input>
+    </ion-card-content>
+  </ion-card>  
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Contraseña</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input type="password" (ionChange)="(inputPass($event))" [debounce]="250" placeholder="Ingrese su contraseña" formControlName="pass" ></ion-input>
+    </ion-card-content>
+  </ion-card>  
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Confirmar contraseña</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input type="password" (ionChange)="(inputConfPass($event))" [debounce]="250" placeholder="Confirmar su contraseña" ></ion-input>
+    </ion-card-content>
+  </ion-card>  
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Numero empleado</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input type="number" (ionChange)="(inputNumEmp($event))" [debounce]="250" placeholder="Ingrese su numero empleado" formControlName="numEmp" ></ion-input>
+    </ion-card-content>
+  </ion-card>  
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>RFC</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input type="text" (ionChange)="(inputRfc($event))" [debounce]="250" placeholder="Ingrese su RFC" formControlName="rfc" ></ion-input>
+    </ion-card-content>
+  </ion-card>  
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Curp</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input type="text" (ionChange)="(inputCurp($event))" [debounce]="250" placeholder="Ingrese su curp" formControlName="curp" ></ion-input>
+    </ion-card-content>
+  </ion-card> 
+</form>
+  <ion-button size="block" fill="outline" (click)="registrar()" >
+    Registrar
+  </ion-button>
+
+</ion-content>

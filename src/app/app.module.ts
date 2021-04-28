@@ -14,13 +14,15 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, 
-            IonicModule.forRoot(), 
+            IonicModule.forRoot(
+              {backButtonText:'Atrás'}), 
             AppRoutingModule,
             HttpClientModule,
   ],
@@ -31,6 +33,7 @@ import { ImagePicker } from '@ionic-native/image-picker/ngx';
     File,
     Network,
     ImagePicker,
+    NativeStorage,
     // SQLiteObject,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
