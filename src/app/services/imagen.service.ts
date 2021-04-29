@@ -28,7 +28,7 @@ export class ImagenService {
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri, // file-based data; provides best performance
       source: CameraSource.Camera, // automatically take a new photo with the camera
-      quality: 100 // highest quality (0 to 100)
+      quality: 50 // highest quality (0 to 100)
     });
 
     this.photos.unshift({

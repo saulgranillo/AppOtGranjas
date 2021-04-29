@@ -11,7 +11,7 @@ import { Platform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { ImagenService } from '../../services/imagen.service';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
+// import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
 
 @Component({
@@ -97,7 +97,7 @@ export class AgregarPage implements OnInit {
     private files: File,
     private network:Network,
     public imgService : ImagenService,
-    private imagePicker: ImagePicker
+    // private imagePicker: ImagePicker
     ) {}
 
   ngOnInit() {
@@ -530,6 +530,7 @@ export class AgregarPage implements OnInit {
             this.areaDesc = "Seleccionar"
             this.equipo = "Seleccionar"
             this.lstTecnico.length = 0;
+            this.eliminarImagen();
 
           } else {
             let err = "Error agregar SQLite"
@@ -554,6 +555,7 @@ export class AgregarPage implements OnInit {
             this.areaDesc = "Seleccionar"
             this.equipo = "Seleccionar"
             this.lstTecnico.length = 0;
+            this.eliminarImagen();
           }
         })
       };

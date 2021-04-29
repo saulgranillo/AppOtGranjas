@@ -13,7 +13,7 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
+// import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 
@@ -32,7 +32,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     SQLite,
     File,
     Network,
-    ImagePicker,
+    // ImagePicker,
     NativeStorage,
     // SQLiteObject,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
