@@ -8,7 +8,7 @@ export const environment = {
 // local OrdenesTrabajo
   // urlApiOrdenesTrabajo: 'http://localhost:54793/api',
 //IIS Local
-  // urlApiOrdenesTrabajo: 'http://localhost:1234/api'
+  // urlApiOrdenesTrabajo: 'http://localhost:1234/api',
   // urlApiOrdenesTrabajo: 'http://192.168.0.11:1234/api',
 
   // local TodoApi

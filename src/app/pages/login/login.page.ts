@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
 import { UsuarioService } from '../../services/usuario.service';
 import { AlertController, ModalController } from '@ionic/angular';
-import { async } from '@angular/core/testing';
-import { RegistroPage } from '../registro/registro.page';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 @Component({
@@ -21,7 +19,6 @@ export class LoginPage implements OnInit {
   constructor(private formBuilder : FormBuilder
               ,private usrService : UsuarioService
               ,private alertCtrl : AlertController
-              ,private modalCtrl : ModalController
               ,private storage : NativeStorage) { }
 
   ngOnInit() {
@@ -31,6 +28,8 @@ export class LoginPage implements OnInit {
       email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     })
+
+    this.getToken();
   }
 
   inputEmail(event){
@@ -42,6 +41,7 @@ export class LoginPage implements OnInit {
     this.password = event.detail;
     console.log(this.password);
   }
+
   login(){
     
     let objLogin = {
@@ -56,10 +56,9 @@ export class LoginPage implements OnInit {
 
       // probar en el cel que si se guarde 
       // si esta guardado el token, paso a la pantalla de inicio
-      this.setToken('token',result.access_token).then((result:any) =>{
-        console.log(result)
-      });
 
+        this.setToken(result.access_token);
+    
       }
   
     }).catch((error:any) =>{
@@ -68,11 +67,39 @@ export class LoginPage implements OnInit {
     })
   }
 
-  async modalRegistro(){
-    const modal = await this.modalCtrl.create({
-      component : RegistroPage
-    })
-    await modal.present();
+  setToken(value){
+    this.storage.setItem('token', {token: value})
+  .then(
+    () => console.log('Stored item!'),
+    error => console.error('Error storing item', error)
+  );
+
+  }
+
+  getToken(){
+    this.storage.getItem('token')
+  .then((data) => {
+    if(data.token.length > 0){
+      console.log(data.token)
+    }
+  }).catch((error:any)=>{
+    console.log(error)
+  });
+  }
+
+  validarToken(){
+    this.storage.getItem('token')
+    .then((data) => {
+      if(data.token.length > 0){
+        this.usrService.userProfile(data.token).then((data) =>{
+          console.log('userProfile',data)
+        }).catch((error) =>{
+          console.log('userError',error.message)
+        })
+      }
+    }).catch((error:any)=>{
+      console.log(error)
+    });
   }
 
   async alertaError(err) {
@@ -83,8 +110,5 @@ export class LoginPage implements OnInit {
     });
     await alert.present();
   }
-
-  public setToken(settingName,value){
-    return this.storage.setItem(`setting:${ settingName }`,value);
-  }
+  
 }

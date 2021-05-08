@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reportes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      Reporte completo
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="block" fill="outline" (click)="excel()">
+        Generar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+  
+<ion-card>
+  <ion-card-header>
+    Reporte por fechas
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label position="floating">Fecha inicio</ion-label>
+      <ion-datetime [pickerOptions]="fechaIniOptions"  displayFormat="DD/MM/YYYY" [(ngModel)]="fIni" placeholder="Seleccionar fecha" ></ion-datetime> <!--(ionChange)="fechaIni()"  min="1994-03-14" max="2012-12-09" value="2002-09-23T15:03:46.789" -->
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Fecha fin</ion-label>
+      <ion-datetime [pickerOptions]="fechaFinOptions" displayFormat="DD/MM/YYYY" [(ngModel)]="fFin" placeholder="Seleccionar fecha"></ion-datetime>
+    </ion-item>
+    <ion-button expand="block" fill="outline" (click)="validarFechas()">
+      Generar
+    </ion-button>
+    
+  </ion-card-content>
+</ion-card>
+
+<!-- <ion-button expand="block" fill="outline" (click)="reporteXFechas()">
+    
+  </ion-button> -->
+  
+</ion-content>

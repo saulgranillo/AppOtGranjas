@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="" defaultHref="/login" ></ion-back-button>
+      <ion-back-button text="" routerLink="/login"></ion-back-button>
     </ion-buttons>
     <ion-title>Registro</ion-title>
   </ion-toolbar>
@@ -16,6 +16,10 @@
     <ion-card-content>
       <ion-input type="email" (ionChange)="(inputEmail($event))" [debounce]="250" placeholder="Ingrese su email" formControlName="email"></ion-input>
     </ion-card-content>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.email.errors">
+      Correo inválido 
+    </span>
+
   </ion-card>  
 
   <ion-card>
@@ -25,6 +29,12 @@
     <ion-card-content>
       <ion-input type="password" (ionChange)="(inputPass($event))" [debounce]="250" placeholder="Ingrese su contraseña" formControlName="pass" ></ion-input>
     </ion-card-content>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.pass.errors?.required">
+      Indicar contraseña
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.pass.errors?.minlength">
+      Contraseña debe ser mayor a 8 caracteres
+    </span>
   </ion-card>  
 
   <ion-card>
@@ -32,7 +42,7 @@
       <ion-card-subtitle>Confirmar contraseña</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-input type="password" (ionChange)="(inputConfPass($event))" [debounce]="250" placeholder="Confirmar su contraseña" ></ion-input>
+      <ion-input type="password" (ionChange)="(inputConfPass($event))" [debounce]="250" placeholder="Confirmar su contraseña" formControlName="confirmPass"></ion-input>
     </ion-card-content>
   </ion-card>  
 
@@ -43,6 +53,12 @@
     <ion-card-content>
       <ion-input type="number" (ionChange)="(inputNumEmp($event))" [debounce]="250" placeholder="Ingrese su numero empleado" formControlName="numEmp" ></ion-input>
     </ion-card-content>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.numEmp.errors?.required">
+      Indicar numero empleado
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.numEmp.errors?.minlength">
+      6 carácteres 
+    </span>
   </ion-card>  
 
   <ion-card>
@@ -52,6 +68,12 @@
     <ion-card-content>
       <ion-input type="text" (ionChange)="(inputRfc($event))" [debounce]="250" placeholder="Ingrese su RFC" formControlName="rfc" ></ion-input>
     </ion-card-content>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.rfc.errors?.required">
+      Indicar RFC
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.rfc.errors?.minlength">
+      13 carácteres 
+    </span>
   </ion-card>  
   
   <ion-card>
@@ -61,6 +83,12 @@
     <ion-card-content>
       <ion-input type="text" (ionChange)="(inputCurp($event))" [debounce]="250" placeholder="Ingrese su curp" formControlName="curp" ></ion-input>
     </ion-card-content>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.curp.errors?.required">
+      Indicar Curp
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorCtrl.curp.errors?.minlength">
+      18 carácteres 
+    </span>
   </ion-card> 
 </form>
   <ion-button size="block" fill="outline" (click)="registrar()" >

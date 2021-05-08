@@ -35,14 +35,14 @@ export class UsuarioService {
   login(objLogin) {
     let promise = new Promise((resolve, reject) => {
 
-      var model = {
+      var options = {
         email: objLogin.email === undefined ? '' : objLogin.email.value,
         password: objLogin.password === undefined ? '' : objLogin.password.value,
         }
-      this.http.post(`${environment.urlApiAuthPrueba}/api/auth/login`, model).subscribe((data) => {
+      this.http.post(`${environment.urlApiAuthPrueba}/api/auth/login`, options).subscribe((data) => {
         resolve(data)
       }, error => {
-        console.log(error.error);
+        console.log(error);
         reject(error);
 
       });
@@ -54,9 +54,8 @@ export class UsuarioService {
   userProfile(token) {
 
     const options ={
-      headers: new HttpHeaders().append('Content-Type','application/json; charset=utf-8')
-        .append('Accept','application/json')
-        .append('Authorization', 'Bearer ' + token)
+      headers: new HttpHeaders().append('Authorization', 'Bearer ' + token)
+
     }
     let promise = new Promise((resolve, reject) => {
  

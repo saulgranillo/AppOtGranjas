@@ -5,6 +5,7 @@ import { interval, Subscription } from 'rxjs';
 import { Platform, LoadingController, AlertController } from '@ionic/angular';
 import { ExportService } from '../../services/export.service';
 import { Network } from '@ionic-native/network/ngx';
+import { ReportesService } from '../../services/reportes.service';
 
 
 @Component({
@@ -32,7 +33,8 @@ export class InicioPage implements OnInit {
               private loadingCtrl : LoadingController,            
               private exportService : ExportService,
               private network: Network,
-              private alertCtrl : AlertController
+              private alertCtrl : AlertController,
+              private rptService : ReportesService
               
               ) { }
 
@@ -150,41 +152,36 @@ export class InicioPage implements OnInit {
     
   }
 //asi debo de manejar todos los errores
-  excel(){
+  // excel(){
     
-    if(this.network.type==="none") 
-    {
-     this.alertaNetwork();
-     return
-    }
+  //   if(this.network.type==="none") 
+  //   {
+  //    this.alertaNetwork();
+  //    return
+  //   }
 
-    this.otService.cargarCSV().then((result:any) =>{
-      if(result.length >0){
-        this.lstCSV = result
-        // console.log('el csv',this.lstCSV)
-        let noMostrar : any = ['IdOT','Imagen','Prioridad', 'TipoOT','Centro','CodArea','CodEquipo','Grupo'];
+  //   this.rptService.cargarCSV().then((result:any) =>{
+  //     if(result.length >0){
+  //       this.lstCSV = result
+  //       // console.log('el csv',this.lstCSV)
+  //       let noMostrar : any = ['IdOT','Imagen','Prioridad', 'TipoOT','Centro','CodArea','CodEquipo','Grupo'];
 
-        this.exportService.exportExcel(this.lstCSV,'Ordenes.xlsx',noMostrar)
-        this.alertaExcelExportado();
+  //       this.exportService.exportExcel(this.lstCSV,'Ordenes.xlsx',noMostrar)
+  //       this.alertaExcelExportado();
       
-      }else{
-        console.log('trono el csv');
-        this.alertaFalloExcelExportado();
+  //     }else{
+  //       console.log('trono el csv');
+  //       this.alertaFalloExcelExportado();
 
-      }
+  //     }
       
-    }). catch((error:any) =>{
-      // console.log('error weyyy', error)
-      this.alertaFalloExcelExportadoMensaje(error)
+  //   }). catch((error:any) =>{
+  //     // console.log('error weyyy', error)
+  //     this.alertaFalloExcelExportadoMensaje(error)
 
-    })
-    
-     
+  //   })  
 
-  
-    
-
-  }
+  // }
 
   async alertCargarCatalogos() {
     const loading = await this.loadingCtrl.create({

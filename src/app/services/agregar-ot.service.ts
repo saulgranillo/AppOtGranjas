@@ -269,21 +269,21 @@ export class AgregarOTService {
     })
   }
 
-  cargarCSV(){
+  // cargarCSV(){
 
-    let promise = new Promise((resolve, reject) =>{
-      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarCSV`).toPromise().then(
-        res =>{
-          this.lstCSV = res ;               
-          resolve( res );
-        },
-        msg => {
-          reject (msg);
-        }
-      )
-    });
-    return promise;
-  }
+  //   let promise = new Promise((resolve, reject) =>{
+  //     this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarCSV`).toPromise().then(
+  //       res =>{
+  //         this.lstCSV = res ;               
+  //         resolve( res );
+  //       },
+  //       msg => {
+  //         reject (msg);
+  //       }
+  //     )
+  //   });
+  //   return promise;
+  // }
 
 
 
