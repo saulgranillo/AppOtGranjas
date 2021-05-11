@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Plugins, CameraResultType, Capacitor, FilesystemDirectory, CameraPhoto, CameraSource } from '@capacitor/core';
 import { Platform, IonicModule } from '@ionic/angular';
+import { UsuarioService } from './usuario.service';
 import {HttpClient, HttpHeaders, HttpParams} from'@angular/common/http';
 const { Camera, Filesystem, Storage } = Plugins;
 
@@ -28,6 +29,28 @@ export class ImagenService {
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri, // file-based data; provides best performance
       source: CameraSource.Camera, // automatically take a new photo with the camera
+      quality: 50 // highest quality (0 to 100)
+    });
+
+    this.photos.unshift({
+      filepath: "soon...",
+      webviewPath: capturedPhoto.webPath
+    });
+
+    // Save the picture and add it to photo collection
+    const savedImageFile = await this.savePicture(capturedPhoto);
+   
+    Storage.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos)
+    });
+  }
+
+  public async selectFromGallery(){
+   
+    const capturedPhoto = await Camera.getPhoto({
+      resultType: CameraResultType.Uri, // file-based data; provides best performance
+      source: CameraSource.Photos, // automatically take a new photo with the camera
       quality: 50 // highest quality (0 to 100)
     });
 

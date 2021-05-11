@@ -11,8 +11,11 @@ import { Platform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { ImagenService } from '../../services/imagen.service';
-// import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
+// import { Camera, CameraOptions} from '@ionic-native/camera/ngx';
+
+// import { ImagePicker } from '@ionic-native/image-picker/ngx';
+declare var window: any;
 
 @Component({
   selector: 'app-agregar',
@@ -97,6 +100,7 @@ export class AgregarPage implements OnInit {
     private files: File,
     private network:Network,
     public imgService : ImagenService,
+    // private camara : Camera
     // private imagePicker: ImagePicker
     ) {}
 
@@ -398,6 +402,40 @@ export class AgregarPage implements OnInit {
       } 
     })
    
+  }
+
+  agregarGaleria(){
+    
+    this.imgService.selectFromGallery().then((res) =>{
+      if (this.imgService.photos.length >= 1) {
+        this.btnFotoHidden =1;
+        this.btnEliminarFoto=0;
+        console.log(this.btnFotoHidden)
+      } 
+    })
+
+
+    // const options: CameraOptions = {
+    //   quality: 100,
+    //   destinationType: this.camara.DestinationType.FILE_URI,
+    //   encodingType: this.camara.EncodingType.JPEG,
+    //   mediaType: this.camara.MediaType.PICTURE,
+    //   correctOrientation: true,
+    //   sourceType: this.camara.PictureSourceType.PHOTOLIBRARY
+    // };
+
+    // this.camara.getPicture(options).then((imageData) =>{
+    //   // let base64Image = 'data:image/jpeg;base64,' + imageData;
+
+    //   const img = window.Ionic.WebView.convertFileSrc( imageData )
+    //   console.log(img)
+
+    //   //agrego al arreglo
+    //   this.imgService.photos.push(imageData)
+
+    // }, (err) =>{
+    //   console.log('accediendo galeria',err)
+    // })
   }
 
   // agregarImagenGaleria(){
