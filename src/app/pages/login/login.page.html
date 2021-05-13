@@ -20,8 +20,10 @@
           <ion-input type="password" (ionChange)="(inputPass($event))" [debounce]="250"></ion-input>
         </ion-item>
       </ion-list>
-      <ion-button size="small" fill="outline" routerLink="/registro" >Crear cuenta</ion-button> <!--(click)="modalRegistro()" > -->
       <ion-button color="secondary" expand="full" (click)="login()">Entrar</ion-button>
+      <ion-button size="small" fill="clear" routerLink="/registro" >Crear cuenta</ion-button> <!--(click)="modalRegistro()" > -->
+      
+
       <!-- <ion-button size="small" fill="outline" (click)="validarToken()" >Validar</ion-button>
       <ion-button size="small" fill="outline" (click)="getToken()" >GET</ion-button> -->
     </ion-card-content>

@@ -250,28 +250,38 @@
       </ion-list-header>
     
       <ion-card-content>
+        <ion-grid>
+          <ion-row justify-content-around>
+            <ion-col>
+              <ion-button [hidden]="btnFotoHidden" expand="block" fill="clear" (click)="agregarImagen()">
+                <ion-icon name="camera-outline"  size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button [hidden]="btnFotoHidden" expand="block" fill="clear" (click)="agregarGaleria()">
+                <ion-icon name="image-outline"  size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
 
         <ion-list>
           <ion-item *ngFor="let photo of imgService.photos">
             <!-- <ion-thumbnail slot="start"> -->
-              <ion-row>
-                <ion-img [src]="photo.webviewPath"></ion-img>
-              </ion-row>
-              
+            <ion-row>
+              <ion-img [src]="photo.webviewPath"></ion-img>
+            </ion-row>
+
             <!-- </ion-thumbnail> -->
           </ion-item>
         </ion-list>
-    
-        <ion-button [hidden]="btnFotoHidden" expand="block" fill="outline" (click)="agregarImagen()">
-          Camara
-        </ion-button>
-        <ion-button [hidden]="btnFotoHidden" expand="block" fill="outline" (click)="agregarGaleria()">
-          Galeria
-        </ion-button>
+        <!-- <ion-button [hidden]="btnFotoHidden" expand="block" fill="outline" (click)="agregarImagen()">
+                  Camara   
+                </ion-button>
+                <ion-button [hidden]="btnFotoHidden" expand="block" fill="outline" (click)="agregarGaleria()">
+                  Galeria
+                </ion-button> -->
 
-        <!-- <ion-button [hidden]="btnFotoHidden" expand="block" fill="outline" (click)="agregarImagenGaleria()">
-          Galeria
-        </ion-button> -->
 
         <ion-button [hidden]="btnEliminarFoto" expand="block" fill="outline" (click)="eliminarImagen()">
           Eliminar

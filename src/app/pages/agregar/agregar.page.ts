@@ -108,6 +108,7 @@ export class AgregarPage implements OnInit {
     this.btnEliminarFoto=1;
     this.btnFotoHidden=0;
     console.log('eliminar ,foto', this.btnEliminarFoto,this.btnFotoHidden)
+    this.eliminarImagen();
 //  this.imgService.loadSaved();
     if (this.platform.is('cordova')) {
       this.cargarPrioridadSql();

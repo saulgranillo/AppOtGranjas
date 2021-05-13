@@ -14,7 +14,7 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-
+// import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,6 +33,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     Network,
     NativeStorage,
     // SQLiteObject,
+    // FileOpener,
     
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
