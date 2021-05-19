@@ -8,6 +8,8 @@ import { Platform } from '@ionic/angular';
 import { Observable, fromEvent,merge,of } from 'rxjs';
 
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +17,8 @@ export class ExportService {
 
   public appIsOnline$: Observable<boolean>;
 
-  constructor(private files : File,
-      	      private platform : Platform
+  constructor(private files : File
+      	      ,private platform : Platform
               // ,private fileOpn : FileOpener
               ) 
               { }
@@ -55,20 +57,28 @@ export class ExportService {
 
   private saveExcelFile(buffer: any, fileName: string): void {
     
-    if(this.platform.is("cordova")|| this.platform.is("ios") || this.platform.is("android") ){
+    if (this.platform.is("cordova") || this.platform.is("ios") || this.platform.is("android")) {
       const data: Blob = new Blob([buffer], { type: this.fileType });
       this.files.writeFile(this.files.externalRootDirectory + "/Download", fileName, data, { replace: true }).then((fileEntry: FileEntry) => {
         console.log("file created");
         //   // abrir en automatico (instalar plugin)
-      // this.fileOpn.open(fileEntry.toURL(), data.type)
-      //   .then(() => {
-      //     console.log('FIle abierto')
-      //   }).catch(err => console.log('error abriendo ' + err))
-  
+          
+        // this.files.resolveDirectoryUrl("file:///storage/emulated/0/Download/").then((res:any) =>{
+
+
+        // var  options =  { create : false};
+        // this.files.getFile(res.fullPath, "Ordenes.xlsx", options).then((fileEntry) => {
+        //   console.log('FILE ENtrY', fileEntry)
+        // });
+
+
+        // })
+
+        
       }).catch((err) => {
         console.log('error creando el archivo' + err)
       });
-  
+
     }
     else{
       const data: Blob = new Blob([buffer], { type: this.fileType });

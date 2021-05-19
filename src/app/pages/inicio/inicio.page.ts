@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AgregarOTService } from '../../services/agregar-ot.service';
 import { SqliteService } from '../../services/sqlite.service';
-import { interval, Subscription } from 'rxjs';
-import { Platform, LoadingController, AlertController } from '@ionic/angular';
-import { ExportService } from '../../services/export.service';
+import { Subscription } from 'rxjs';
+import { Platform, LoadingController, AlertController, ModalController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
-import { ReportesService } from '../../services/reportes.service';
-
+import { LoginPage } from '../login/login.page';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -27,15 +25,14 @@ export class InicioPage implements OnInit {
   csvData : any[] = [];
   headerRow: any[] = [];
   otro : any[] = [];
-  constructor(private otService: AgregarOTService, 
+  constructor(
               private sqlService : SqliteService,
               private platform: Platform,
-              private loadingCtrl : LoadingController,            
-              private exportService : ExportService,
+              private loadingCtrl : LoadingController,                          
               private network: Network,
-              private alertCtrl : AlertController,
-              private rptService : ReportesService
-              
+              private alertCtrl : AlertController
+              ,private modalCtrl : ModalController
+              ,private routes : Router      
               ) { }
 
   ngOnInit() {
@@ -44,6 +41,12 @@ export class InicioPage implements OnInit {
     //   this.selecNoGuardada();
 
     // }));
+
+    // this.modalLogin();
+    // this.routes.config.pop();
+    console.log('RUTAS😎',this.routes)
+    this.routes.config[0].redirectTo ="inicio"
+    // this.routes.config[0].redirectTo
   }
   
 
@@ -151,6 +154,16 @@ export class InicioPage implements OnInit {
 
     
   }
+
+  async modalLogin(){
+    const modal = await this.modalCtrl.create({
+      component: LoginPage
+    });
+    await modal.present();
+    const resp = await modal.onDidDismiss();
+    console.log('Login Resp', resp)
+  }
+
 //asi debo de manejar todos los errores
   // excel(){
     

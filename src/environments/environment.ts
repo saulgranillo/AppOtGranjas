@@ -22,7 +22,7 @@ export const environment = {
   urlApiOrdenesTrabajo: 'http://201.147.196.67:1243/api',
 
   urlApiAuthPrueba: 'http://norson17:8081',
-  urlApiAuth: 'http://norson17:8083/'
+  urlApiAuth: 'http://norson17:8083'
 
 };
 

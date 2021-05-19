@@ -10,22 +10,25 @@
     </ion-card-header>
 
     <ion-card-content>
+      <form [formGroup] = "ionicForm">
       <ion-list>
         <ion-item>
           <ion-label position="stacked">Correo</ion-label>
-          <ion-input type="email" (ionChange)="(inputEmail($event))" [debounce]="250"></ion-input>
+          <ion-input type="email" formControlName="email" [debounce]="250" clearInput="true"></ion-input> <!--(ionChange)="(inputEmail($event))" --> 
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Constraseña</ion-label>
-          <ion-input type="password" (ionChange)="(inputPass($event))" [debounce]="250"></ion-input>
+          <ion-input type="password" formControlName="password"  [debounce]="250" clearInput="true"></ion-input> <!--(ionChange)="(inputPass($event))"-->
         </ion-item>
       </ion-list>
       <ion-button color="secondary" expand="full" (click)="login()">Entrar</ion-button>
-      <ion-button size="small" fill="clear" routerLink="/registro" >Crear cuenta</ion-button> <!--(click)="modalRegistro()" > -->
-      
+      <ion-button size="small" fill="clear" routerLink="/registro">Crear cuenta</ion-button> <!-- (click)="modalRegistro()"  routerLink="/registro" > -->
+      <br>
+      <ion-button size="small" fill="clear" routerLink="/reset-pass">¿Olvidaste tu contraseña?</ion-button>  
 
       <!-- <ion-button size="small" fill="outline" (click)="validarToken()" >Validar</ion-button>
       <ion-button size="small" fill="outline" (click)="getToken()" >GET</ion-button> -->
+    </form>
     </ion-card-content>
   <!-- </ion-card> -->
 

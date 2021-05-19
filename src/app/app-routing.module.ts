@@ -43,7 +43,15 @@ const routes: Routes = [
   {
     path: 'reportes',
     loadChildren: () => import('./pages/reportes/reportes.module').then( m => m.ReportesPageModule)
+  },  {
+    path: 'manuales',
+    loadChildren: () => import('./pages/manuales/manuales.module').then( m => m.ManualesPageModule)
+  },
+  {
+    path: 'reset-pass',
+    loadChildren: () => import('./pages/reset-pass/reset-pass.module').then( m => m.ResetPassPageModule)
   }
+
 
 
 

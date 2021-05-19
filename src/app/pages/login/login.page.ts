@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
 import { UsuarioService } from '../../services/usuario.service';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, Platform, MenuController } from '@ionic/angular';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Router } from '@angular/router';
+import { RegistroPage } from '../registro/registro.page';
 
 
 @Component({
@@ -13,8 +14,9 @@ import { Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
 
-  email : string = "";
+  email : any = "";
   password : string ="";
+  backbutton : any;
   // validadores
   ionicForm: FormGroup;
 
@@ -22,55 +24,67 @@ export class LoginPage implements OnInit {
               ,private usrService : UsuarioService
               ,private alertCtrl : AlertController
               ,private storage : NativeStorage
-              ,private router : Router) { }
+              ,private router : Router
+              ,private modalCtrl : ModalController
+              ,private platform : Platform
+              ,private menuCtrl : MenuController
+              ) { }
 
   ngOnInit() {
   
     this.ionicForm = this.formBuilder.group({
       
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
     })
-
     // this.validarToken();
+    console.log('ENRE AL LOGIN PRIMERO')
+    this.closeMenu();
   }
 
-  inputEmail(event){
-    this.email = event.detail;
-    console.log(this.email);
+  ionViewWillEnter(){
+   this.validarToken();
+   
   }
 
-  inputPass(event){
-    this.password = event.detail;
-    console.log(this.password);
+  ionViewWillLeave(){
+   this.ionicForm.reset();
+  }
+ 
+  closeMenu(){
+    this.menuCtrl.close();
   }
 
-  login(){
-    
+  login() {
+
     let objLogin = {
-     email : this.email, 
-     password : this.password
+      email: this.ionicForm.value.email,
+      password: this.ionicForm.value.password
     }
-    
-    this.usrService.login(objLogin).then((result:any) =>{
-      if (result.access_token.length >0 ) {   
-      //lo guardo en el storage
-      // si esta guardado el token, paso a la pantalla de inicio
-        // this.setToken(result.access_token);
 
-        this.storage.setItem('token', {token: result.access_token}).then((res) =>{
-          console.log('Stored ITEM!!',res)
-          this.router.navigate(['/inicio']);
-        }).catch(error =>{
+    console.log(this.ionicForm.value, 'objLOGIN')
+
+    this.usrService.login(objLogin).then((result: any) => {
+      if (result.access_token.length > 0) {
+
+        //lo guardo en el storage
+        // si esta guardado el token, paso a la pantalla de inicio
+
+        this.storage.setItem('token', { token: result.access_token }).then((res) => {
+          console.log('Stored ITEM!!', res)
+          this.ionicForm.reset();
+          // this.modalCtrl.dismiss();
+          this.router.navigateByUrl('/inicio');
+        }).catch(error => {
           console.log(error)
         })
 
       }
-  
-    }).catch((error:any) =>{
+
+    }).catch((error: any) => {
       console.log(error)
-     this.alertaError();
-      
+      this.alertaError();
+
     })
   }
 
@@ -79,18 +93,29 @@ export class LoginPage implements OnInit {
     .then((data) => {
       if(data.token.length > 0){
         var dumbToken = data.token + "a"
-        this.usrService.userProfile(dumbToken).then((data) =>{
-          console.log('userProfile',data)
+        this.usrService.userProfile(data.token).then((data) =>{
+          console.log('ME autentifique 😎',data)
           this.router.navigate(['/inicio'])
         }).catch((error) =>{
           console.log('userError',error.message)
-          this.alertaErrorDesautenticado(error)
+          // this.alertaErrorDesautenticado(error)
+          this.alertaIniciarSesion();
         })
       }
     }).catch((error:any)=>{
       console.log(error)
       //Una alerta para que inicie sesion
     });
+  }
+
+  async modalRegistro(){
+    // this.modalCtrl.dismiss()
+    const modal = await this.modalCtrl.create({
+      component: RegistroPage
+    });
+    await modal.present();
+    const resp = await modal.onDidDismiss();
+    console.log('Login Resp', resp)
   }
 
   async alertaError() {
@@ -111,4 +136,36 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
   
+  async alertaIniciarSesion() {
+    const alert = await this.alertCtrl.create({
+      header: 'Alerta',
+      message: 'Favor de iniciar sesion',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+  
 }
+
+
+
+
+
+// ngAfterViewInit() {
+    //  this.backbutton =
+    //  this.platform.backButton.observers.pop();
+  // }
+
+  // ionViewWillLeave() {
+  //   this.platform.backButton.observers.push(this.backbutton);
+  // }
+
+  // inputEmail(event){
+  //   this.email = event.detail;
+  //   console.log(this.email);
+  // }
+
+  // inputPass(event){
+  //   this.password = event.detail;
+  //   console.log(this.password);
+  // }

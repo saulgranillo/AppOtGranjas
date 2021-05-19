@@ -1,0 +1,20 @@
+<app-header titulo="Recuperar Contraseña"></app-header>
+
+<ion-content>
+  <form [formGroup] ="ionicForm" >
+    <ion-card>
+      <ion-list-header>
+        <ion-label class="subTitulo">Reestablecer contraseña</ion-label>
+      </ion-list-header>
+      <ion-card-content>
+
+        <ion-input type="email" formControlName="email" placeholder="Ingresa tu correo"></ion-input>
+        <br>
+        <ion-button expand="block" fill="outline" (click)="resetPass()">
+          Reestablecer
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+  </form>
+</ion-content>

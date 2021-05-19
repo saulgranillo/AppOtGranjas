@@ -87,6 +87,10 @@ export class RegistroPage implements OnInit {
     return pass === confPass ? null : {notSame: true}
   }
 
+  reset(){
+    this.ionicForm.reset();
+  }
+
   // validaPass(){
     
   //   if(this.ionicForm.controls.pass.value == this.ionicForm.controls.confirmPass.value){
@@ -109,7 +113,7 @@ export class RegistroPage implements OnInit {
     // console.log(objModel)
     
     this.isSubmitted = true;
-    if (this.ionicForm.errors.notSame) {
+    if (this.ionicForm.errors != null ) {
       this.alertaContraseñas();
       return
     }
@@ -118,6 +122,7 @@ export class RegistroPage implements OnInit {
     if (this.ionicForm.valid) {
       this.usrService.registro(objModel).then((result: any) => {
         if (result.user.id >0) {
+          this.ionicForm.reset();
           this.alertaRegistrar();
         }
       }).catch((error: any) => {

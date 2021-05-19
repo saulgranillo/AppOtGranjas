@@ -20,7 +20,7 @@ export class UsuarioService {
         rfc: objRegistro.rfc === undefined ? '' : objRegistro.rfc.value,
         curp: objRegistro.curp === undefined ? '' : objRegistro.curp.value,
       }
-      this.http.post(`${environment.urlApiAuthPrueba}/api/auth/register`, model).subscribe((data) => {
+      this.http.post(`${environment.urlApiAuth}/api/auth/register`, model).subscribe((data) => {
         resolve(data)
       }, error => {
         console.log(error);
@@ -36,10 +36,10 @@ export class UsuarioService {
     let promise = new Promise((resolve, reject) => {
 
       var options = {
-        email: objLogin.email === undefined ? '' : objLogin.email.value,
-        password: objLogin.password === undefined ? '' : objLogin.password.value,
+        email: objLogin.email === undefined ? '' : objLogin.email,
+        password: objLogin.password === undefined ? '' : objLogin.password,
         }
-      this.http.post(`${environment.urlApiAuthPrueba}/api/auth/login`, options).subscribe((data) => {
+      this.http.post(`${environment.urlApiAuth}/api/auth/login`, options).subscribe((data) => {
         resolve(data)
       }, error => {
         console.log(error);
@@ -59,7 +59,7 @@ export class UsuarioService {
     }
     let promise = new Promise((resolve, reject) => {
  
-      this.http.get(`${environment.urlApiAuthPrueba}/api/auth/user-profile`,options).subscribe((data) => {
+      this.http.get(`${environment.urlApiAuth}/api/auth/user-profile`,options).subscribe((data) => {
         resolve(data)
         console.log(data);
       }, error => {
@@ -75,13 +75,11 @@ export class UsuarioService {
   logout(token){
 
     const options ={
-      headers: new HttpHeaders().append('Content-Type','application/json; charset=utf-8')
-        .append('Accept','application/json')
-        .append('Authorization', 'Bearer ' + token)
+      headers: new HttpHeaders().append('Authorization', 'Bearer ' + token)
     }
     let promise = new Promise((resolve, reject) => {
  
-      this.http.get(`${environment.urlApiAuthPrueba}/api/auth/logout`,options).subscribe((data) => {
+      this.http.post(`${environment.urlApiAuth}/api/auth/logout`,null,options).subscribe((data) => {
         resolve(data)
         console.log(data);
       }, error => {
@@ -102,7 +100,7 @@ export class UsuarioService {
       }
     let promise = new Promise((resolve, reject) => {
  
-      this.http.post(`${environment.urlApiAuthPrueba}/api/auth/reset-password-request`,model).subscribe((data) => {
+      this.http.post(`${environment.urlApiAuth}/api/auth/reset-password-request`,model).subscribe((data) => {
         resolve(data)
         console.log(data);
       }, error => {
@@ -125,7 +123,7 @@ export class UsuarioService {
       }
     let promise = new Promise((resolve, reject) => {
  
-      this.http.post(`${environment.urlApiAuthPrueba}/api/auth/change-password`,model).subscribe((data) => {
+      this.http.post(`${environment.urlApiAuth}/api/auth/change-password`,model).subscribe((data) => {
         resolve(data)
         console.log(data);
       }, error => {
