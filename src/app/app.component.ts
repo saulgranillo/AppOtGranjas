@@ -59,7 +59,10 @@ export class AppComponent {
       console.log(data);
        if (data.message) {
          this.closeMenu();
-         this.router.navigate(['/login'])
+                        // así es el antes popToRoot() con esto elimino el stack de las paginas 
+          this.router.navigate(['/login'], { replaceUrl: true });
+        
+         
        }  
     }).catch((err) => {
       this.alertaErrorLogout(err)
