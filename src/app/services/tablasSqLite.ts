@@ -83,12 +83,10 @@ export const RelImagen =
     FileName TEXT
     );
    `
-
-// export const RelTecnicos =
-//    `CREATE TABLE IF NOT EXISTS RelTecnicos(
-//         IdRel INTEGER PRIMARY KEY NOT NULL,
-//         IdOT  INTREGER,
-//         IdTecnico INTREGER 
-//        );
-//       `
+export const CatTecnicos =
+   `CREATE TABLE IF NOT EXISTS CatTecnicos(
+        IdTecnico INTEGER PRIMARY KEY NOT NULL,
+        Nombre  TEXT    
+       );
+      `
 

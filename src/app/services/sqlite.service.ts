@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
-import { catOT, CatEquipo, CatEstatus, CatPrioridad, CatTipo, CatTipoEvento, CatArea, CatGranja, RelImagen } from './tablasSqLite';
+import { catOT, CatEquipo, CatEstatus, CatPrioridad, CatTipo, CatTipoEvento, CatArea, CatGranja, RelImagen, CatTecnicos } from './tablasSqLite';
 import { AgregarOTService } from './agregar-ot.service';
 import { Platform } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
@@ -31,6 +31,7 @@ lstArea: any[] = [];
 lstGranja: any[] = [];
 lstEquipo: any[] = [];
 lstPrioridad: any[] = [];
+lstTecnicos: any[] = [];
 lstCatOt: any[] = [];
 porGuardar:any;
 idActualizar:any;
@@ -66,7 +67,9 @@ crearDB(){
         console.log('CatGranja')
         this.database.executeSql(CatGranja);
         console.log('RelImagenes')
-        this.database.executeSql(RelImagen);     
+        this.database.executeSql(RelImagen);
+        console.log('CatTecnicos')
+        this.database.executeSql(CatTecnicos)     
         console.log('Cree las tablas')
 
       }).catch( e => 
@@ -118,8 +121,10 @@ crearDB(){
   //     this.insertarCatTipo(this.lstTipo);
   //   });
   // }
+  
   insertarCatPrioridad_Sql() {
-    // console.log('estoy en el isntartar')
+    // en los insertCat... es para actualizar el sqlite con el server
+    // y los selectCat ... son para cargar la info desde sqlite
 
     this.database.executeSql('DROP TABLE CatPrioridad ');
     this.database.executeSql(CatPrioridad);
@@ -457,6 +462,54 @@ selectCatEquipo_Sql() {
         }
       }
       console.log('EQUIPO',items)
+      resolve(items);
+
+    }, (error) => {
+      reject(error);
+    })
+  });
+
+}
+
+insertarCatTecnicos_Sql() {
+  console.log('insertTecnicos')
+  
+  this.database.executeSql('DROP TABLE CatTecnicos');
+  this.database.executeSql(CatTecnicos);
+  console.log('elimine y cree tecnicos')
+
+  this.otService.cargarTecnicosLista().then((eventos: []) => {
+    this.lstTecnicos = eventos.concat();
+  });
+
+  return new Promise((resolve, reject) => {
+    var lst = this.lstTecnicos;
+    for (let i = 0; i < lst.length; i++) {
+      let datos = [lst[i].Nombre]
+      this.database.executeSql(`INSERT INTO CatTecnicos(Nombre) VALUES(?)`, datos).then((data) => {
+        console.log('inserte Tecnico', data)
+        resolve(datos);
+      }, (error) => {
+        reject(error);
+      })
+    }
+
+  });
+}
+
+selectCatTecnicos_Sql() {
+  console.log('select Tecnicos');
+  return new Promise((resolve, reject) => {
+    this.database.executeSql('SELECT * FROM CatTecnicos', []).then((data) => {
+      let items = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          items.push({
+            Nombre: data.rows.item(i).Nombre,
+          })
+        }
+      }
+      console.log('TECNICOS',items)
       resolve(items);
 
     }, (error) => {

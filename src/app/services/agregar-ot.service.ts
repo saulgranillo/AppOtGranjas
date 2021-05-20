@@ -17,6 +17,7 @@ export class AgregarOTService {
   lstGranja : any;
   lstEstatus : any;
   lstTipoEvento : any;
+  lstTecnicos : any;
   lstCSV : any;
 
   
@@ -137,6 +138,21 @@ export class AgregarOTService {
       this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarEvento`).toPromise().then(
         res =>{
           this.lstTipoEvento = res ;               
+          resolve( res );
+        },
+        msg => {
+          reject (msg);
+        }
+      )
+    });
+    return promise;
+  }
+
+  cargarTecnicosLista(){
+    let promise = new Promise((resolve, reject) =>{
+      this.http.get(`${environment.urlApiOrdenesTrabajo}/OT/CargarTecnicos`).toPromise().then(
+        res =>{
+          this.lstTecnicos = res ;               
           resolve( res );
         },
         msg => {
