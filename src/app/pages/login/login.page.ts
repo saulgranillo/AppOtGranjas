@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
 import { UsuarioService } from '../../services/usuario.service';
-import { AlertController, ModalController, Platform, MenuController } from '@ionic/angular';
+import { AlertController, ModalController, MenuController } from '@ionic/angular';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Router } from '@angular/router';
 import { RegistroPage } from '../registro/registro.page';
+import { Network } from '@ionic-native/network/ngx';
 
 
 @Component({
@@ -26,8 +27,8 @@ export class LoginPage implements OnInit {
               ,private storage : NativeStorage
               ,private router : Router
               ,private modalCtrl : ModalController
-              ,private platform : Platform
               ,private menuCtrl : MenuController
+              ,private network : Network
               ) { }
 
   ngOnInit() {
@@ -43,6 +44,10 @@ export class LoginPage implements OnInit {
   }
 
   ionViewWillEnter(){
+    if (this.network.type === "none") {
+      this.router.navigate(['/inicio'])
+      return
+    }
    this.validarToken();
    
   }
