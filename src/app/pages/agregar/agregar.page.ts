@@ -605,19 +605,19 @@ export class AgregarPage implements OnInit {
   }
 
   // lo use para prueba
-  // guardarImagen(){
-  //   this.base = this.imgService.base
-  //     console.log(this.base)
-  //     this.otService.guardarImagen(this.base).then((result:any) =>{
-  //     if(result.MsgError != ""){
-  //       console.log("Error imagen")
-  //     }
-  //     else
-  //     {
-  //       console.log("Imajen guardó")
-  //     }
-  //     })
-  // }
+  guardarImagen(){
+    this.base = this.imgService.base
+      console.log(this.base)
+      this.otService.guardarImagen(this.base).then((result:any) =>{
+      if(result.MsgError != ""){
+        console.log("Error imagen")
+      }
+      else
+      {
+        console.log("Imajen guardó")
+      }
+      })
+  }
  
 
   get errorCtrl() {
