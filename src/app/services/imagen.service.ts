@@ -1,26 +1,30 @@
 import { Injectable, Component } from '@angular/core';
-import { Plugins, CameraResultType, Capacitor, FilesystemDirectory, CameraPhoto, CameraSource } from '@capacitor/core';
+import { Plugins, CameraResultType, Capacitor, FilesystemDirectory, CameraPhoto, CameraSource, CameraOptions } from '@capacitor/core';
 import { Platform, IonicModule } from '@ionic/angular';
 import { UsuarioService } from './usuario.service';
 import {HttpClient, HttpHeaders, HttpParams} from'@angular/common/http';
 const { Camera, Filesystem, Storage } = Plugins;
+import {environment} from '../../environments/environment';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImagenService {
 
-  // Todo este codigo salió de la documentacion IONIC 
+  // Todo este codigo salió de la documentacion IONIC
+  // https://ionicframework.com/docs/angular/your-first-app/3-saving-photos
   // tengo el proyecto de ejemplo es el de photo-gallery
-  public photos: Photo[] = []; //la interfaz 
+  public photos: Photo[] = []; //la interfaz
   private PHOTO_STORAGE: string = "photos";
   private platform: Platform;
   public imagenes: any [] =[];
   public base:any;
-
+  objImagen:CameraPhoto;
   public  window:any;
 
-  constructor(platform: Platform, public http : HttpClient) { 
+  constructor(platform: Platform, public http : HttpClient) {
     this.platform = platform;
   }
 
@@ -39,7 +43,7 @@ export class ImagenService {
 
     // Save the picture and add it to photo collection
     const savedImageFile = await this.savePicture(capturedPhoto);
-   
+
     Storage.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
@@ -47,7 +51,7 @@ export class ImagenService {
   }
 
   public async selectFromGallery(){
-   
+
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri, // file-based data; provides best performance
       source: CameraSource.Photos, // automatically take a new photo with the camera
@@ -61,7 +65,7 @@ export class ImagenService {
 
     // Save the picture and add it to photo collection
     const savedImageFile = await this.savePicture(capturedPhoto);
-   
+
     Storage.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
@@ -69,10 +73,10 @@ export class ImagenService {
   }
 
   private async savePicture(cameraPhoto: CameraPhoto) {
-  
+
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
-    
+
     // Write the file to the data directory
     const fileName = new Date().getTime() + '.jpeg';
     const savedFile = await Filesystem.writeFile({
@@ -84,11 +88,11 @@ export class ImagenService {
     // console.log('base en savePicture', base)
     this.base = base64Data;
     this.imagenes.push(savedFile.uri);
- 
+
           //  {filepath : savedFile.uri;
           //   webviewPath: Capacitor.convertFileSrc(savedFile.uri)
           //  }
-   
+
   }
 
   public async loadSaved() {
@@ -138,13 +142,58 @@ export class ImagenService {
   });
 
   deleteImage(){
-    
+
     Storage.clear();
     this.photos.pop();
-  
-    
+
+
    }
-  
+
+   cargarXId(IdOrden){
+     var model = {
+       IdImagen : 0,
+       Imagen : "",
+       IdOT : IdOrden
+     }
+
+    let promise = new Promise((resolve, reject) =>{
+      this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/CargarImgXId`,model).toPromise().then(
+        (res:any) =>{
+          // console.log('el RES',res);
+          resolve( res );
+        },
+        msg => {
+          reject (msg);
+        }
+      )
+    });
+    return promise;
+   }
+
+   public async rptImagen(imgBase){
+
+  //   const fileName = new Date().getTime() + '.jpeg';
+  //   const savedFile = await Filesystem.writeFile({
+  //     path: fileName,
+  //     data: imgBase,
+  //     directory: FilesystemDirectory.Data
+  //   });
+
+  //     this.objImagen = {
+  //     webPath : fileName
+  //   }
+  //   const base64Data = await this.readAsBase64(objImagen);
+  //   // var base = base64Data
+  //   // console.log('base en savePicture', base)
+  //   // Use webPath to display the new image instead of base64 since it's
+  //   // already loaded into memory
+  //   return {
+  //   filepath: fileName,
+  //   webviewPath: savedFile.uri
+  // };
+
+   }
+
 
 }
 

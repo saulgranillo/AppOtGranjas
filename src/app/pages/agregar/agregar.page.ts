@@ -25,7 +25,7 @@ declare var window: any;
 
 
 export class AgregarPage implements OnInit {
-
+//#region Variables globales
   prioridad : string ;
   codPrioridad : any;
 
@@ -89,6 +89,8 @@ export class AgregarPage implements OnInit {
   btnFotoHidden:any
   btnEliminarFoto:any
 
+  //#endregion
+  
   constructor( 
     private otService : AgregarOTService,
     private modalCtrl : ModalController,

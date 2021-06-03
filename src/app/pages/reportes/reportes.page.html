@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content>
+
   <ion-card>
     <ion-card-header>
       Reporte completo
@@ -39,8 +40,25 @@
   </ion-card-content>
 </ion-card>
 
+<form [formGroup]="reportesForm">
+
+<ion-card>
+  <ion-card-header>
+    Imagen por folio
+  </ion-card-header>
+  <ion-card-content>
+    <ion-input type="number" inputmode="numeric" placeholder="Inserta folio de la OT" formControlName="folioImg" [debounce]="250"
+      (ionChange)="(inputimgXId($event))"></ion-input>
+    <ion-button expand="block" fill="outline" (click)="imagenXId()">
+      Consultar
+    </ion-button>
+    <img  [src]="base64Image" />
+  </ion-card-content>
+</ion-card>
+
 <!-- <ion-button expand="block" fill="outline" (click)="reporteXFechas()">
     
   </ion-button> -->
-  
+</form>
+
 </ion-content>

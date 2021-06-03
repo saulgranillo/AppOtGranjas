@@ -15,6 +15,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 // import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     File,
     Network,
     NativeStorage,
+    SocialSharing,
     // SQLiteObject,
     // FileOpener,
     

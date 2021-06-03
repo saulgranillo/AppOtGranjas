@@ -3,6 +3,9 @@ import { Network } from '@ionic-native/network/ngx';
 import { ReportesService } from '../../services/reportes.service';
 import { Platform, LoadingController, AlertController } from '@ionic/angular';
 import { ExportService } from '../../services/export.service';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { ImagenService } from '../../services/imagen.service';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @Component({
   selector: 'app-reportes',
@@ -17,13 +20,19 @@ export class ReportesPage implements OnInit {
   fechaFinOptions: any;
   fIni: any;
   fFin: any;
-
+  folio :number;
+  reportesForm: FormGroup;
+  imgHidden:any;
+  base64Image:string = '';
 
   constructor(
     private network: Network,
     private alertCtrl : AlertController,
-    private rptService : ReportesService,
-    private exportService : ExportService,
+    private rptService : ReportesService
+    ,private exportService : ExportService
+    ,private formBuilder : FormBuilder
+    ,private imgService : ImagenService
+    ,private socialSharing : SocialSharing
   ) { 
     this.fechaIniOptions = {
       buttons: [{
@@ -47,6 +56,12 @@ export class ReportesPage implements OnInit {
   }
 
   ngOnInit() {
+    this.reportesForm = this.formBuilder.group({ 
+     folioImg: ['', [Validators.required, Validators.pattern("^[0-9]*$") ]]
+    })
+    this.imgHidden=0;
+    console.log('hidden en el oninit', this.imgHidden);
+    
   }
   
 
@@ -140,6 +155,36 @@ export class ReportesPage implements OnInit {
 
   }
 
+  imagenXId(){
+    // if(this.reportesForm.valid){
+   
+      this.imgService.cargarXId(this.folio).then((data:any)=>{
+        if(data.Imagen){            
+        
+          this.base64Image = data.Imagen;
+          var prueba = this.base64Image.split(";")[1];
+          console.log("prueba",prueba)
+          var formato = 'data:image/jpg;';
+          this.base64Image.concat(formato,prueba);
+          console.log(this.base64Image);
+          // this.imgHidden=1;
+          // console.log('hidden en el ImagenXId', this.imgHidden);
+          //this.imgService.rptImagen(data.Imagen);
+        }
+      }).catch((error) =>{
+        console.log(error)
+      })
+
+    // }else{
+    //   this.alertaFolioOT();
+    // }
+  }
+
+  inputimgXId(event){
+    this.folio = event.detail.value;
+    console.log('elfolio',this.folio);
+  }
+
   async alertaNetwork() {
     const alert = await this.alertCtrl.create({
       // cssClass: 'my-custom-class',
@@ -201,6 +246,15 @@ export class ReportesPage implements OnInit {
       header: 'Alerta',
       // subHeader: 'Para continuar',
       message: 'Capturar ambas fechas.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+  
+  async alertaFolioOT() {
+    const alert = await this.alertCtrl.create({
+      header: 'Alerta',
+      message: 'Capturar un folio valido.',
       buttons: ['OK']
     });
     await alert.present();
