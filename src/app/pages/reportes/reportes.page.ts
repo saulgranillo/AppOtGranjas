@@ -174,16 +174,16 @@ export class ReportesPage implements OnInit {
         
           this.base64Image = data.Imagen;
           var imgSinFormato = this.base64Image.split(";")[1];
-         var aString= imgSinFormato.toString();
-          var formato = 'data:image/jpeg;';        
-         var nueva :string;
-         nueva.concat(formato,aString);
+          // var aString = imgSinFormato.toString();
+          var formato = 'data:image/jpeg;';
+          // var nueva: string;
+          // nueva.concat(formato, aString);
           // this.nuevaImg.concat(formato, aString);
-          // this.base64Image.concat(formato,prueba);
+          this.base64Image.concat(formato,imgSinFormato);
           // this.nuevaImg.concat(formato,imgSinFormato);
-        
 
-          console.log(nueva);
+
+          console.log(this.base64Image);
           if(this.base64Image){
             this.btnHiddenShare=1;  
             this.btnHiddenEliminarFoto=1;
@@ -193,6 +193,8 @@ export class ReportesPage implements OnInit {
           // this.imgHidden=1;
           // console.log('hidden en el ImagenXId', this.imgHidden);
           //this.imgService.rptImagen(data.Imagen);
+        }else if (data.Imagen =="") {
+          this.alertaSinImagen();
         }
       }).catch((error) =>{
         console.log(error)
@@ -312,6 +314,15 @@ export class ReportesPage implements OnInit {
       header: 'Error',
       // subHeader: 'Para continuar',
       message: err,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async alertaSinImagen() {
+    const alert = await this.alertCtrl.create({
+      header: 'Alerta',
+      message: 'Esta OT no cuenta con una imagen.',
       buttons: ['OK']
     });
     await alert.present();

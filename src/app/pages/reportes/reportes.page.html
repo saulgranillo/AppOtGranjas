@@ -47,20 +47,22 @@
     Imagen por folio
   </ion-card-header>
   <ion-card-content>
-    <ion-input type="number" inputmode="numeric" placeholder="Inserta folio de la OT" formControlName="folioImg" [debounce]="250"
-      (ionChange)="(inputimgXId($event))"></ion-input>
+    <ion-input type="number" inputmode="numeric" placeholder="Inserta folio de la OT" formControlName="folioImg"
+      [debounce]="250" (ionChange)="(inputimgXId($event))"></ion-input>
     <ion-button expand="block" fill="outline" (click)="imagenXId()">
       Consultar
     </ion-button>
-    <img  [src]="base64Image" />
+    <ion-item class="paddingFoto">
+      <img center [src]="base64Image" />
+    </ion-item>
     <br>
-    <ion-button [hidden]="!btnHiddenShare" (click)="shareImage()">
+    <ion-button [hidden]="!btnHiddenShare" expand="block" fill="outline" (click)="shareImage()">
       <ion-icon name="share-social-outline"></ion-icon>
     </ion-button>
     <ion-button [hidden]="!btnHiddenEliminarFoto" expand="block" fill="outline" (click)="eliminarImagen()">
       Eliminar
     </ion-button>
-    
+
   </ion-card-content>
 </ion-card>
 
