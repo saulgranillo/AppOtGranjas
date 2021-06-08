@@ -6,6 +6,7 @@ import { ExportService } from '../../services/export.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ImagenService } from '../../services/imagen.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-reportes',
@@ -23,7 +24,10 @@ export class ReportesPage implements OnInit {
   folio :number;
   reportesForm: FormGroup;
   imgHidden:any;
+  btnHiddenShare:any;
+  btnHiddenEliminarFoto:any
   base64Image:string = '';
+  nuevaImg:string ='';
 
   constructor(
     private network: Network,
@@ -33,6 +37,8 @@ export class ReportesPage implements OnInit {
     ,private formBuilder : FormBuilder
     ,private imgService : ImagenService
     ,private socialSharing : SocialSharing
+    ,private platform: Platform
+    ,private files: File
   ) { 
     this.fechaIniOptions = {
       buttons: [{
@@ -60,7 +66,9 @@ export class ReportesPage implements OnInit {
      folioImg: ['', [Validators.required, Validators.pattern("^[0-9]*$") ]]
     })
     this.imgHidden=0;
-    console.log('hidden en el oninit', this.imgHidden);
+    this.btnHiddenShare=0;
+    this.btnHiddenEliminarFoto=0;
+    console.log('hidden en el oninit img,btn', this.imgHidden,this.btnHiddenShare);
     
   }
   
@@ -159,14 +167,29 @@ export class ReportesPage implements OnInit {
     // if(this.reportesForm.valid){
    
       this.imgService.cargarXId(this.folio).then((data:any)=>{
+        if(data.clsModResultado.MsgError){
+          this.alertaFalloImagenXId(data.clsModResultado.MsgError);
+        }
         if(data.Imagen){            
         
           this.base64Image = data.Imagen;
-          var prueba = this.base64Image.split(";")[1];
-          console.log("prueba",prueba)
-          var formato = 'data:image/jpg;';
-          this.base64Image.concat(formato,prueba);
-          console.log(this.base64Image);
+          var imgSinFormato = this.base64Image.split(";")[1];
+         var aString= imgSinFormato.toString();
+          var formato = 'data:image/jpeg;';        
+         var nueva :string;
+         nueva.concat(formato,aString);
+          // this.nuevaImg.concat(formato, aString);
+          // this.base64Image.concat(formato,prueba);
+          // this.nuevaImg.concat(formato,imgSinFormato);
+        
+
+          console.log(nueva);
+          if(this.base64Image){
+            this.btnHiddenShare=1;  
+            this.btnHiddenEliminarFoto=1;
+             
+          }
+          
           // this.imgHidden=1;
           // console.log('hidden en el ImagenXId', this.imgHidden);
           //this.imgService.rptImagen(data.Imagen);
@@ -183,6 +206,29 @@ export class ReportesPage implements OnInit {
   inputimgXId(event){
     this.folio = event.detail.value;
     console.log('elfolio',this.folio);
+  }
+
+  shareImage(){
+    // if (this.platform.is('cordova')) {
+     
+    this.socialSharing.share(null,null,this.base64Image,null);
+        
+    // }else{
+    //   var csv = ''
+    //   var blob = new Blob([csv]);
+    //   var a = window.document.createElement('a');
+    //   a.href = window.URL.createObjectURL(blob);
+    //   a.download = 'newdata.csv';
+    //   a.click();
+    //   document.body.removeChild(a);
+    // }
+  }
+
+  eliminarImagen(){
+    this.base64Image='';
+    this.btnHiddenShare=0;
+    this.imgHidden=0;
+    this.btnHiddenEliminarFoto=0;
   }
 
   async alertaNetwork() {
@@ -255,6 +301,17 @@ export class ReportesPage implements OnInit {
     const alert = await this.alertCtrl.create({
       header: 'Alerta',
       message: 'Capturar un folio valido.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async alertaFalloImagenXId(err) {
+    const alert = await this.alertCtrl.create({
+      // cssClass: 'my-custom-class',
+      header: 'Error',
+      // subHeader: 'Para continuar',
+      message: err,
       buttons: ['OK']
     });
     await alert.present();

@@ -53,6 +53,14 @@
       Consultar
     </ion-button>
     <img  [src]="base64Image" />
+    <br>
+    <ion-button [hidden]="!btnHiddenShare" (click)="shareImage()">
+      <ion-icon name="share-social-outline"></ion-icon>
+    </ion-button>
+    <ion-button [hidden]="!btnHiddenEliminarFoto" expand="block" fill="outline" (click)="eliminarImagen()">
+      Eliminar
+    </ion-button>
+    
   </ion-card-content>
 </ion-card>
 
