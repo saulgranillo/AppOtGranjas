@@ -173,16 +173,10 @@ export class ReportesPage implements OnInit {
         if(data.Imagen){            
         
           this.base64Image = data.Imagen;
-          var imgSinFormato = this.base64Image.split(";")[1];
-          // var aString = imgSinFormato.toString();
+          var imgSinFormato = this.base64Image.split(";")[1];        
           var formato = 'data:image/jpeg;';
-          // var nueva: string;
-          // nueva.concat(formato, aString);
-          // this.nuevaImg.concat(formato, aString);
           this.base64Image.concat(formato,imgSinFormato);
-          // this.nuevaImg.concat(formato,imgSinFormato);
-
-
+          
           console.log(this.base64Image);
           if(this.base64Image){
             this.btnHiddenShare=1;  

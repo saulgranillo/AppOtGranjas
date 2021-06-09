@@ -663,8 +663,10 @@ selecNoGuardada() {
             if (this.network.type === "none") {  
               return
             }
+            console.log('porGuardar en sqlService',this.porGuardar)
             this.otService.guardarOTdesdeSql(this.porGuardar)
             // .finally(() => {
+              // aqui es .then y luego this.actualizarEstatus() para que si lo actualice cuando guarde y no antes
               this.actualizarEstatus(this.idActualizar)
             // });  
           }  

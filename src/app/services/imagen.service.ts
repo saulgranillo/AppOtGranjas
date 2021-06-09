@@ -55,8 +55,9 @@ export class ImagenService {
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri, // file-based data; provides best performance
       source: CameraSource.Photos, // automatically take a new photo with the camera
-      quality: 50 // highest quality (0 to 100)
+      quality: 30 // highest quality (0 to 100)
     });
+    console.log('capturedPhoto', capturedPhoto);
 
     this.photos.unshift({
       filepath: "soon...",
@@ -65,6 +66,8 @@ export class ImagenService {
 
     // Save the picture and add it to photo collection
     const savedImageFile = await this.savePicture(capturedPhoto);
+
+    console.log('savedImage',savedImageFile);
 
     Storage.set({
       key: this.PHOTO_STORAGE,
@@ -76,7 +79,7 @@ export class ImagenService {
 
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
-
+console.log('base64 en save picture', base64Data);
     // Write the file to the data directory
     const fileName = new Date().getTime() + '.jpeg';
     const savedFile = await Filesystem.writeFile({

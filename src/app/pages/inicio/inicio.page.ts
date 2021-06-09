@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SqliteService } from '../../services/sqlite.service';
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { Platform, LoadingController, AlertController, ModalController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
 import { LoginPage } from '../login/login.page';
@@ -36,11 +36,11 @@ export class InicioPage implements OnInit {
               ) { }
 
   ngOnInit() {
-    // this.subscripcion = interval(10000).subscribe((x => {
-    //   console.log('entre al timer');
-    //   this.selecNoGuardada();
+    this.subscripcion = interval(10000).subscribe((x => {
+      console.log('entre al timer');
+      this.selecNoGuardada();
 
-    // }));
+    }));
 
     // this.modalLogin();
     // this.routes.config.pop();

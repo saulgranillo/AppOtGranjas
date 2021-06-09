@@ -190,6 +190,12 @@ export class AgregarOTService {
     var CodEvento = objGuardar.CodEvento
     var FileName = objGuardar.FileName
 
+    console.log('objGuardar en otService', objGuardar.FileName)
+
+    const options ={
+      headers: new HttpHeaders().append('Content-Type','application/json; charset=utf-8')
+    }
+
     return new Promise ((resolve, reject) =>{
       
       var model = {
@@ -217,13 +223,13 @@ export class AgregarOTService {
         Tecnico5 : Tecnico5 === undefined ? '' : Tecnico5,
         TipoEvento : TipoEvento === undefined ? '' : TipoEvento,
         CodEvento: CodEvento === undefined ? '' : CodEvento,
-        LstImagenes: FileName === undefined ? '' : FileName
+        LstImagenes: objGuardar.FileName === undefined ? '' : objGuardar.FileName
       
       }
-      console.log('MODEL')
-      console.log(model)
+      // console.log('MODEL')
+      console.log('model otService',model)
 
-      this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/Guardar`,model).subscribe((data) =>{
+      this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/Guardar`, JSON.stringify(model), options).subscribe((data) =>{
         resolve(data)
       }, error =>{
         reject(error);
@@ -232,6 +238,7 @@ export class AgregarOTService {
   }
 
   guardarOTOnline(objGuardar){
+    // debugger;
     console.log('servicio', objGuardar)
     const options ={
       headers: new HttpHeaders().append('Content-Type','application/json; charset=utf-8')

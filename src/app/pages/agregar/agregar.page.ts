@@ -411,6 +411,7 @@ export class AgregarPage implements OnInit {
     
     this.imgService.selectFromGallery().then((res) =>{
       if (this.imgService.photos.length >= 1) {
+        console.log('EL RES en agregar', res)
         this.btnFotoHidden =1;
         this.btnEliminarFoto=0;
         console.log(this.btnFotoHidden)
@@ -514,7 +515,7 @@ export class AgregarPage implements OnInit {
     else {
       // console.log(this.lstTecnico);
       this.base = this.imgService.base
-      console.log(this.base)
+      console.log('Base de imgService on agregar',this.base)
 
       console.log(this.ionicForm.value)
       this.objGuardar = {
@@ -552,9 +553,16 @@ export class AgregarPage implements OnInit {
             //me voy a guardar la relación foto
             // this.lstImagenes = this.imgService.imagenes
             //intentare guardar el base64
-            this.sqlService.insertarRelImagen_Sql(result.insertId,this.base).catch((err:any)=>{
-              this.alertaErrorAgregar(err);
-            })
+
+            // this.files.readAsDataURL(this.imgService.photos[0].webviewPath,"foto.jpeg").then(base64File =>{
+            //   console.log('elbase 64', base64File);
+          console.log('este guardare',this.base);
+              this.sqlService.insertarRelImagen_Sql(result.insertId,this.base).catch((err:any)=>{
+                this.alertaErrorAgregar(err);
+              })
+
+            // })
+            
 
             //Valido la conexión para mostrar el diferente alert
             if(this.network.type==="none") 
@@ -625,6 +633,21 @@ export class AgregarPage implements OnInit {
   get errorCtrl() {
     // console.log(this.ionicForm.controls)
     return this.ionicForm.controls;
+  }
+
+  base64(){
+    this.files.readAsDataURL(this.imgService.photos[0].webviewPath,"foto.jpeg").then(base64File =>{
+      console.log('elbase 64', base64File);
+
+      //Inserto en tabla 
+      // this.sqlService.insertarRelImagen_Sql(result.insertId,this.base).catch((err:any)=>{
+      //   this.alertaErrorAgregar(err);
+      // })
+
+    }).catch((err) =>{
+      console.log('error wey', err);
+    })
+    
   }
 
 

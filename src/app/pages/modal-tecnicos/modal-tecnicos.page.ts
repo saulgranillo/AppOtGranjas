@@ -34,148 +34,148 @@ export class ModalTecnicosPage implements OnInit {
   arrTecnicos: any[] = 
   [
     {
-      nombre: 'ACARRERA'
+      nombre: 'ALVAREZ ISMAEL'
     },
     {
-      nombre: 'ACASTILLO'
+      nombre: 'ARREDONDO ELADIO'
     },
     {
-      nombre: 'ACASTRO'
+      nombre: 'BAIPOLI BALTAZAR'
     },
     {
-      nombre: 'AOVALLES'
+      nombre: 'BUSTAMANTE VAZQUEZ OSCAR'
     },
     {
-      nombre:'ARIVERA'
+      nombre: 'BUSTAMANTE GUTIERREZ OSCAR'
     },
     {
-      nombre:'ARODRIGUEZ'
+      nombre: 'CAMPAS FRANCISCO'
     },
     {
-      nombre:'BCEBALLOS'
+      nombre:'CARRERA ANGEL'
     },
     {
-      nombre:'BCHAVEZ'
+      nombre:'CASTILLO ABEL'
     },
     {
-      nombre:'DMENDOZA'
+      nombre:'CASTRO ALAN'
     },
     {
-      nombre:'DSANTIAGO'
+      nombre:'CEBALLOS BENITO'
     },
     {
-      nombre:'DVEGA'
+      nombre:'DE SANTIAGO DOMINGO'
     },
     {
-      nombre:'EDOMINGUEZ'
+      nombre:'DOMINGUEZ ESTEBAN'
     },
     {
-      nombre:'EGUZMAN'
+      nombre:'FLORES ISRAEL'
     },
     {
-      nombre:'EXTERNO'
+      nombre:'GONZALEZ FRANCISCO'
     },
     {
-      nombre:'FCAMPAS'
+      nombre:'GONZALEZ JOHAN'
     },
     {
-      nombre:'FRAMIREZ'
+      nombre:'GONZALEZ SERVANDO'
     },
     {
-      nombre:'FRIVERA'
+      nombre:'GRIJALVA JUAN'
     },
     {
-      nombre:'FSANCHEZ'
+      nombre:'GRIJALVA FRANCISCO'
     },
     {
-      nombre:'FVEGA'
+      nombre:'GUERRERO LUIS'
     },
     {
-      nombre:'GBORBON'
+      nombre:'GUZMAN EUGENIO'
     },
     {
-      nombre:'GRAMIREZ'
+      nombre:'HERRERA JESUS'
     },
     {
-      nombre:'HMENDIVIL'
+      nombre:'LEYVA MARTIN'
     },
     {
-      nombre:'IALVARES'
+      nombre:'LOPEZ CRUZ'
     },
     {
-      nombre:'IFLORES'
+      nombre:'LOPEZ MELQUIADES'
     },
     {
-      nombre:'JGONZALEZ'
+      nombre:'MARTINEZ JOSE'
     },
     {
-      nombre:'JGRIJALVA'
+      nombre:'MENDIVIL EDGAR'
     },
     {
-      nombre:'JHERRERA'
+      nombre:'MENDIVIL HORACIO'
     },
     {
-      nombre:'JMARTINEZ'
+      nombre:'MENDOZA JESUS'
     },
     {
-      nombre:'JMENDIVIL'
+      nombre:'MORA RICARDO'
     },
     {
-      nombre:'JORDUÑO'
+      nombre:'NIEBLA MARIO'
     },
     {
-      nombre:'JPAREDES'
+      nombre:'OCHOA MARCOS'
     },
     {
-      nombre:'JVAZQUEZ'
+      nombre:'OCHOA MANUEL'
     },
     {
-      nombre:'LGUERRERO'
+      nombre:'OVALLES CANDELARIO'
     },
     {
-      nombre:'MAOCHOA'
+      nombre:'QUINTANA JESUS'
     },
     {
-      nombre:'MGARCIA'
+      nombre:'RAMIREZ FRANCISCO'
     },
     {
-      nombre:'MLEYVA'
+      nombre:'RAMIREZ GUADALUPE'
     },
     {
-      nombre:'MLOPEZ'
+      nombre:'RAMIREZ NABOR'
     },
     {
-      nombre:'MNIEBLAS'
+      nombre:'RIVERA FRANCISCO'
     },
     {
-      nombre:'MOCHOA'
+      nombre:'RIVERA JESUS'
     },
     {
-      nombre:'NRAMIREZ'
+      nombre:'RODRIGUEZ PEDRO'
     },
     {
-      nombre:'OBUSTAMANTE'
+      nombre:'RODRIGUEZ FRANCISCO'
     },
     {
-      nombre:'PAYALA'
+      nombre:'RODRIGUEZ ALBERTO'
     },
     {
-      nombre:'PLEYVA'
+      nombre:'VALENZUELA PAZ'
     },
     {
-      nombre:'PRODRIGUEZ'
+      nombre:'VAZQUEZ JOSE'
     },
     {
-      nombre:'RMORA'
+      nombre:'VEGA DIEGO'
     },
     {
-      nombre:'SANAYA'
+      nombre:'VEGA JOSE'
     },
     {
-      nombre:'SGONZALEZ'
+      nombre:'VILLALVAZO ALDO'
     },
     {
-      nombre:'WGONZALEZ'
+      nombre:'YOVICHA JUSTO'
     }
   ]
 
