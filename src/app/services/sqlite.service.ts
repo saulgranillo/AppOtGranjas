@@ -633,7 +633,7 @@ GuardarCatOt_Sql(objGuardar) {
 
 selecNoGuardada() {
     return new Promise((resolve,reject) =>{
-      // qui meto la consulta del join , para la imagen offline(pendiente)
+      // qui meto la consulta del join , para la imagen offline
       this.database.executeSql(`SELECT 
                                 CatOT.IdOT, CatOT.Prioridad, CatOT.CodPrioridad, CatOT.TipoOT, CatOT.CodTipoOT, CatOT.Centro, CatOT.Granja, CatOT.Area, CatOT.CodArea, CatOT.Sala, 
                                 CatOT.Equipo, CatOT.CodEquipo, CatOT.Grupo, CatOT.Actividad, CatOT.Materiales, CatOT.Estatus, CatOT.CodEstatus, CatOT.Tecnico1, CatOT.Tecnico2, 
@@ -643,7 +643,7 @@ selecNoGuardada() {
                                 , []).then((data) => {
         // this.porGuardar.pop();
         console.log('MEGACONSULTA',data);
-        // convierto la ruta de la imagen a base64 y la mando en la peticion
+       
         if (data.rows.length >0) {
           for (let i = 0; i < data.rows.length; i++) {
             let item = data.rows.item(i);
@@ -651,7 +651,7 @@ selecNoGuardada() {
             // console.log('porguardar', this.porGuardar);
             this.idActualizar = this.porGuardar.IdOT;
             var filePath = this.porGuardar.FileName
-
+          //esto creoque nunca lo use 
           //   const photoList =  Storage.get({ key: this.PHOTO_STORAGE });
           //   const readFile =  Filesystem.readFile({
           //     path: filePath,
@@ -664,10 +664,15 @@ selecNoGuardada() {
               return
             }
             console.log('porGuardar en sqlService',this.porGuardar)
-            this.otService.guardarOTdesdeSql(this.porGuardar)
+            this.otService.guardarOTdesdeSql(this.porGuardar).then((data:any) =>{
+              console.log('actualizare el status',data)
+              this.actualizarEstatus(this.idActualizar)
+            }).catch((err) =>{
+              console.log(err)
+            })
             // .finally(() => {
               // aqui es .then y luego this.actualizarEstatus() para que si lo actualice cuando guarde y no antes
-              this.actualizarEstatus(this.idActualizar)
+             
             // });  
           }  
         }else{
@@ -707,6 +712,23 @@ actualizarEstatus(id){
   this.database.executeSql('UPDATE CatOT SET Guardado="S" WHERE IdOT = ?',[id])
 }
 
+  eliminarImagenGuardada() {
+    return new Promise((resolve, reject) => {
+      this.database.executeSql(`	
+                                DELETE FROM RelImagen
+                                WHERE RelImagen.IdOt IN ( SELECT IdOt FROM CatOT WHERE CatOT.Guardado="S" )	
+           `).then((data) => {
+                              console.log('data imagen eliminar',data)
+
+        resolve(true);
+      }, (error) => {
+        reject(error);
+      })
+
+
+    });
+
+  }
 
 }
 

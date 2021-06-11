@@ -39,6 +39,7 @@ export class InicioPage implements OnInit {
     this.subscripcion = interval(10000).subscribe((x => {
       console.log('entre al timer');
       this.selecNoGuardada();
+      this.eliminarImgGuardada();
 
     }));
 
@@ -82,6 +83,14 @@ export class InicioPage implements OnInit {
       });
     }
 
+  }
+
+  eliminarImgGuardada(){
+    this.sqlService.eliminarImagenGuardada().then((data:any)=>{
+      console.log(data)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
  
 
