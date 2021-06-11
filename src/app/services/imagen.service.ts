@@ -20,6 +20,7 @@ export class ImagenService {
   private PHOTO_STORAGE: string = "photos";
   private platform: Platform;
   public imagenes: any [] =[];
+  public imagenXId: any [] =[];
   public base:any;
   objImagen:CameraPhoto;
   public  window:any;
@@ -98,6 +99,30 @@ console.log('base64 en save picture', base64Data);
 
   }
 
+  //  async guardarXId(imagen:string){
+  //   const fileName = new Date().getTime() + '.jpeg';
+  //   const savedFIle = await Filesystem.writeFile({
+  //     path: fileName,
+  //     data: imagen,
+  //     directory: FilesystemDirectory.Data
+  //   });
+  
+  //   this.imagenXId.push(savedFIle);
+  //   console.log('guardoen IMGSERVICE', savedFIle);  
+  // }
+
+  // public async cargarImagenId(){
+  //   for (let foto of this.imagenXId){
+  //     const readFile = await Filesystem.readFile({
+  //       path: foto.filepath,
+  //       directory: FilesystemDirectory.Data
+  //   });
+  //   var path = foto.filepath
+  //   console.log('cargar, el path',path)
+  //   foto.path =  `data:image/jpeg;base64,${readFile.data}`;
+  //   }
+  // }
+
   public async loadSaved() {
     const photoList = await Storage.get({ key: this.PHOTO_STORAGE });
     this.photos = JSON.parse(photoList.value) || [];
@@ -162,7 +187,8 @@ console.log('base64 en save picture', base64Data);
     let promise = new Promise((resolve, reject) =>{
       this.http.post(`${environment.urlApiOrdenesTrabajo}/OT/CargarImgXId`,model).toPromise().then(
         (res:any) =>{
-          // console.log('el RES',res);
+          // JSON.stringify(res);
+          console.log('el RES',res);
           resolve( res );
         },
         msg => {

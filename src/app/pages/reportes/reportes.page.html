@@ -52,8 +52,11 @@
     <ion-button expand="block" fill="outline" (click)="imagenXId()">
       Consultar
     </ion-button>
-    <ion-item class="paddingFoto">
-      <img center [src]="base64Image" />
+    
+    <ion-item class="paddingFoto" [hidden]="!imgHidden">
+     
+      <img [src]="imagen" />
+
     </ion-item>
     <br>
     <ion-button [hidden]="!btnHiddenShare" expand="block" fill="outline" (click)="shareImage()">

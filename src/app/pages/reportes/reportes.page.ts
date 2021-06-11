@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
 import { ReportesService } from '../../services/reportes.service';
-import { Platform, LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { ExportService } from '../../services/export.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ImagenService } from '../../services/imagen.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-reportes',
@@ -26,8 +25,11 @@ export class ReportesPage implements OnInit {
   imgHidden:any;
   btnHiddenShare:any;
   btnHiddenEliminarFoto:any
+
   base64Image:string = '';
   nuevaImg:string ='';
+  urlXId:any;
+  imagen:string='';
 
   constructor(
     private network: Network,
@@ -35,10 +37,10 @@ export class ReportesPage implements OnInit {
     private rptService : ReportesService
     ,private exportService : ExportService
     ,private formBuilder : FormBuilder
-    ,private imgService : ImagenService
+    ,public imgService : ImagenService
     ,private socialSharing : SocialSharing
-    ,private platform: Platform
-    ,private files: File
+    
+    
   ) { 
     this.fechaIniOptions = {
       buttons: [{
@@ -69,7 +71,7 @@ export class ReportesPage implements OnInit {
     this.btnHiddenShare=0;
     this.btnHiddenEliminarFoto=0;
     console.log('hidden en el oninit img,btn', this.imgHidden,this.btnHiddenShare);
-    
+
   }
   
 
@@ -169,20 +171,26 @@ export class ReportesPage implements OnInit {
       this.imgService.cargarXId(this.folio).then((data:any)=>{
         if(data.clsModResultado.MsgError){
           this.alertaFalloImagenXId(data.clsModResultado.MsgError);
+          return;
         }
-        if(data.Imagen){            
-        
+        if(data.Imagen){   
           this.base64Image = data.Imagen;
-          var imgSinFormato = this.base64Image.split(";")[1];        
-          var formato = 'data:image/jpeg;';
-          this.base64Image.concat(formato,imgSinFormato);
-          
-          console.log(this.base64Image);
-          if(this.base64Image){
+          // var imgSinFormato = this.base64Image.split(";")[1];
+          this.imagen = 'data:image/jpeg;base64,' + this.base64Image
+          console.log(this.imagen)
+          // this.imgService.guardarXId(this.base64Image).then((data:any)=>{                 
+          //   this.urlXId = this.imgService.imagenXId[1].uri
+          //   console.log('urlXID', this.urlXId)
+          // })
+
+
+          if(this.imagen){
+            this.imgHidden=1;
             this.btnHiddenShare=1;  
             this.btnHiddenEliminarFoto=1;
              
           }
+          
           
           // this.imgHidden=1;
           // console.log('hidden en el ImagenXId', this.imgHidden);
@@ -199,6 +207,7 @@ export class ReportesPage implements OnInit {
     // }
   }
 
+
   inputimgXId(event){
     this.folio = event.detail.value;
     console.log('elfolio',this.folio);
@@ -207,7 +216,7 @@ export class ReportesPage implements OnInit {
   shareImage(){
     // if (this.platform.is('cordova')) {
      
-    this.socialSharing.share(null,null,this.base64Image,null);
+    this.socialSharing.share(null,null,this.imagen,null);
         
     // }else{
     //   var csv = ''
